@@ -1,0 +1,80 @@
+%\documentclass[paper]{geophysics}
+\documentclass[manuscript,revised]{geophysics}
+
+
+\usepackage{setspace}
+\usepackage[colorlinks]{hyperref}
+\hypersetup{colorlinks,linkcolor={blue},citecolor={blue},urlcolor={red}} 
+
+
+% An example of defining macros
+\newcommand{\rs}[1]{\mathstrut\mbox{\scriptsize\rm #1}}
+\newcommand{\rr}[1]{\mbox{\rm #1}}
+
+
+
+
+\begin{document}
+
+\title{An example \emph{Geophysics} article, \\ with a two-line title}
+
+\renewcommand{\thefootnote}{\fnsymbol{footnote}} 
+
+
+\ms{GEO-Example} % manuscript number
+
+\address{
+\footnotemark[1]BP UTG, \\
+200 Westlake Park Blvd, \\
+Houston, TX, 77079 \\
+\footnotemark[2]Bureau of Economic Geology, \\
+John A. and Katherine G. Jackson School of Geosciences \\
+The University of Texas at Austin \\
+University Station, Box X \\
+Austin, TX 78713-8924}
+
+\author{Gelson Ferreira de Souza-Junior\footnotemark[1], Ricardo Ivan Ferreira da Trindade\footnotemark[1],  Leonardo Uieda\footnotemark[2]}
+\date{}
+\footer{Example}
+\lefthead{Dellinger \& Fomel}
+\righthead{\emph{Geophysics} example}
+
+\maketitle
+
+\begin{abstract}
+\begin{singlespace}
+Paleomagnetism is the main tool used in paleogeographic reconstructions, in which directional information of the past magnetic field is retrieved from ferromagnetic grains (l.s). Magnetic minerals have a wide range of size and composition that influence their magnetic properties and, consequently, their ability to record the directions of paleomagnetic fields. The signals obtained with classical paleomagnetic methodologies are vector averages that include all magnetic grains present in the samples, including the stable and unstable carriers. To improve the quality of the magnetic signal, it would be necessary to individually identify the magnetizations of the carriers of remanent magnetization, in order to isolate only the good registers of the geomagnetic field. This would allow obtaining more reliable paleomagnetic information, as well as possibly being effective for the paleomagnetic study of older rocks (e.g., Archean rocks), meteorites and even bodies with complex geological evolution. Therefore, this project aims to apply magnetic microscopy to identify the remanent magnetization directions of stable magnetic grains and, subsequently, invert these data in an attempt to recover the individual paleomagnetic directions of the magnetic carriers present in the thin-sections. If successful, a new precision methodology for paleomagnetic data acquisition will be implemented.
+
+\noindent{\textbf{Keywords}: Paleomagnetism, magnetic microscopy, Euler deconvolution, inversion of magnetic data.}
+\end{singlespace}
+\end{abstract}
+
+\section{Introduction}
+%\onehalfspacing
+\doublespacing
+
+\noindent{Paleomagnetism is the study of the record of the Earth's magnetic field preserved in rocks, being the main tool, and the only quantitative method, used during paleogeographic reconstruction~\citep{Butler1992}. It is based on three basic assumptions: (i) the geomagnetic field can be approximated to the field created by a geocentric axial dipole (GAD) aligned with the Earth's axis of rotation over a period that eliminates paleosecular variation ($>10^4$ years)~\citep{McElhinny2000}; (ii) ferromagnetic minerals (l.s.) acquire natural remanent magnetization (NRM) parallel to the Earth's geomagnetic field~\citep{Dunlop1997, Tauxe2018}; and (iii) this acquired magnetization is recorded for a long period of time, depending on the physicochemical characteristics of the magnetized mineral, following Neél's Theory~\citep{Neel1949, Neel1955} and being also influenced by the geological processes by which the rocks were submitted.}
+
+\noindent{The thermoremanent magnetizations (TRMs) of magnetic particles in geological materials are the main records of the direction of the geomagnetic field of the past \citep{DeGroot2014}. Iron oxides, such as magnetite, which is the most common magnetic mineral present in rocks~\citep{OReilly1984} and acquire TRM as they cool below their Curie temperature and subsequently this direction of magnetization is “frozen” upon reaching blocking temperature~\citep{Dunlop1997}. When the grains are small enough, and the magnetization is unidirectional homogeneous (single domain - SD), the acquisition and preservation of magnetic signals is physically supported by Néel's theory~\citep{Neel1949, Neel1955}, conserving the remanent magnetization for long periods of time, on the order of billions of years, and for this reason, they are considered “good recorders” of the paleomagnetic field. In addition to SD, pseudo-single domain (PSD) particles, in the flower and stable vortex states, can also preserve magnetization for periods on the order of the solar system age~\citep{Nagy2017}. On the other hand, Néel's theory does not cover larger particles (multi domain - MD), which have unstable remanent magnetization (e.g., caused by viscous reordering of magnetic domains,~\cite{DeGroot2014}), so they are particles with limited ability to record the geomagnetic field. In addition to the magnetic domain state, particles can still vary in composition, size and shape which causes changes in their magnetic properties. All these factors are crucial in determining stable remanence directions used in the calculation of paleomagnetic poles.}
+
+\noindent{Classic techniques for obtaining paleomagnetic data, e.g., thermal demagnetization and alternating fields, are based on the progressive acquisition of the magnetization contained in cylindrical samples, usually of 10 cm$^3$. The magnetic signal of a single specimen is the result of the sum of moments contained in the assembly of ferromagnetic grains, including stable and unstable registers~\citep{DeGroot2021}. although there are recent well-structured studies of imaging magnetic minerals in thin-sections \citep[e.g.,][]{Almeida2014, Farchi2017,  Glenn2017, Lima2014, Lima2009, Nichols2016, Weiss2007, DeGroot2018, DeGroot2021}, obtaining NRM directions of individual grains in the rock fabric remains, to the best of our knowledge, a challenge deeply explored only by \cite{DeGroot2021}. With the possibility of isolating the individual contributions of a fairly large number (N $>10^6$) of stable magnetic particles (SD/PSD) the magnetic directions recovered, using the average of their NRM vectors, would have an accurate paleomagnetic response \citep{Berndt2016}, however such number of observations is unfeasible for the currently insufficient measurements scales of the equipaments \citep{DeGroot2018}.}
+
+\noindent{Several branches of Earth Sciences have demonstrated the importance of the “spatiality" of data on a microscopic scale, mainly in Geochemistry and Geochronology, where it is possible to perform punctual analyzes and compositional maps, which allowed significant advances in the understanding of igneous, metamorphic and sedimentary processes~\citep[e.g.,][]{ Barnes2019, Davidson2007, Verberne2020}. In Paleomagnetism there has been an interest in point magnetic analyses, or microscale magnetic maps, from magnetic microscopy techniques~\citep{DeGroot2014, DeGroot2018, Lima2014, Weiss2007}. However, despite recent advances in this area, still there is no well-established inversion protocol to determine the magnetic vector direction of each individual ferromagnetic grains, nor the intensity of magnetization, without using additional information of the positioning and shape of these sources, such as micromagnetic tomography \citep[e.g.,][]{DeGroot2018, DeGroot2021, Fabian2019}, which is a measurement spatially even more limited than the micromagnetic microscopy itself.}
+
+\noindent{This paper aims to give a new perspective in the methodological routine that carry out paleomagnetic studies in microscale allowing to retrieve the individual remanent magnetization direction of these stable magnetic carriers (SD and PSD), semi automatically and without any additional information. In this way, a larger area of the thin section can be scanned with the objective of increasing the number of observations and, therefore, increasing the reliability of the directional data obtained. We also intend to generate a micromagnetic analysis protocol in an open source software, based on the techniques that will be described below.}
+
+\section{Methodology}
+
+\section{Results}
+
+\section{Discussion}
+
+\section{Conclusion}
+
+
+\begin{singlespace}
+\doublespacing
+\bibliographystyle{agu}  % style file is seg.bst
+\bibliography{article1}
+\end{singlespace}
+\end{document}
