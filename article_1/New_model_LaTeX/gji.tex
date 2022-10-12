@@ -1,0 +1,69 @@
+\documentclass[extra,mreferee]{gji}
+\usepackage[utf8]{inputenc}
+\usepackage{timet}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage[longend,linesnumbered,ruled]{algorithm2e}
+\usepackage{graphicx}
+\usepackage{url}
+\usepackage[pdftex,colorlinks=true]{hyperref}
+\usepackage{doi}
+
+% Add line numbers
+\usepackage{lineno}
+\linenumbers
+
+% Import packages useful for creating the parameters tables
+\usepackage{multirow}
+\usepackage{booktabs}
+\usepackage{setspace}
+
+% Import variables
+\input{variables.tex}
+
+% Define style for urls
+\urlstyle{same}
+\hypersetup{
+    allcolors=blue,
+    pdftitle={\Title},
+}
+
+% Define title, authors, affiliations and DOI
+% ===========================================
+\title{\Title}
+\author[\SolerShort{} and \UiedaShort{}]{
+    \Soler$^{1,2}$ and \Uieda$^{3}$ \\
+    $^{1}$\CONICET (\SolerMail) \\
+    $^{2}$\IGSV \\
+    $^{3}$\Liverpool \\
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+\maketitle
+
+\begin{summary}
+    \input{abstract}
+\end{summary}
+
+\begin{keywords}
+    \keywordsGJI{}
+\end{keywords}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\input{content.tex}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\bibliographystyle{gji}
+\bibliography{references}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\input{appendix.tex}
+
+\end{document}

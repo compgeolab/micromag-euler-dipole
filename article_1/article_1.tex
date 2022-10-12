@@ -11,6 +11,10 @@
 \usepackage{graphicx}
 \graphicspath{ {./images/} } % images path
 
+\usepackage{multirow} % for tables
+\usepackage[table,xcdraw]{xcolor}
+\usepackage{floatrow} % for caption on the top of the table
+
 \usepackage[nameinlink, capitalise, noabbrev]{cleveref} % enhance refs
 
 \usepackage[document]{ragged2e} % to justify text
@@ -217,7 +221,7 @@ h_j =\left[\begin{matrix}{{mx}_{j\ \cdot}C}_m \cdot \frac{4}{3}\pi\cdot R_j^3\\{
 %%
 \subsubsection{Inverse Model}
 
-\noindent{Assuming that the ferromagnetic minerals (\emph{l.s.}) that give rise to the observed magnetization component data vector ${\bar{B}}_z$ can be approximated by a set of L uniformly magnetized spheres with known coordinates ($xc_j$, $yc_j$, $zc_j$), j = 1, 2, ..., L, of their centers. Also assuming that there is no induced magnetization component, only that of the NRM. Under these assumptions, a superdetermined inverse linear problem is formulated to estimate the vector of parameters $\bar{h}$ (\cref{eq:sphere9}) from the observed data ${\bar{B}}_z and \bar{\bar{M}}$, the latter being obtained previously with the Euler Deconvolution.}
+\noindent{Assuming that the ferromagnetic minerals (\emph{l.s.}) that give rise to the observed magnetization component data vector ${\bar{B}}_z$ can be approximated by a set of L uniformly magnetized spheres with known coordinates ($xc_j$, $yc_j$, $zc_j$), j = 1, 2, ..., L, of their centers. Also assuming that there is no induced magnetization component, only that of the NRM. Under these assumptions, a superdetermined inverse linear problem is formulated to estimate the vector of parameters $\bar{h}$ (\cref{eq:sphere9}) from the observed data ${\bar{B}}_z$ and $\bar{\bar{M}}$, the latter being obtained previously with the Euler Deconvolution.}
 
 \noindent{The problem of estimating a parameter vector $\bar{h}$ containing the spheres' magnetization vectors can be solved by minimizing the objective function $f\left(\bar{h}\right)$:}
 
@@ -445,6 +449,81 @@ f(\bar{m} ) = {\lVert e\lVert}^2 = {(\bar{\bar{G}} \cdot \bar{m}-\bar{d})}^T \cd
 
 %%%%%%%%%%%%%
 \section{Results}
+
+%%%
+\subsection{Synthetic Data}
+
+\noindent{We applied the proposed method in a numerical simulation of a geological thin-section of dimensions 1000 μm x 1000 μm in a regular grid (1000 x 1000) for estimating the magnetization directions of four spherical sources uniformly magnetized (but different directions), according to \cref{tab:directmodel}. Totaling an observation number N = $10^6$ obtained at a sensor-sample distance of 5 μm and a spacing of 1 μm. Subsequently, a pseudorandom noise of normal Gaussian distribution, with a zero mean and standard variation ≅ 5\% of the anomaly amplitude, was added to the data as shown in Figure XX.}
+
+
+\floatsetup[table]{capposition=top} % to put the caption on the top of the table
+
+% If you use beamer only pass "xcolor=table" option, i.e. \documentclass[xcolor=table]{beamer}
+\begin{table}[htbp]
+\caption{Initial position and magnetization parameters for each spherical source.}
+\label{tab:directmodel}
+\centering
+\begin{tabular}[width=1.0\textwidth]{ccccccc}
+\rowcolor[HTML]{E7E7E7} 
+\cellcolor[HTML]{E7E7E7}                         & \multicolumn{3}{c}{\cellcolor[HTML]{E7E7E7}Center coordinates} & \multicolumn{3}{c}{\cellcolor[HTML]{E7E7E7}Magnetization} \\
+\rowcolor[HTML]{E7E7E7} 
+\multirow{-2}{*}{\cellcolor[HTML]{E7E7E7}Sphere} & X (µm)              & Y (µm)             & Z (µm)             & Q (A/m)            & D (°)            & I (°)            \\
+1                                                & 250                 & 250                & 8.50               & 6.0                & -140             & -30              \\
+\rowcolor[HTML]{E7E7E7} 
+2                                                & 500                 & 500                & 10.0               & 6.0                & 0                & 62               \\
+3                                                & 750                 & 750                & 5.30               & 6.0                & -70              & -50              \\
+\rowcolor[HTML]{E7E7E7} 
+4                                                & 200                 & 800                & 7.75               & 6.0                & 125              & 22              
+\end{tabular}
+\end{table}
+
+
+
+\subsubsection{Euler Solution}
+
+\noindent{The first step is to calculate the magnetic horizontal gradient in order to isolate the window data of each source. In the horizontal gradient, the magnetic anomaly caused by a body tends to overlap its limits, thus obtaining a robust positioning \citep{Blakely1996}.  \cite{VanderWalt2014}.}
+
+
+
+\begin{table}[htbp]
+\caption{Central positions of sources input vs Euler deconvolution solutions.}
+\label{tab:eulerresults}
+\centering
+\begin{tabular}[width=1.0\textwidth]{ccccccc}
+\rowcolor[HTML]{E7E7E7} 
+\cellcolor[HTML]{E7E7E7}                         & \multicolumn{3}{c}{\cellcolor[HTML]{E7E7E7}Posição do Centro de   Entrada} & \multicolumn{3}{c}{\cellcolor[HTML]{E7E7E7}Solução de Euler} \\
+\rowcolor[HTML]{E7E7E7} 
+\multirow{-2}{*}{\cellcolor[HTML]{E7E7E7}Esfera} & X (µm)                  & Y (µm)                  & Z (µm)                 & X (µm)             & Y (µm)             & Z (µm)             \\
+1                                                & 250                     & 250                     & 8.50                   & 249.144984         & 250.084691         & 8.17863468         \\
+\rowcolor[HTML]{E7E7E7} 
+2                                                & 500                     & 500                     & 10.0                   & 500.213134         & 500.443637         & 9.85904976         \\
+3                                                & 750                     & 750                     & 5.30                   & 749.873747         & 750.127834         & 5.26685529         \\
+\rowcolor[HTML]{E7E7E7} 
+4                                                & 200                     & 800                     & 7.75                   & 200.177971         & 800.331017         & 7.82974687        
+\end{tabular}
+\end{table}
+
+
+\begin{table}[htbp]
+\caption{Input magnetization directions vs inversion solutions and their error propagation.}
+\label{tab:inversionresults}
+\centering
+\begin{tabular}[width=1.0\textwidth]{ccccccc}
+\rowcolor[HTML]{E7E7E7} 
+\cellcolor[HTML]{E7E7E7}                         & \multicolumn{2}{c}{\cellcolor[HTML]{E7E7E7}Direção de Entrada} & \multicolumn{4}{c}{\cellcolor[HTML]{E7E7E7}Direções Recuperadas e   Incertezas} \\
+\rowcolor[HTML]{E7E7E7} 
+\multirow{-2}{*}{\cellcolor[HTML]{E7E7E7}Esfera} & D (°)                          & I (°)                         & D (°)               & $\sigma$ D (°)            & I (°)             & $\sigma$ I (°)           \\
+1                                                & -140                           & -30                           & -137.0294           & ± 0.7641          & -32.6550          & ± 0.5169          \\
+\rowcolor[HTML]{E7E7E7} 
+2                                                & 0                              & 62                            & 2.5167              & ± 1.5004          & 60.5473           & ± 0.6917          \\
+3                                                & -70                            & -50                           & -68.3316            & ± 0.6752          & -49.0172          & ± 0.3923          \\
+\rowcolor[HTML]{E7E7E7} 
+4                                                & 125                            & 22                            & 124.8320            & ± 0.6449          & 21.9940           & ± 0.4515         
+\end{tabular}
+\end{table}
+
+
+
 
 
 \section{Discussion}
