@@ -1,0 +1,20 @@
+name: inversion-microscopy
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python==3.9.*
+  - numpy
+  - scipy
+  - matplotlib
+  - pandas
+  - scikit-image
+  - xarray
+  - netcdf4
+  - jupyterlab
+  # Fatiando
+  - pooch
+  - verde
+  - harmonica
+  # For stereonets
+  - apsg
