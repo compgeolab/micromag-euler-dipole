@@ -371,7 +371,7 @@ def euler_windows_view(X_, Y_, Z_, d_, euler_windows_T, show_windows=False, colo
     x_step = (np.max(X_)*m2microm - np.min(X_)*m2microm) / (nx-1)
     
     plt.figure(figsize=figsize)
-    plt.contourf(Y_*m2microm, X_*m2microm, d_, cmap='jet')
+    plt.contourf(Y_*m2microm, X_*m2microm, d_, cmap='viridis')
     
     for i in range(np.shape(euler_windows_T)[0]):
         x1 = int(euler_windows_T[i,0]) * x_step

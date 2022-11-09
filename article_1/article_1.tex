@@ -128,15 +128,93 @@ Paleomagnetism is the main tool used in paleogeographic reconstructions, in whic
 
 \noindent{Due to the similarities between magnetic microscopy techniques and aeromagnetic surveys, the methodologies of data inversion of the latter, densely studied in the last decades, can be adapted for magnetic microscopy. However, \cite{Lima2013} report important distinctions between SMM and aeromagnetic surveys, namely: (i) the source distribution in the SMM can often be accurately modeled in a two-dimensional model; (ii) the SMM measures the field produced directly by the sample's NRM; (iii) the sensor positioning is very accurate in the SMM, and the vertical component of the magnetic field is usually measured, rather than the total field; (iv) there is no need for correction to bring all measurements to the same surface or to grid the data; and (v) the distributions of the magnetization sources are finite and known.}
 
+
+
+
+%%%
+\subsection{Euler Deconvolution}
+
+\noindent{Euler Deconvolution is a consolidated method classically applied to data from aeromagnetic surveys. Given the similarities between SMM and aeromagnetic data, its application becomes plausible for determining the positions of magnetic sources caused by ferromagnetic minerals (l.s). Euler deconvolution is one of the most useful methods for estimating the three-dimensional positioning of magnetic sources/geological bodies \citep{Reid1990, Thompson1982}. It is the application of a mobile operator in a small data window over the sampled data set. The observations made within this window are used to estimate the horizontal and vertical positions of the source by solving a small linear system of equations using the gradients of the potential field, provided that the shapes of the sources are assumed.}
+
+\noindent{Despite this, this system usually has a large number of solutions \citep{Barbosa2011}, which becomes a limitation for the method. In an attempt to circumvent the problem of this expressive cloud of solutions, we suggest the previous application of a method of delimitation of the contours of the sources generating the potential field and later the application of Euler's Deconvolution, which becomes unique for each source (one data window per source). As the method itself already requires the gradients of the potential field, therefore, the method of delimitation chosen was the horizontal gradient \citep{Cordell1982}. \cite{Blakely1996} states that the response of a source's horizontal gradient tends to overlap its limits, thus obtaining a two-dimensional robust map of the sources location. The amplitude of the horizontal gradient ($\nabla H$) is expressed by~\cref{eq:HG}. Once the source positions are determined by this preliminary method then, subsequently, Euler Deconvolution is applied and a static window for each source generating the potential field.}
+
+\begin{equation} \label{eq:HG}
+\centering
+\nabla H= \sqrt{ {\left( \frac{∂F}{∂x} \right)}^2+{\left( \frac{∂F}{∂y} \right)}^2 }
+\end{equation}
+
+%%%
+\subsubsection{Euler Deconvolution Formulation}
+
+\noindent{The anomaly of a potential field F produced by a three-dimensional source, whose cartesian coordinates of its central position are x$_0$, y$_0$ and z$_0$, satisfies the homogeneous Euler equation \citep{Reid1990} expressed by:}
+
+\begin{equation} \label{eq:euler1}
+\centering
+(x-x_0) \cdot \frac{\partial F}{\partial x} + (y-y_0) \cdot \frac{\partial F}{\partial y}+(z-z_0) \cdot \frac{\partial F}{\partial z}=n \cdot (b-F)  \ \ 
+\end{equation}
+
+\begin{tabular}{ l }
+\noindent{where: n is the structural index, that is, a gauge of the geometric shape of the}  \\
+\noindent{sources causing the anomaly; and b is the constant, and unknown, base level.}  \\
+\end{tabular}
+
+\bigskip
+
+\noindent{The Euler's Deconvolution uses the gradient of a potential field and the structural index, which can be defined by the geometric nature of the sources. The structural index is the only necessary a priori knowledge. Once a value for n is assumed (n = 3 for spherical/punctual magnetic sources), the homogeneous Euler equation can be rearranged as follows:}
+
+\begin{equation} \label{eq:euler2}
+\centering
+x_0 \cdot \frac{\partial F}{\partial x} + y_0 \cdot \frac{\partial F}{\partial y} + z_0 \cdot \frac{\partial F}{\partial z} + n \cdot b = x \cdot \frac{\partial F}{\partial x} + y \cdot \frac{\partial F}{\partial y} + z \cdot \frac{\partial F}{\partial z} + n \cdot F  \ \ 
+\end{equation}
+
+\noindent{The \cref{eq:euler2} can be written in matrix form as:}
+
+\begin{equation} \label{eq:euler3}
+\centering
+\left[\begin{matrix}{Fx}_1&{Fy}_1&{Fz}_1&n\\{Fx}_2&{Fy}_2&{Fz}_2&n\\\vdots&\vdots&\vdots&\vdots\\{Fx}_N&{Fy}_N&{Fz}_N&n\\\end{matrix}\right]\left[\begin{matrix}x_0\\y_0\\z_0\\b\\\end{matrix}\right]=\left[\begin{matrix}x_1\cdot{Fx}_1+y_1 \cdot {Fy}_1+z_1 \cdot {Fz}_1+n\cdot F_1\\x_2\cdot{Fx}_2+y_2\cdot{Fy}_2+z_2\cdot{Fz}_2+n\cdot F_2\\\vdots\\x_N\cdot{Fx}_N+y_N\cdot{Fy}_N+z_N\cdot{Fz}_N+n\cdot F_N\\\end{matrix}\right]\ 
+\end{equation}
+
+\begin{tabular}{ l }
+\noindent{Where: $Fx_i$, $Fy_i$ and $Fz_i$ represent, respectively, the gradients $\frac{\partial F}{\partial x}$, $\frac{\partial F}{\partial y}$ and $\frac{\partial F}{\partial z}$}   \\
+\noindent{evaluated on the i-th observation point ($i=1,2, ..., N$). While $x_i$, $y_i$ and $z_i$}   \\
+\noindent{represent the cartesian coordinates at the i-th observation point.}
+\end{tabular}
+
+\bigskip
+
+\noindent{Note that \cref{eq:euler3} is a linear system $\bar{\bar{G}} \cdot \bar{m}=\bar{d}$ and its objective function $f(\bar{m} )$ expressed by:}
+
+\begin{equation} \label{eq:euler4}
+\centering
+f(\bar{m} ) = {\lVert e\lVert}^2 = {(\bar{\bar{G}} \cdot \bar{m}-\bar{d})}^T \cdot ~ (\bar{\bar{G}} \cdot \bar{m}-\bar{d})
+\end{equation}
+
+\noindent{The solution $\bar{m}$ of the system can be obtained by minimizing the objective function $(\frac{\partial f}{\partial m_k}=\bar{0})$ through the least squares estimator given by:}
+
+\begin{equation} \label{eq:euler5}
+\centering
+\bar{m}=\left({\bar{\bar{G}}}^T\cdot ~ \bar{\bar{G}}\right)^{-1} \cdot \ \left({\bar{\bar{G}}}^T\cdot ~ \bar{d}\right)
+\end{equation}
+
+\noindent{Thus, $\bar{m}=\left[x_0\ \ y_0\ \ z_0\ \ b\right]^T$ will be the solution vector that satisfies Euler's Equation with the least possible error containing the position coordinates font center ($x_0$, $y_0$, $z_0$) and the base level (b).}
+
+
+
+
+
+
+
+
+
 %%%
 \subsection{Magnetic Inversion}
 
-\noindent{The rapid inversion of the total field is a method developed by \cite{OliveiraJr.2015} being computationally efficient to invert the magnetic anomalies produced by multiple sources with approximately spherical shapes to estimate their magnetization directions (inclination and declination). This methodology requires the central position of the magnetic sources, which can be obtained with Euler Deconvolution, and the information on their geometry helps to reduce the non-exclusivity of the problem. In this way it is possible to estimate the direction of magnetization from multiple sources. The method does not require that all sources have the same magnetization direction nor the use of regularly spaced data on a horizontal grid, and can still be implemented in linear and non-linear inversion problems.}
+\noindent{The rapid inversion of the total field is a method developed by \cite{OliveiraJr.2015} being computationally efficient to invert the magnetic anomalies produced by multiple sources with approximately spherical shapes to estimate their magnetization directions (inclination and declination). This methodology requires the central position of the magnetic sources, which can be obtained with Euler Deconvolution, and the information on their geometry helps to reduce the non-exclusivity of the problem. In this way, it is possible to estimate the direction of magnetization from multiple sources. The method does not require that all sources have the same magnetization direction nor the use of regularly spaced data on a horizontal grid, and can still be implemented in linear and non-linear inversion problems.}
 
 \noindent{Currently, the main inversion limitations for these type of data are: (i) in part because the sampling scale during measurement is insufficiently accurate and (ii) because of the non-singularity of the magnetic inversion  \citep{Lima2013}. The basic mathematical structure associated with the inverse problem of aeromagnetic data can be adapted and used in SMM data due to its similarity, despite the non-singularity caused by the infinite number of solutions for the same observed magnetic field  \citep{Weiss2007}. Assigning as much information as possible about the analyzed sample and the experimental environment can reduce this ambiguity by recovering the magnetization direction. In particles with unidirectional magnetization, and without magnetization sources outside the sample area, it is possible to guarantee singularity for the inverse problem in SMM  \citep{Baratchart2013}. Associating the fact that there is a singularity in the response of uniformly magnetized particles and that ferromagnetic particles (\emph{l.s.}) with stable magnetization have such a characteristic, therefore, the inversion method becomes ideal for the purpose of this project.}
 
 %%
-\subsubsection{Direct Model}
+\subsubsection{Parametrization and Forward Model}
 
 \noindent{Let $\bar{B}$ be the observed data vector, whose i-th element ${\bar{B}}_i$, $i= 1, 2, ..., N$, is a total field anomaly, resulting from the NRM contribution of each ferromagnetic particle (\emph{l.s.}), measured at position ($x_i$, $y_i$, $z_i$) (black dots, \cref{fig:MODEL}). In this cartesian coordinate system, x points to geographic north, y points east, and z points down. In general, the magnetic field that is produced in the thin section is the result solely and exclusively of the NRM contribution of the particles without considering the induced component, since the measurements carried out in the magnetic microscope are usually made under magnetic shielding conditions. Thereby, approximating the shape of ferromagnetic minerals (\emph{l.s.}) to NRM magnetizing spheric/punctual sources. According to \cite{Blakely1996} the equation of a uniformly magnetized sphere is given by:}
 
@@ -282,7 +360,7 @@ h_j =\left[\begin{matrix}{{mx}_{j\ \cdot}C}_m \cdot \frac{4}{3}\pi\cdot R_j^3\\{
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.5\textwidth]{VECTORS.png}
+\includegraphics[width=0.5\textwidth]{VECTORS.pdf}
 \caption{Schematic representation of vector $h_j$ (\cref{eq:sphere8}) with elements $hx_j$, $hy_j$ and $hz_j$ in cartesian coordinates. This vector has declination $D_j$ (positive clockwise) and slope $I_j$ (positive downwards), j = 1, 2, ... L. Source: \cite{OliveiraJr.2015}.}
 \label{fig:VECTORS}
 \end{figure}
@@ -369,72 +447,7 @@ h_j =\left[\begin{matrix}{{mx}_{j\ \cdot}C}_m \cdot \frac{4}{3}\pi\cdot R_j^3\\{
 
 
 
-%%%
-\subsection{Euler Deconvolution}
 
-\noindent{Euler Deconvolution is a consolidated method classically applied to data from aeromagnetic surveys. Given the similarities between SMM and aeromagnetic data, its application becomes plausible for determining the positions of magnetic sources caused by ferromagnetic minerals (l.s). Euler deconvolution is one of the most useful methods for estimating the three-dimensional positioning of magnetic sources/geological bodies \citep{Reid1990, Thompson1982}. It is the application of a mobile operator in a small data window over the sampled data set. The observations made within this window are used to estimate the horizontal and vertical positions of the source by solving a small linear system of equations using the gradients of the potential field, provided that the shapes of the sources are assumed.}
-
-\noindent{Despite this, this system usually has a large number of solutions \citep{Barbosa2011}, which becomes a limitation for the method. In an attempt to circumvent the problem of this expressive cloud of solutions, we suggest the previous application of a method of delimitation of the contours of the sources generating the potential field and later the application of Euler's Deconvolution, which becomes unique for each source (one data window per source). As the method itself already requires the gradients of the potential field, therefore, the method of delimitation chosen was the horizontal gradient \citep{Cordell1982}. \cite{Blakely1996} states that the response of a source's horizontal gradient tends to overlap its limits, thus obtaining a two-dimensional robust map of the sources location. The amplitude of the horizontal gradient ($\nabla H$) is expressed by~\cref{eq:HG}. Once the source positions are determined by this preliminary method then, subsequently, Euler Deconvolution is applied and a static window for each source generating the potential field.}
-
-\begin{equation} \label{eq:HG}
-\centering
-\nabla H= \sqrt{ {\left( \frac{∂F}{∂x} \right)}^2+{\left( \frac{∂F}{∂y} \right)}^2 }
-\end{equation}
-
-%%%
-\subsubsection{Euler Deconvolution Formulation}
-
-\noindent{The anomaly of a potential field F produced by a three-dimensional source, whose cartesian coordinates of its central position are x$_0$, y$_0$ and z$_0$, satisfies the homogeneous Euler equation \citep{Reid1990} expressed by:}
-
-\begin{equation} \label{eq:euler1}
-\centering
-(x-x_0) \cdot \frac{\partial F}{\partial x} + (y-y_0) \cdot \frac{\partial F}{\partial y}+(z-z_0) \cdot \frac{\partial F}{\partial z}=n \cdot (b-F)  \ \ 
-\end{equation}
-
-\begin{tabular}{ l }
-\noindent{where: n is the structural index, that is, a gauge of the geometric shape of the}  \\
-\noindent{sources causing the anomaly; and b is the constant, and unknown, base level.}  \\
-\end{tabular}
-
-\bigskip
-
-\noindent{The Euler's Deconvolution uses the gradient of a potential field and the structural index, which can be defined by the geometric nature of the sources. The structural index is the only necessary a priori knowledge. Once a value for n is assumed (n = 3 for spherical/punctual magnetic sources), the homogeneous Euler equation can be rearranged as follows:}
-
-\begin{equation} \label{eq:euler2}
-\centering
-x_0 \cdot \frac{\partial F}{\partial x} + y_0 \cdot \frac{\partial F}{\partial y} + z_0 \cdot \frac{\partial F}{\partial z} + n \cdot b = x \cdot \frac{\partial F}{\partial x} + y \cdot \frac{\partial F}{\partial y} + z \cdot \frac{\partial F}{\partial z} + n \cdot F  \ \ 
-\end{equation}
-
-\noindent{The \cref{eq:euler2} can be written in matrix form as:}
-
-\begin{equation} \label{eq:euler3}
-\centering
-\left[\begin{matrix}{Fx}_1&{Fy}_1&{Fz}_1&n\\{Fx}_2&{Fy}_2&{Fz}_2&n\\\vdots&\vdots&\vdots&\vdots\\{Fx}_N&{Fy}_N&{Fz}_N&n\\\end{matrix}\right]\left[\begin{matrix}x_0\\y_0\\z_0\\b\\\end{matrix}\right]=\left[\begin{matrix}x_1\cdot{Fx}_1+y_1 \cdot {Fy}_1+z_1 \cdot {Fz}_1+n\cdot F_1\\x_2\cdot{Fx}_2+y_2\cdot{Fy}_2+z_2\cdot{Fz}_2+n\cdot F_2\\\vdots\\x_N\cdot{Fx}_N+y_N\cdot{Fy}_N+z_N\cdot{Fz}_N+n\cdot F_N\\\end{matrix}\right]\ 
-\end{equation}
-
-\begin{tabular}{ l }
-\noindent{Where: $Fx_i$, $Fy_i$ and $Fz_i$ represent, respectively, the gradients $\frac{\partial F}{\partial x}$, $\frac{\partial F}{\partial y}$ and $\frac{\partial F}{\partial z}$}   \\
-\noindent{evaluated on the i-th observation point ($i=1,2, ..., N$). While $x_i$, $y_i$ and $z_i$}   \\
-\noindent{represent the cartesian coordinates at the i-th observation point.}
-\end{tabular}
-
-\bigskip
-
-\noindent{Note that \cref{eq:euler3} is a linear system $\bar{\bar{G}} \cdot \bar{m}=\bar{d}$ and its objective function $f(\bar{m} )$ expressed by:}
-
-\begin{equation} \label{eq:euler4}
-\centering
-f(\bar{m} ) = {\lVert e\lVert}^2 = {(\bar{\bar{G}} \cdot \bar{m}-\bar{d})}^T \cdot ~ (\bar{\bar{G}} \cdot \bar{m}-\bar{d})
-\end{equation}
-
-\noindent{The solution $\bar{m}$ of the system can be obtained by minimizing the objective function $(\frac{\partial f}{\partial m_k}=\bar{0})$ through the least squares estimator given by:}
-
-\begin{equation} \label{eq:euler5}
-\centering
-\bar{m}=\left({\bar{\bar{G}}}^T\cdot ~ \bar{\bar{G}}\right)^{-1} \cdot \ \left({\bar{\bar{G}}}^T\cdot ~ \bar{d}\right)
-\end{equation}
-
-\noindent{Thus, $\bar{m}=\left[x_0\ \ y_0\ \ z_0\ \ b\right]^T$ will be the solution vector that satisfies Euler's Equation with the least possible error containing the position coordinates font center ($x_0$, $y_0$, $z_0$) and the base level (b).}
 
 
 
@@ -529,7 +542,13 @@ f(\bar{m} ) = {\lVert e\lVert}^2 = {(\bar{\bar{G}} \cdot \bar{m}-\bar{d})}^T \cd
 \section{Discussion}
 
 \section{Conclusion}
+\noindent{We developed an efficient semi-automated method to determine the direction of magnetization of dipolar sources on a microscale, as well as the recovery of their magnetic moment. Being ideal for a reinterpretation for the application of methods of paleomagnetic studies using thin sections of rock samples. This would be an attempt to improve the quality of results obtained by isolating the responses of more reliable recorders of the Earth's geomagnetic field. }
 
+\noindent{We also present a new, faster and cleaner way to solve the Euler equation in determining the positioning of magnetic anomaly sources using a pre-selection of magnetic anomaly source windows based on the Laplacian of the Gaussian applied to total gradient anomaly maps. In this way, reducing the numerous solutions to just one data window per source. After estimating the structural index (N=3) by approximating the sources generating the magnetic anomaly to spheres/points, the Euler deconvolution is performed and the central position of each source is determined.}
+
+\noindent{Since for the recovery of direction and magnetization we only need to assume that the sources have their central positions known (so we apply Euler deconvolution) and that their magnetizations are uniform. This last premise aligns with the theory of magnetically stable particles, which are the basis of classical paleomagnetism. Also, there is no need for any kind of prior knowledge other than the observed magnetic anomaly, and the structural index of the sources. Therefore, this method can be quickly replicated in a dataset of thin sections of rocks to obtain the distributions of magnetic directions of each source identified in the sample.}
+
+\noindent{The test using a simply synthetic sample shows the great capability of the method by retrieving not only the precisely center positions }
 
 \begin{singlespace}
 \doublespacing
