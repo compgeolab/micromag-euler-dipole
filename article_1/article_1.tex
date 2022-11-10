@@ -146,11 +146,11 @@ Paleomagnetism is the main tool used in paleogeographic reconstructions, in whic
 %%%
 \subsubsection{Euler Deconvolution Formulation}
 
-\noindent{The anomaly of a potential field F produced by a three-dimensional source, whose cartesian coordinates of its central position are x$_0$, y$_0$ and z$_0$, satisfies the homogeneous Euler equation \citep{Reid1990} expressed by:}
+\noindent{The anomaly of a potential field F produced by a three-dimensional source, whose cartesian coordinates of its central position are x$_c$, y$_c$ and z$_c$, satisfies the homogeneous Euler equation \citep{Reid1990} expressed by:}
 
 \begin{equation} \label{eq:euler1}
 \centering
-(x-x_0) \cdot \frac{\partial F}{\partial x} + (y-y_0) \cdot \frac{\partial F}{\partial y}+(z-z_0) \cdot \frac{\partial F}{\partial z}=n \cdot (b-F)  \ \ 
+(x-x_c) \cdot \frac{\partial F}{\partial x} + (y-y_c) \cdot \frac{\partial F}{\partial y}+(z-z_c) \cdot \frac{\partial F}{\partial z}=n \cdot (b-F)  \ \ 
 \end{equation}
 
 \begin{tabular}{ l }
@@ -164,14 +164,14 @@ Paleomagnetism is the main tool used in paleogeographic reconstructions, in whic
 
 \begin{equation} \label{eq:euler2}
 \centering
-x_0 \cdot \frac{\partial F}{\partial x} + y_0 \cdot \frac{\partial F}{\partial y} + z_0 \cdot \frac{\partial F}{\partial z} + n \cdot b = x \cdot \frac{\partial F}{\partial x} + y \cdot \frac{\partial F}{\partial y} + z \cdot \frac{\partial F}{\partial z} + n \cdot F  \ \ 
+x_c \cdot \frac{\partial F}{\partial x} + y_c \cdot \frac{\partial F}{\partial y} + z_c \cdot \frac{\partial F}{\partial z} + n \cdot b = x \cdot \frac{\partial F}{\partial x} + y \cdot \frac{\partial F}{\partial y} + z \cdot \frac{\partial F}{\partial z} + n \cdot F  \ \ 
 \end{equation}
 
 \noindent{The \cref{eq:euler2} can be written in matrix form as:}
 
 \begin{equation} \label{eq:euler3}
 \centering
-\left[\begin{matrix}{Fx}_1&{Fy}_1&{Fz}_1&n\\{Fx}_2&{Fy}_2&{Fz}_2&n\\\vdots&\vdots&\vdots&\vdots\\{Fx}_N&{Fy}_N&{Fz}_N&n\\\end{matrix}\right]\left[\begin{matrix}x_0\\y_0\\z_0\\b\\\end{matrix}\right]=\left[\begin{matrix}x_1\cdot{Fx}_1+y_1 \cdot {Fy}_1+z_1 \cdot {Fz}_1+n\cdot F_1\\x_2\cdot{Fx}_2+y_2\cdot{Fy}_2+z_2\cdot{Fz}_2+n\cdot F_2\\\vdots\\x_N\cdot{Fx}_N+y_N\cdot{Fy}_N+z_N\cdot{Fz}_N+n\cdot F_N\\\end{matrix}\right]\ 
+\left[\begin{matrix}{Fx}_1&{Fy}_1&{Fz}_1&n\\{Fx}_2&{Fy}_2&{Fz}_2&n\\\vdots&\vdots&\vdots&\vdots\\{Fx}_N&{Fy}_N&{Fz}_N&n\\\end{matrix}\right]\left[\begin{matrix}x_c\\y_c\\z_c\\b\\\end{matrix}\right]=\left[\begin{matrix}x_1\cdot{Fx}_1+y_1 \cdot {Fy}_1+z_1 \cdot {Fz}_1+n\cdot F_1\\x_2\cdot{Fx}_2+y_2\cdot{Fy}_2+z_2\cdot{Fz}_2+n\cdot F_2\\\vdots\\x_N\cdot{Fx}_N+y_N\cdot{Fy}_N+z_N\cdot{Fz}_N+n\cdot F_N\\\end{matrix}\right]\ 
 \end{equation}
 
 \begin{tabular}{ l }
@@ -182,21 +182,21 @@ x_0 \cdot \frac{\partial F}{\partial x} + y_0 \cdot \frac{\partial F}{\partial y
 
 \bigskip
 
-\noindent{Note that \cref{eq:euler3} is a linear system $\bar{\bar{G}} \cdot \bar{m}=\bar{d}$ and its objective function $f(\bar{m} )$ expressed by:}
+\noindent{Note that \cref{eq:euler3} is a linear system $\bar{\bar{G}} \cdot \bar{p}=\bar{d}$ and its objective function $f(\bar{p} )$ expressed by:}
 
 \begin{equation} \label{eq:euler4}
 \centering
-f(\bar{m} ) = {\lVert e\lVert}^2 = {(\bar{\bar{G}} \cdot \bar{m}-\bar{d})}^T \cdot ~ (\bar{\bar{G}} \cdot \bar{m}-\bar{d})
+f(\bar{p} ) = {\lVert e\lVert}^2 = {(\bar{\bar{G}} \cdot \bar{p}-\bar{d})}^T \cdot ~ (\bar{\bar{G}} \cdot \bar{p}-\bar{d})
 \end{equation}
 
-\noindent{The solution $\bar{m}$ of the system can be obtained by minimizing the objective function $(\frac{\partial f}{\partial m_k}=\bar{0})$ through the least squares estimator given by:}
+\noindent{The solution $\bar{p}$ of the system can be obtained by minimizing the objective function $(\frac{\partial f}{\partial p_k}=\bar{0})$ through the least squares estimator given by:}
 
 \begin{equation} \label{eq:euler5}
 \centering
-\bar{m}=\left({\bar{\bar{G}}}^T\cdot ~ \bar{\bar{G}}\right)^{-1} \cdot \ \left({\bar{\bar{G}}}^T\cdot ~ \bar{d}\right)
+\bar{p}=\left({\bar{\bar{G}}}^T\cdot ~ \bar{\bar{G}}\right)^{-1} \cdot \ \left({\bar{\bar{G}}}^T\cdot ~ \bar{d}\right)
 \end{equation}
 
-\noindent{Thus, $\bar{m}=\left[x_0\ \ y_0\ \ z_0\ \ b\right]^T$ will be the solution vector that satisfies Euler's Equation with the least possible error containing the position coordinates font center ($x_0$, $y_0$, $z_0$) and the base level (b).}
+\noindent{Thus, $\bar{p}=\left[x_c\ \ y_c\ \ z_c\ \ b\right]^T$ will be the solution vector that satisfies Euler's Equation with the least possible error containing the position coordinates font center ($x_c$, $y_c$, $z_c$) and the base level (b).}
 
 
 
@@ -220,29 +220,29 @@ f(\bar{m} ) = {\lVert e\lVert}^2 = {(\bar{\bar{G}} \cdot \bar{m}-\bar{d})}^T \cd
 
 \begin{equation} \label{eq:sphere1}
 \centering
-b =\ C_m \cdot \frac{4}{3} \cdot \pi \cdot R^3 \cdot m \cdot \hat{m} \cdot \frac{1}{r^2} \cdot \hat{r}
+b =\ C_m \cdot \frac{4}{3} \cdot \pi \cdot R^3 \cdot M \cdot \hat{M} \cdot \frac{1}{r^2} \cdot \hat{r}
 \end{equation}
 
 \noindent{Whereas the magnetic sources can be represented by a set of L uniformly magnetized spheres. In this case, each sphere will have a contribution in the field measured at the position ($x_i$, $y_i$, $z_i$):}
 
 \begin{equation} \label{eq:sphere2}
 \centering
-{b_i}^j=\ C_m \cdot \frac{4}{3}\pi \cdot {R_j}^3 \cdot {\bar{m}}^j\cdot\frac{1}{r_{i,j}^2}\cdot{\hat{r}}_{i,j}\ ,\ \ j=1,\ 2\ldots,\ L
+{b_i}^j=\ C_m \cdot \frac{4}{3}\pi \cdot {R_j}^3 \cdot {\bar{M}}^j\cdot\frac{1}{r_{i,j}^2}\cdot{\hat{r}}_{i,j}\ ,\ \ j=1,\ 2\ldots,\ L
 \end{equation}
 
 \begin{tabular}{ l }
 \noindent{Where: $C_m=\ \frac{\mu_0}{4\pi}=\ {10}^{-7}\frac{\ H}{m}$; $R_j$ is the radius of the j-th sphere; $r_{i,j}$ is the distance}   \\ 
 \noindent{(unit vector ${\hat{r}}_{i,j}$) between the center of the j-th sphere and the observation point i,}    \\  
-\noindent{i = 1, 2, . .. N; and ${\bar{m}}^j=\left[{mx}_j\ {my}_j\ {mz}_j\right]^T$ is the vector formed by the cartesian} \\
-\noindent{components of the magnetization of the j-th sphere (unit vector ${\hat{m}}^j)$.}
+\noindent{i = 1, 2, . .. N; and ${\bar{M}}^j=\left[{Mx}_j\ {My}_j\ {Mz}_j\right]^T$ is the vector formed by the cartesian} \\
+\noindent{components of the magnetization of the j-th sphere (unit vector ${\hat{M}}^j)$.}
 \end{tabular}
 
 \bigskip
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.5\textwidth]{MODEL.png}
-\caption{Schematic representation of spheres (L = 2) uniformly magnetized in the subsurface, whose magnetic effect, produced by these spheres, can be observed at points ($x_i$, $ y_i$, $z_i$), i = 1, 2, ..., N (points black). In this cartesian coordinate system, x points to geographic north, y points east, and z points down. Modified from: \cite{OliveiraJr.2015}.}
+\includegraphics[width=0.5\textwidth]{MODEL.pdf}
+\caption{Schematic representation of spheres (L = 2) uniformly magnetized in the subsurface, whose magnetic effect, produced by these spheres, can be observed at points ($x_i$, $ y_i$, $z_i$), i = 1, 2, ..., N (black dots). In this cartesian coordinate system, x points to geographic north, y points east, and z points down. Modified from: \cite{OliveiraJr.2015}.}
 \label{fig:MODEL}
 \end{figure}
 
@@ -253,11 +253,11 @@ b =\ C_m \cdot \frac{4}{3} \cdot \pi \cdot R^3 \cdot m \cdot \hat{m} \cdot \frac
 B_i=\sum_{j=1}^{L}b_i^j
 \end{equation}
 
-\noindent{According to \cite{OliveiraJr.2015} the \cref{eq:sphere2} can be segmented into two members: (i) the first being a matrix $M_i^j$ encompassing the vector relationship with the positioning for each source and (ii) the second being $h_j$, which is the vector that encompasses the cartesian components of the magnetization of each sphere:}
+\noindent{The \cref{eq:sphere2} presents the sensitive matrix $A_i^j$ and the $m_j$, which is the vector that encompasses the cartesian components of the magnetc moment (magnetization times volume) of each sphere:}
 
 \begin{equation} \label{eq:sphere4}
-\small M_i^j =\left[\begin{matrix}\left(\frac{\partial^2}{\partial x\partial x}\cdot\frac{1}{r_{i,j}}\right)&\left(\frac{\partial^2}{\partial x\partial y}\cdot\frac{1}{r_{i,j}}\right)&\left(\frac{\partial^2}{\partial x\partial z}\cdot\frac{1}{r_{i,j}}\right)\\\left(\frac{\partial^2}{\partial x\partial y}\cdot\frac{1}{r_{i,j}}\right)&\left(\frac{\partial^2}{\partial y\partial y}\cdot\frac{1}{r_{i,j}}\right)&\left(\frac{\partial^2}{\partial x\partial z}\cdot\frac{1}{r_{i,j}}\right)\\\left(\frac{\partial^2}{\partial x\partial z}\cdot\frac{1}{r_{i,j}}\right)&\left(\frac{\partial^2}{\partial y\partial z}\cdot\frac{1}{r_{i,j}}\right)&\left(\frac{\partial^2}{\partial z\partial z}\cdot\frac{1}{r_{i,j}}\right)\\\end{matrix}\right]_{\text{\tiny 3N $\times$ 3L}},
-h_j =\left[\begin{matrix}{{mx}_{j\ \cdot}C}_m \cdot \frac{4}{3}\pi\cdot R_j^3\\{{my}_{j\ \cdot}C}_m \cdot \frac{4}{3}\pi\cdot R_j^3\\{{mz}_{j\ \cdot}C}_m \cdot \frac{4}{3}\pi\cdot R_j^3\\\end{matrix}\right]_{\text{\tiny 3L $\times$ 1}}
+\small A_i^j ={C}_{m} \cdot \left[\begin{matrix}\left(\frac{\partial^2}{\partial x\partial x}\cdot\frac{1}{r_{i,j}}\right)&\left(\frac{\partial^2}{\partial x\partial y}\cdot\frac{1}{r_{i,j}}\right)&\left(\frac{\partial^2}{\partial x\partial z}\cdot\frac{1}{r_{i,j}}\right)\\\left(\frac{\partial^2}{\partial x\partial y}\cdot\frac{1}{r_{i,j}}\right)&\left(\frac{\partial^2}{\partial y\partial y}\cdot\frac{1}{r_{i,j}}\right)&\left(\frac{\partial^2}{\partial x\partial z}\cdot\frac{1}{r_{i,j}}\right)\\\left(\frac{\partial^2}{\partial x\partial z}\cdot\frac{1}{r_{i,j}}\right)&\left(\frac{\partial^2}{\partial y\partial z}\cdot\frac{1}{r_{i,j}}\right)&\left(\frac{\partial^2}{\partial z\partial z}\cdot\frac{1}{r_{i,j}}\right)\\\end{matrix}\right]_{\text{\tiny 3N $\times$ 3L}},
+m_j =\left[\begin{matrix}{{Mx}_{j\ }} \cdot \frac{4}{3}\pi\cdot R_j^3\\{{My}_{j\ }} \cdot \frac{4}{3}\pi\cdot R_j^3\\{{Mz}_{j\ }} \cdot \frac{4}{3}\pi\cdot R_j^3\\\end{matrix}\right]_{\text{\tiny 3L $\times$ 1}}
 \end{equation}
 
 \begin{FlushRight}
@@ -267,83 +267,92 @@ h_j =\left[\begin{matrix}{{mx}_{j\ \cdot}C}_m \cdot \frac{4}{3}\pi\cdot R_j^3\\{
 \noindent{Subsequently, the components of the total magnetizing field can be obtained (from \cref{eq:sphere3}), as shown below:}
 
 \begin{equation} \label{eq:sphere5}
-\small \left[\begin{matrix}\left(\frac{\partial^2}{\partial x\partial x}\cdot\frac{1}{r_{i,j}}\right)&\left(\frac{\partial^2}{\partial x\partial y}\cdot\frac{1}{r_{i,j}}\right)&\left(\frac{\partial^2}{\partial x\partial z}\cdot\frac{1}{r_{i,j}}\right)\\\left(\frac{\partial^2}{\partial x\partial y}\cdot\frac{1}{r_{i,j}}\right)&\left(\frac{\partial^2}{\partial y\partial y}\cdot\frac{1}{r_{i,j}}\right)&\left(\frac{\partial^2}{\partial x\partial z}\cdot\frac{1}{r_{i,j}}\right)\\\left(\frac{\partial^2}{\partial x\partial z}\cdot\frac{1}{r_{i,j}}\right)&\left(\frac{\partial^2}{\partial y\partial z}\cdot\frac{1}{r_{i,j}}\right)&\left(\frac{\partial^2}{\partial z\partial z}\cdot\frac{1}{r_{i,j}}\right)\\\end{matrix}\right]_{\text{\tiny 3N $\times$ 3L}}\cdot\ \left[\begin{matrix}{{mx}_{j\ \cdot}C}_m\cdot\frac{4}{3}\pi\cdot R_j^3\\{{my}_{j\ \cdot}C}_m\cdot\frac{4}{3}\pi\cdot R_j^3\\{{mz}_{j\ \cdot}C}_m\cdot\frac{4}{3}\pi\cdot R_j^3\\\end{matrix}\right]_{\text{\tiny 3L $\times$ 1}}=\left[\begin{matrix}{Bx}_{i\ }\\{By}_{i\ }\\{Bz}_{i\ }\\\end{matrix}\right]_{\text{\tiny 3N $\times$ 1}}
+\small {C}_{m} \cdot \left[\begin{matrix}\left(\frac{\partial^2}{\partial x\partial x}\cdot\frac{1}{r_{i,j}}\right)&\left(\frac{\partial^2}{\partial x\partial y}\cdot\frac{1}{r_{i,j}}\right)&\left(\frac{\partial^2}{\partial x\partial z}\cdot\frac{1}{r_{i,j}}\right)\\\left(\frac{\partial^2}{\partial x\partial y}\cdot\frac{1}{r_{i,j}}\right)&\left(\frac{\partial^2}{\partial y\partial y}\cdot\frac{1}{r_{i,j}}\right)&\left(\frac{\partial^2}{\partial x\partial z}\cdot\frac{1}{r_{i,j}}\right)\\\left(\frac{\partial^2}{\partial x\partial z}\cdot\frac{1}{r_{i,j}}\right)&\left(\frac{\partial^2}{\partial y\partial z}\cdot\frac{1}{r_{i,j}}\right)&\left(\frac{\partial^2}{\partial z\partial z}\cdot\frac{1}{r_{i,j}}\right)\\\end{matrix}\right]_{\text{\tiny 3N $\times$ 3L}}
+\cdot\ 
+\left[\begin{matrix}{{Mx}_{j\ }} \cdot \frac{4}{3}\pi\cdot R_j^3\\{{My}_{j\ }} \cdot \frac{4}{3}\pi\cdot R_j^3\\{{Mz}_{j\ }} \cdot \frac{4}{3}\pi\cdot R_j^3\\\end{matrix}\right]_{\text{\tiny 3L $\times$ 1}}
+=\left[\begin{matrix}{Bx}_{i\ }\\{By}_{i\ }\\{Bz}_{i\ }\\\end{matrix}\right]_{\text{\tiny 3N $\times$ 1}}
 \end{equation}
 
 \noindent{As in the specific case in the study of magnetic microscopy, in the routine practice, the vertical component of magnetization is usually measured. In this case, there is a need to adapt the \cref{eq:sphere5} to isolate the response from the vertical component ($B_z$). Therefore, the equation of the direct model will be given by:}
 
 \begin{equation} \label{eq:sphere6}
-\small \left[\begin{matrix}\left(\frac{\partial^2}{\partial x\partial z}\cdot\frac{1}{r_{i,j}}\right)&\left(\frac{\partial^2}{\partial y\partial z}\cdot\frac{1}{r_{i,j}}\right)&\left(\frac{\partial^2}{\partial z\partial z}\cdot\frac{1}{r_{i,j}}\right)\\\end{matrix}\right]_{\text{\tiny N $\times$ 3L}}\cdot\ \left[\begin{matrix}{{mx}_{j\ \cdot}C}_m\cdot\frac{4}{3}\pi\cdot R_j^3\\{{my}_{j\ \cdot}C}_m\cdot\frac{4}{3}\pi\cdot R_j^3\\{{mz}_{j\ \cdot}C}_m\cdot\frac{4}{3}\pi\cdot R_j^3\\\end{matrix}\right]_{\text{\tiny 3L $\times$ 1}}=\left[{Bz}_{i\ }\right]_{\text{\tiny N $\times$ 1}}
+\small {C}_{m} \cdot \left[\begin{matrix}\left(\frac{\partial^2}{\partial x\partial z}\cdot\frac{1}{r_{i,j}}\right)&\left(\frac{\partial^2}{\partial y\partial z}\cdot\frac{1}{r_{i,j}}\right)&\left(\frac{\partial^2}{\partial z\partial z}\cdot\frac{1}{r_{i,j}}\right)\\\end{matrix}\right]_{\text{\tiny N $\times$ 3L}}
+\cdot\ 
+\left[\begin{matrix}{{Mx}_{j\ }} \cdot \frac{4}{3}\pi\cdot R_j^3\\{{My}_{j\ }} \cdot \frac{4}{3}\pi\cdot R_j^3\\{{Mz}_{j\ }} \cdot \frac{4}{3}\pi\cdot R_j^3\\\end{matrix}\right]_{\text{\tiny 3L $\times$ 1}}
+=\left[{Bz}_{i\ }\right]_{\text{\tiny N $\times$ 1}}
 \end{equation}
 
-\noindent{The magnetization is usually represented in spherical coordinates of intensity (Q (A/m)), declination (D (°)) and inclination (I (°)). Thus, the vector ${\bar{m}}_j$, containing the cartesian coordinates of magnetization, of the direct model can also be calculated as follows:}
+\noindent{The magnetization is usually represented in spherical coordinates of intensity (Q (A/m)), declination (D (°)) and inclination (I (°)). Thus, the vector ${\bar{M}}_j$, containing the cartesian coordinates of magnetization, of the direct model can also be calculated as follows:}
 
 \begin{equation} \label{eq:sphere7}
-\small \left[\begin{matrix}{mx}_j\\{my}_j\\{mz}_j\\\end{matrix}\right]_{\text{\tiny 3L $\times$ 1}}=Q_j\cdot\left[\begin{matrix}cos\left(I_j\right)\cdot c o s\left(D_j\right)\\cos\left(I_j\right)\cdot s i n\left(D_j\right)\\sin\left(I_j\right)\\\end{matrix}\right]_{\text{\tiny 3L $\times$ 1}}  
+\small \left[\begin{matrix}{Mx}_j\\{My}_j\\{Mz}_j\\\end{matrix}\right]_{\text{\tiny 3L $\times$ 1}}=Q_j\cdot\left[\begin{matrix}cos\left(I_j\right)\cdot c o s\left(D_j\right)\\cos\left(I_j\right)\cdot s i n\left(D_j\right)\\sin\left(I_j\right)\\\end{matrix}\right]_{\text{\tiny 3L $\times$ 1}}  
 \end{equation}
 
 \noindent{We can simplify the \cref{eq:sphere6} to:}
 
 \begin{equation} \label{eq:sphere8}
-\small \left[\begin{matrix}\left(\frac{\partial^2}{\partial x\partial z}\cdot\frac{1}{r_{i,j}}\right)&\left(\frac{\partial^2}{\partial y\partial z}\cdot\frac{1}{r_{i,j}}\right)&\left(\frac{\partial^2}{\partial z\partial z}\cdot\frac{1}{r_{i,j}}\right)\\\end{matrix}\right]_{\text{\tiny N $\times$ 3L}}\cdot\ \left[\begin{matrix}{hx}_j\\{hy}_j\\{hz}_j\\\end{matrix}\right]_{\text{\tiny 3L $\times$ 1}}=\left[{Bz}_{i\ }\right]_{\text{\tiny N $\times$ 1}}
+\small {C}_{m} \cdot \left[\begin{matrix}\left(\frac{\partial^2}{\partial x\partial z}\cdot\frac{1}{r_{i,j}}\right)&\left(\frac{\partial^2}{\partial y\partial z}\cdot\frac{1}{r_{i,j}}\right)&\left(\frac{\partial^2}{\partial z\partial z}\cdot\frac{1}{r_{i,j}}\right)\\\end{matrix}\right]_{\text{\tiny N $\times$ 3L}}
+\cdot\ 
+\left[\begin{matrix}{mx}_j\\{my}_j\\{mz}_j\\\end{matrix}\right]_{\text{\tiny 3L $\times$ 1}}
+=\left[{Bz}_{i\ }\right]_{\text{\tiny N $\times$ 1}}
 \end{equation}
 
 \noindent{With this, the \cref{eq:sphere8} can be rewritten in linear form, given by:}
 
 \begin{equation} \label{eq:sphere9}
 \centering
-\small \bar{\bar{M}}\cdot{\bar{h}}_j={\bar{B}}_z
+\small \bar{\bar{A}}\cdot{\bar{m}}={\bar{B}}_z
 \end{equation}
 
 
 %%
 \subsubsection{Inverse Model}
 
-\noindent{Assuming that the ferromagnetic minerals (\emph{l.s.}) that give rise to the observed magnetization component data vector ${\bar{B}}_z$ can be approximated by a set of L uniformly magnetized spheres with known coordinates ($xc_j$, $yc_j$, $zc_j$), j = 1, 2, ..., L, of their centers. Also assuming that there is no induced magnetization component, only that of the NRM. Under these assumptions, a superdetermined inverse linear problem is formulated to estimate the vector of parameters $\bar{h}$ (\cref{eq:sphere9}) from the observed data ${\bar{B}}_z$ and $\bar{\bar{M}}$, the latter being obtained previously with the Euler Deconvolution.}
+\noindent{Assuming that the ferromagnetic minerals (\emph{l.s.}) that give rise to the observed magnetization component data vector ${\bar{B}}_z$ can be approximated by a set of L uniformly magnetized spheres with known coordinates ($xc_j$, $yc_j$, $zc_j$), j = 1, 2, ..., L, of their centers. Also assuming that there is no induced magnetization component, only that of the NRM. Under these assumptions, a superdetermined inverse linear problem is formulated to estimate the vector of parameters $\bar{m}$ (\cref{eq:sphere9}) from the observed data ${\bar{B}}_z$ and $\bar{\bar{A}}$, the latter being obtained previously with the Euler Deconvolution.}
 
-\noindent{The problem of estimating a parameter vector $\bar{h}$ containing the spheres' magnetization vectors can be solved by minimizing the objective function $f\left(\bar{h}\right)$:}
+\noindent{The problem of estimating a parameter vector $\bar{m}$ containing the spheres' magnetic moment vectors can be solved by minimizing the objective function $f\left(\bar{m}\right)$:}
 
 \begin{equation} \label{eq:sphere10}
 \centering
-\small f\left(\bar{h}\right)={\lVert e\lVert}^2= e^T\cdot e = {(\bar{\bar{M}} \cdot \bar{h}-\bar{d})}^T \cdot ~ (\bar{\bar{M}} \cdot \bar{h}-\bar{B_z})
+\small f\left(\bar{m}\right)={\lVert e\lVert}^2= e^T\cdot e = {(\bar{\bar{A}} \cdot \bar{m}-\bar{d})}^T \cdot ~ (\bar{\bar{A}} \cdot \bar{m}-\bar{B_z})
 \end{equation}
 
-\noindent{When differentiating the (\cref{eq:sphere10}) by $\bar{h}$ and equating the result to the zero vector ($\frac{\partial f}{\partial h_k}=\bar{0}$). Then we obtain the normal equation for estimating least squares solution given by:}
+\noindent{When differentiating the (\cref{eq:sphere10}) by $\bar{m}$ and equating the result to the zero vector ($\frac{\partial f}{\partial m_k}=\bar{0}$). Then we obtain the normal equation for estimating least squares solution given by:}
 
 \begin{equation} \label{eq:sphere11}
 \centering
-\small \bar{h}\ =\left({\bar{\bar{M}}}^T\cdot\bar{\bar{M}}\right)^{-1}\cdot ~ \left({\bar{\bar{M}}}^T\cdot{\bar{B}}_z\right)\ 
+\small \bar{m}\ =\left({\bar{\bar{A}}}^T\cdot\bar{\bar{A}}\right)^{-1}\cdot ~ \left({\bar{\bar{A}}}^T\cdot{\bar{B}}_z\right)\ 
 \end{equation}
 
 \noindent{As the least squares estimate (\cref{eq:sphere11}) is very sensitive to the presence of outliers in the observed data, the estimated parameters could be seriously misleading. To counteract this problem \cite{OliveiraJr.2015} suggest a robust scheme based on the minimization of the objective function obtained with the absolute error:}
 
 \begin{equation} \label{eq:sphere12}
 \centering
-\small f\left(\widetilde{h}\right)=\left(\sum_{i=1}^{N}\left| { \left(\bar{\bar{M}} \cdot \bar{h} \right)}_{i} - {{\bar{\left(B_z\right)}}}_{i} \right|\right)
+\small f\left(\widetilde{m}\right)=\left(\sum_{i=1}^{N}\left| { \left(\bar{\bar{A}} \cdot \bar{m} \right)}_{i} - {{\bar{\left(B_z\right)}}}_{i} \right|\right)
 \end{equation}
 
 \noindent{Unlike the solution presented for the objective function in \cref{eq:sphere11}, the parameter vector minimizing \cref{eq:sphere12} cannot be obtained as a simple linear system. A practical way is the iteratively reweighted least squares algorithm \citep{Aster2019, OliveiraJr.2015}. In this algorithm, at each iteration k, the following linear system is solved:}
 
 \begin{equation} \label{eq:sphere13}
 \centering
-\small {\widetilde{h}}^{k+1}=\left({\bar{\bar{M}}}^T\cdot{\bar{\bar{R}}}^k\cdot\bar{\bar{M}}\right)^{-1}\cdot\left({\bar{\bar{M}}}^T\cdot{\bar{\bar{R}}}^k\cdot{\bar{B}}_z\right)\ \ 
+\small {\widetilde{m}}^{k+1}=\left({\bar{\bar{A}}}^T\cdot{\bar{\bar{R}}}^k\cdot\bar{\bar{A}}\right)^{-1}\cdot\left({\bar{\bar{A}}}^T\cdot{\bar{\bar{R}}}^k\cdot{\bar{B}}_z\right)\ \ 
 \end{equation}
 
 \noindent{The term ${\bar{\bar{R}}}^k$ is an N $\times$ N diagonal matrix whose i-th element $r_i^k$ (i = 1, 2, ..., N) is given by:}
 
 \begin{equation} \label{eq:sphere14}
-{r_i}^k=\frac{1}{\left|\left(\bar{\bar{M}}\cdot\bar{h}\right)_i-{{\bar{B_z}}}_i+e\right|}
+{r_i}^k=\frac{1}{\left|\left(\bar{\bar{A}}\cdot\bar{m}\right)_i-{{\bar{B_z}}}_i+e\right|}
 \end{equation}
 
 \begin{FlushRight}
 \noindent{Where: $e$ is a small positive number used to prevent singularities}
 \end{FlushRight}
 
-\noindent{This iterative process starts (k = 0) with the solution vector obtained by the least squares estimator (\cref{eq:sphere11}). From this initial approximation ${\widetilde{h}}^0$, we calculate the matrix ${\bar{\bar{R}}}^0$ (\cref{eq:sphere14}). Which is used in the solution of the linear system given by \cref{eq:sphere13} to obtain the estimate ${\widetilde{h}}^1$. Later using this updated estimate to calculate the new matrix ${\bar{\bar{R}}}^1$ (\cref{eq:sphere14}), we solve the linear system (\cref{eq:sphere13}) to obtain a new estimate ${\widetilde{h}}^ 2$, and so on. As the iterations progress, this iterative procedure tends to converge and estimate $\widetilde{h}$, which is called robust estimate \citep{OliveiraJr.2015}. According to \cite{Aster2019} this convergence can be limited by a tolerance $\tau$, given by:}
+\noindent{This iterative process starts (k = 0) with the solution vector obtained by the least squares estimator (\cref{eq:sphere11}). From this initial approximation ${\widetilde{m}}^0$, we calculate the matrix ${\bar{\bar{R}}}^0$ (\cref{eq:sphere14}). Which is used in the solution of the linear system given by \cref{eq:sphere13} to obtain the estimate ${\widetilde{m}}^1$. Later using this updated estimate to calculate the new matrix ${\bar{\bar{R}}}^1$ (\cref{eq:sphere14}), we solve the linear system (\cref{eq:sphere13}) to obtain a new estimate ${\widetilde{m}}^ 2$, and so on. As the iterations progress, this iterative procedure tends to converge and estimate $\widetilde{m}$, which is called robust estimate \citep{OliveiraJr.2015}. According to \cite{Aster2019} this convergence can be limited by a tolerance $\tau$, given by:}
 
 \begin{equation} \label{eq:sphere15}
 \centering
-\frac{\lVert {\widetilde{h}}^{k+1} - {\widetilde{h}}^{k} \lVert}{1 + \lVert \widetilde{h}^{k+1} \lVert} ≤ \tau
+\frac{\lVert {\widetilde{m}}^{k+1} - {\widetilde{m}}^{k} \lVert}{1 + \lVert \widetilde{m}^{k+1} \lVert} ≤ \tau
 \end{equation}
 
 \begin{FlushRight}
@@ -361,39 +370,44 @@ h_j =\left[\begin{matrix}{{mx}_{j\ \cdot}C}_m \cdot \frac{4}{3}\pi\cdot R_j^3\\{
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.5\textwidth]{VECTORS.pdf}
-\caption{Schematic representation of vector $h_j$ (\cref{eq:sphere8}) with elements $hx_j$, $hy_j$ and $hz_j$ in cartesian coordinates. This vector has declination $D_j$ (positive clockwise) and slope $I_j$ (positive downwards), j = 1, 2, ... L. Source: \cite{OliveiraJr.2015}.}
+\caption{Schematic representation of vector $m_j$ (\cref{eq:sphere8}) with elements $mx_j$, $my_j$ and $mz_j$ in cartesian coordinates. This vector has declination $D_j$ (positive clockwise) and slope $I_j$ (positive downwards), j = 1, 2, ... L. Modified from: \cite{OliveiraJr.2015}.}
 \label{fig:VECTORS}
 \end{figure}
 
-\noindent{In this way, it is possible to determine the magnetization directions $D_j$ and $I_j$ for the j-th sphere of the set of L spheres by using:}
+\noindent{In this way, it is possible to determine the directions ($D_j$ and $I_j$) and magnetic moment ($m_j$) for the j-th sphere of the set of L spheres by using:}
 
 \begin{equation} \label{eq:sphere16}
 \centering
-\small D_j=\tan^{-1}{\left(\frac{{hy}_j}{{hx}_j}\right)}
+\small D_j=\tan^{-1}{\left(\frac{{my}_j}{{mx}_j}\right)}
 \end{equation}
 
 \begin{equation} \label{eq:sphere17}
 \centering
-\small I_j=\tan^{-1}{\left(\frac{{hz}_j}{\sqrt{\left({hx}_j\right)^2+\left({hy}_j\right)^2}}\right)}
+\small I_j=\tan^{-1}{\left(\frac{{mz}_j}{\sqrt{\left({mx}_j\right)^2+\left({my}_j\right)^2}}\right)}
 \end{equation}
 
-\noindent{In a micromagnetic survey, or any geophysical survey, measurements are affected by noise caused by experimental errors and equipment inaccuracies. Noise in the observed data vector ${\bar{B}}_z$ affects the solution of the estimated parameter vector ${\bar{h}}_j$, regardless of the method used. Assuming that the noise during the measurement of the observed data is independent and with variance ${\sigma_0}^2$, one can quantify this effect on the estimated parameters through propagation of the covariance \citep{Aster2019}. The covariance matrix of these parameters will be given by:}
+\begin{equation} \label{eq:sphere17_m}
+\centering
+\small m_j=\sqrt{ {\left({mx}_j\right)}^{2} + {\left({my}_j\right)}^{2} + {\left({mz}_j\right)}^{2} } 
+\end{equation}
+
+\noindent{In a micromagnetic survey, or any geophysical survey, measurements are affected by noise caused by experimental errors and equipment inaccuracies. Noise in the observed data vector ${\bar{B}}_z$ affects the solution of the estimated parameter vector ${\bar{m}}_j$, regardless of the method used. Assuming that the noise during the measurement of the observed data is independent and with variance ${\sigma_0}^2$, one can quantify this effect on the estimated parameters through propagation of the covariance \citep{Aster2019}. The covariance matrix of these parameters will be given by:}
 
 \begin{equation} \label{eq:sphere18}
 \centering
-\small \bar{\bar{Cov}}\left({\bar{h}}_j\right)=\ {\sigma_0}^2\cdot\left({\bar{\bar{M}}}^T\cdot ~ \bar{\bar{M}}\right)^{-1} \ \ \text{(\emph{least square})}
+\small \bar{\bar{Cov}}\left({\bar{m}}_j\right)=\ {\sigma_0}^2\cdot\left({\bar{\bar{A}}}^T\cdot ~ \bar{\bar{A}}\right)^{-1} \ \ \text{(\emph{least square})}
 \end{equation}
 
 \begin{equation} \label{eq:sphere19}
 \centering
-\small \bar{\bar{Cov}}\left(\widetilde{h_j}\right)=\ {\sigma_0}^2\cdot\left({\bar{\bar{M}}}^T\cdot ~ {\bar{\bar{R}}}^k\cdot ~ \bar{\bar{M}}\right)^{-1} \ \ \text{(\emph{robust})}
+\small \bar{\bar{Cov}}\left(\widetilde{m_j}\right)=\ {\sigma_0}^2\cdot\left({\bar{\bar{A}}}^T\cdot ~ {\bar{\bar{R}}}^k\cdot ~ \bar{\bar{A}}\right)^{-1} \ \ \text{(\emph{robust})}
 \end{equation}
 
 \noindent{The main diagonal of the covariance matrix  (\cref{eq:sphere18} and \cref{eq:sphere19}) contains the variance of each member of the parameter vector, as expressed below:}
 
 \begin{equation} \label{eq:sphere20}
 \centering
-\footnotesize \bar{\bar{Cov}} =\left[\begin{matrix}Var({hx}_1)&\cdots&\cdots&\cdots&\cdots&\cdots&\cdots\\\cdots&Var({hy}_1)&\cdots&\cdots&\cdots&\cdots&\cdots\\\cdots&\cdots&Var({hz}_1)&\cdots&\cdots&\cdots&\cdots\\\cdots&\cdots&\cdots&\ddots&\cdots&\cdots&\cdots\\\cdots&\cdots&\cdots&\cdots&Var({hx}_L)&\cdots&\cdots\\\cdots&\cdots&\cdots&\cdots&\cdots&Var({hy}_L)&\cdots\\\cdots&\cdots&\cdots&\cdots&\cdots&\cdots&Var({hz}_L)\\\end{matrix}\right]_{\text{\tiny 3L $\times$ 3L}}\ 
+\footnotesize \bar{\bar{Cov}} =\left[\begin{matrix}Var({mx}_1)&\cdots&\cdots&\cdots&\cdots&\cdots&\cdots\\\cdots&Var({my}_1)&\cdots&\cdots&\cdots&\cdots&\cdots\\\cdots&\cdots&Var({mz}_1)&\cdots&\cdots&\cdots&\cdots\\\cdots&\cdots&\cdots&\ddots&\cdots&\cdots&\cdots\\\cdots&\cdots&\cdots&\cdots&Var({mx}_L)&\cdots&\cdots\\\cdots&\cdots&\cdots&\cdots&\cdots&Var({my}_L)&\cdots\\\cdots&\cdots&\cdots&\cdots&\cdots&\cdots&Var({mz}_L)\\\end{matrix}\right]_{\text{\tiny 3L $\times$ 3L}}\ 
 \end{equation}
 
 \bigskip
@@ -402,49 +416,67 @@ h_j =\left[\begin{matrix}{{mx}_{j\ \cdot}C}_m \cdot \frac{4}{3}\pi\cdot R_j^3\\{
 
 \begin{equation} \label{eq:sphere20}
 \centering
-\sigma_{{hx}_j}=\sqrt{Var({hx}_j)},\ \ \ \  \sigma_{{hy}_j}=\sqrt{Var({hy}_j)}\ \ \ \text{and}\ \ \ \  \sigma_{{hz}_j}=\sqrt{Var({hz}_j)}
+\sigma_{{mx}_j}=\sqrt{Var({mx}_j)},\ \ \ \  \sigma_{{my}_j}=\sqrt{Var({my}_j)}\ \ \ \text{and}\ \ \ \  \sigma_{{mz}_j}=\sqrt{Var({mz}_j)}
 \end{equation}
 
-\noindent{Thus, the propagation of uncertainties of the declination ($D_j$) and slope ($I_j$) results are given as a function of the parameters obtained in \cref{eq:sphere20}:}
+\noindent{Thus, the propagation of uncertainties of the declination ($D_j$), inclination ($I_j$) and magnetic moment ($m_j$) results are given as a function of the parameters obtained in \cref{eq:sphere20}:}
 
 \begin{equation} \label{eq:sphere21}
 \centering
-\sigma_{D_j}=\sqrt{\left(\frac{\partial D_j}{\partial{hx}_j}\right)^2\cdot\ \left(\sigma_{{hx}_j}\right)^2+\left(\frac{\partial D_j}{\partial{hy}_j}\right)^2\cdot\ \left(\sigma_{{hy}_j}\right)^2}
+\sigma_{D_j}=\sqrt{\left(\frac{\partial D_j}{\partial{mx}_j}\right)^2\cdot\ \left(\sigma_{{mx}_j}\right)^2+\left(\frac{\partial D_j}{\partial{my}_j}\right)^2\cdot\ \left(\sigma_{{my}_j}\right)^2}
 \end{equation}
 
 \begin{equation} \label{eq:sphere22}
 \centering
-\sigma_{I_j}=\sqrt{\left(\frac{\partial I_j}{\partial{hx}_j}\right)^2\cdot\ \left(\sigma_{{hx}_j}\right)^2+\left(\frac{\partial I_j}{\partial{hy}_j}\right)^2\cdot\ \left(\sigma_{{hy}_j}\right)^2+\left(\frac{\partial I_j}{\partial{hz}_j}\right)^2\cdot\ \left(\sigma_{{hz}_j}\right)^2}
+\sigma_{I_j}=\sqrt{\left(\frac{\partial I_j}{\partial{mx}_j}\right)^2\cdot\ \left(\sigma_{{mx}_j}\right)^2+\left(\frac{\partial I_j}{\partial{my}_j}\right)^2\cdot\ \left(\sigma_{{my}_j}\right)^2+\left(\frac{\partial I_j}{\partial{mz}_j}\right)^2\cdot\ \left(\sigma_{{mz}_j}\right)^2}
+\end{equation}
+
+\begin{equation} \label{eq:sphere22_m}
+\centering
+\sigma_{m_j}=\sqrt{\left(\frac{\partial m_j}{\partial{mx}_j}\right)^2\cdot\ \left(\sigma_{{mx}_j}\right)^2+\left(\frac{\partial m_j}{\partial{my}_j}\right)^2\cdot\ \left(\sigma_{{my}_j}\right)^2+\left(\frac{\partial m_j}{\partial{mz}_j}\right)^2\cdot\ \left(\sigma_{{mz}_j}\right)^2}
 \end{equation}
 
 \noindent{Where:}
 
 \begin{equation} \label{eq:sphere23}
 \centering
-\frac{\partial D_j}{\partial{hx}_j}=\frac{-{hy}_j}{{{hx}_j}^2+{{hy}_j}^2}
+\frac{\partial D_j}{\partial{mx}_j}=\frac{-{my}_j}{{{mx}_j}^2+{{my}_j}^2}
 \end{equation}
 
 \begin{equation} \label{eq:sphere24}
 \centering
-\frac{\partial D_j}{\partial{hy}_j}=\frac{{hx}_j}{{{hx}_j}^2+{{hy}_j}^2}
+\frac{\partial D_j}{\partial{my}_j}=\frac{{mx}_j}{{{mx}_j}^2+{{my}_j}^2}
 \end{equation}
 
 \begin{equation} \label{eq:sphere25}
 \centering
-\frac{\partial I_j}{\partial{hx}_j}=\frac{-{hx}_j\cdot \ {hz}_j}{\sqrt{{{hx}_j}^2+{{hy}_j}^2}\cdot \left({{hx}_j}^2+{{hy}_j}^2+{{hz}_j}^2\right)}
+\frac{\partial I_j}{\partial{mx}_j}=\frac{-{mx}_j\cdot \ {mz}_j}{\sqrt{{{mx}_j}^2+{{my}_j}^2}\cdot \left({{mx}_j}^2+{{my}_j}^2+{{mz}_j}^2\right)}
 \end{equation}
 
 \begin{equation} \label{eq:sphere26}
 \centering
-\frac{\partial I_j}{\partial{hy}_j}=\frac{-{hy}_j\cdot \ {hz}_j}{\sqrt{{{hx}_j}^2+{{hy}_j}^2}\cdot \left({{hx}_j}^2+{{hy}_j}^2+{{hz}_j}^2\right)}
+\frac{\partial I_j}{\partial{my}_j}=\frac{-{my}_j\cdot \ {mz}_j}{\sqrt{{{mx}_j}^2+{{my}_j}^2}\cdot \left({{mx}_j}^2+{{my}_j}^2+{{mz}_j}^2\right)}
 \end{equation}
 
 \begin{equation} \label{eq:sphere27}
 \centering
-\frac{\partial I_j}{\partial{hz}_j}=\frac{\sqrt{{{hx}_j}^2+{{hy}_j}^2}}{\left({{hx}_j}^2+{{hy}_j}^2+{{hz}_j}^2\right)}
+\frac{\partial I_j}{\partial{mz}_j}=\frac{\sqrt{{{mx}_j}^2+{{my}_j}^2}}{\left({{mx}_j}^2+{{my}_j}^2+{{mz}_j}^2\right)}
 \end{equation}
 
+\begin{equation} \label{eq:sphere28}
+\centering
+\frac{\partial m_j}{\partial{mx}_j}=\frac{{mx}_j}{ \sqrt{{{mx}_j}^2+{{my}_j}^2+{{mz}_j}^2} }
+\end{equation}
 
+\begin{equation} \label{eq:sphere29}
+\centering
+\frac{\partial m_j}{\partial{my}_j}=\frac{{my}_j}{ \sqrt{{{mx}_j}^2+{{my}_j}^2+{{mz}_j}^2} }
+\end{equation}
+
+\begin{equation} \label{eq:sphere30}
+\centering
+\frac{\partial m_j}{\partial{mz}_j}=\frac{{mz}_j}{ \sqrt{{{mx}_j}^2+{{my}_j}^2+{{mz}_j}^2} }
+\end{equation}
 
 
 
