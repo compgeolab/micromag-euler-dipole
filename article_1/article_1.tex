@@ -122,7 +122,7 @@ Paleomagnetism is the main tool used in paleogeographic reconstructions, in whic
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=\textwidth]{QDM.png}
-\caption{Sample classes accessible to QDM, SQUID microscope and 2G Enterprises SRM. The accessible region for the QDM was calculated assuming a magnetic field noise threshold of 5 nT and a 	minimum sensor-sample distance of 5 μm. The calculation for the SQUID microscope assumed field noise values of 15 pT and sensor-sample distance of 150 μm. Source: \cite{Fu2020}.}
+\caption{Sample classes accessible to QDM, SQUID microscope and 2G Enterprises SRM. The accessible region for the QDM was calculated assuming a magnetic field noise threshold of 5 nT and a minimum sensor-sample distance of 5 μm. The calculation for the SQUID microscope assumed field noise values of 15 pT and sensor-sample distance of 150 μm. Source: \cite{Fu2020}.}
 \label{fig:QDM}
 \end{figure}
 
@@ -134,14 +134,26 @@ Paleomagnetism is the main tool used in paleogeographic reconstructions, in whic
 %%%
 \subsection{Euler Deconvolution}
 
-\noindent{Euler Deconvolution is a consolidated method classically applied to data from aeromagnetic surveys. Given the similarities between SMM and aeromagnetic data, its application becomes plausible for determining the positions of magnetic sources caused by ferromagnetic minerals (l.s). Euler deconvolution is one of the most useful methods for estimating the three-dimensional positioning of magnetic sources/geological bodies \citep{Reid1990, Thompson1982}. It is the application of a mobile operator in a small data window over the sampled data set. The observations made within this window are used to estimate the horizontal and vertical positions of the source by solving a small linear system of equations using the gradients of the potential field, provided that the shapes of the sources are assumed.}
+\noindent{\cite{Thompson1982} proposed the Euler Deconvolution technique, which is a consolidated method classically applied to data from aeromagnetic surveys that uses first order x, y and z derivatives to determine the positioning and depth of ideal targets (e.g., sphere, cylinder), each characterized by a structural index \citep{Nabighian2005}. Euler deconvolution is one of the most useful methods for estimating the three-dimensional positioning of magnetic sources/geological bodies \citep{Reid1990}. Given the similarities between SMM and aeromagnetic data, its application becomes plausible for determining the positions of magnetic sources caused by ferromagnetic minerals (l.s).} 
 
-\noindent{Despite this, this system usually has a large number of solutions \citep{Barbosa2011}, which becomes a limitation for the method. In an attempt to circumvent the problem of this expressive cloud of solutions, we suggest the previous application of a method of delimitation of the contours of the sources generating the potential field and later the application of Euler's Deconvolution, which becomes unique for each source (one data window per source). As the method itself already requires the gradients of the potential field, therefore, the method of delimitation chosen was the horizontal gradient \citep{Cordell1982}. \cite{Blakely1996} states that the response of a source's horizontal gradient tends to overlap its limits, thus obtaining a two-dimensional robust map of the sources location. The amplitude of the horizontal gradient ($\nabla H$) is expressed by~\cref{eq:HG}. Once the source positions are determined by this preliminary method then, subsequently, Euler Deconvolution is applied and a static window for each source generating the potential field.}
+\noindent{The classic Euler approach is basically the application of a mobile operator in a small data window over the sampled dataset. The observations made within this window are used to estimate the horizontal and vertical positions of the source by solving a small linear system of equations using the gradients of the potential field, provided that the shapes of the sources are assumed. Despite this, this methodology usually yields a large number of solutions \citep{Barbosa2011}, which becomes a limitation for the method. In an attempt to circumvent the problem of this expressive cloud of solutions, we suggest a previous application of a method for delimitating the region of each source that generates the potential field and later the application of Euler's Deconvolution. Hence giving a single system of linear equations to be solved for each source.}
+
+\noindent{Derivative-based filters are widely used to emphisize the potencial anomaly signal of shallower sources and applied in modern methods for edge/position detection, as of the solution of Euler equation itself requires the gradient of the potential field. Since the calculation of first order derivatives is a must in this case, we might as well give preference to filtering techniques that use the same products. One good filtering example is the so called horizontal gradient method ($\nabla H$, \cref{eq:HG}) \citep{Cordell1982}, which is a source edge detection methodology where the response of a target's horizontal gradient tends to overlap its own limits, thus obtaining a two-dimensional robust map of the sources location \cite{Blakely1996}. Another popular method for locating edges of magnetic bodies is the total gradient ($\nabla T$, \cref{eq:TG}), which places the source's maximum anomaly values over the area inside its boundaries, despite of  geomagnetic latitude, magnetization direction or source dip/geometry \citep{Nabighian2005}. Both total and horizontal gradients are reliable techniques to be applied with the SMM data.}
+
 
 \begin{equation} \label{eq:HG}
 \centering
 \nabla H= \sqrt{ {\left( \frac{∂F}{∂x} \right)}^2+{\left( \frac{∂F}{∂y} \right)}^2 }
 \end{equation}
+
+\begin{equation} \label{eq:TG}
+\centering
+\nabla T= \sqrt{ {\left( \frac{∂F}{∂x} \right)}^2+{\left( \frac{∂F}{∂y} \right)}^2+{\left( \frac{∂F}{∂z} \right)}^2 }
+\end{equation}
+
+
+\noindent{After pre processing the data with derivative-based filter, highlighting the sources edges, it is possible to apply blob detection techniques. The latter refers to visual algorithms and/or modules with the ability of detecting points/regions that are either darker or brighter than the neighborhood. The most common and accurate approach to detect brighter blobs on dark surroundings is the Laplacian of Gaussian (LoG), its downside is also being slower than other approaches \citep{Han2016, Kong2013}. We used the \href{https://scikit-image.org/docs/stable/auto_examples/features_detection/plot_blob.html#sphx-glr-auto-examples-features-detection-plot-blob-py}{scikit-image blob detection} python library \citep{VanderWalt2014} to identify the window region of data that embraces each isolated source by applying the algorithm on the highlighted sources map ($\nabla T$ or $\nabla H$). Therefore, the blobs selected are local maxima obtained with successively LoG images. Once the target location window is determined, subsequently, the Euler Deconvolution can applied in this single static data window yeilding only one solution per source. Thus, being an automatic, faster and easier way than the classical methodology of solving the Euler equation.}
+
 
 %%%
 \subsubsection{Euler Deconvolution Formulation}
