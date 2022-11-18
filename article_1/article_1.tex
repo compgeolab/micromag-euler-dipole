@@ -58,6 +58,9 @@
 \usepackage{floatrow}
 \usepackage{pdfpages}
 \newsavebox\mysavebox
+
+
+\usepackage{booktabs} % to import tables directly from python
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
@@ -103,7 +106,7 @@ Paleomagnetism is the main tool used in paleogeographic reconstructions, in whic
 
 \noindent{The thermoremanent magnetizations (TRMs) of magnetic particles in geological materials are the main records of the direction of the geomagnetic field of the past \citep{DeGroot2014}. Iron oxides, such as magnetite, which is the most common magnetic mineral present in rocks~\citep{OReilly1984} and acquire TRM as they cool below their Curie temperature and subsequently this direction of magnetization is “frozen” upon reaching blocking temperature~\citep{Dunlop1997}. When the grains are small enough, and the magnetization is unidirectional homogeneous (single domain - SD), the acquisition and preservation of magnetic signals is physically supported by Néel's theory~\citep{Neel1949, Neel1955}, conserving the remanent magnetization for long periods of time, on the order of billions of years, and for this reason, they are considered “good recorders” of the paleomagnetic field. In addition to SD, pseudo-single domain (PSD) particles, in the flower and stable vortex states, can also preserve magnetization for periods on the order of the solar system age~\citep{Nagy2017}. On the other hand, Néel's theory does not cover larger particles (multi domain - MD), which have unstable remanent magnetization (e.g., caused by viscous reordering of magnetic domains,~\cite{DeGroot2014}), so they are particles with limited ability to record the geomagnetic field. In addition to the magnetic domain state, particles can still vary in composition, size and shape which causes changes in their magnetic properties. All these factors are crucial in determining stable remanence directions used in the calculation of paleomagnetic poles.}
 
-\noindent{Classic techniques for obtaining paleomagnetic data, e.g., thermal demagnetization and alternating fields, are based on the progressive acquisition of the magnetization contained in cylindrical samples, usually of 10 cm$^3$. The magnetic signal of a single specimen is the result of the sum of moments contained in the assembly of ferromagnetic grains, including stable and unstable registers~\citep{DeGroot2021}. although there are recent well-structured studies of imaging magnetic minerals in thin-sections \citep[e.g.,][]{Almeida2014, Farchi2017,  Glenn2017, Lima2014, Lima2009, Nichols2016, Weiss2007, DeGroot2018, DeGroot2021}, obtaining NRM directions of individual grains in the rock fabric remains, to the best of our knowledge, a challenge deeply explored only by \cite{DeGroot2021}. With the possibility of isolating the individual contributions of a fairly large number ($10^6$ $>$ N $>$ $10^7$) of stable magnetic particles (SD/PSD) the magnetic directions recovered, using the average of their NRM vectors, would have an accurate paleomagnetic response \citep{Berndt2016}, however such number of observations is unfeasible for the currently insufficient measurements scales of the equipaments \citep{DeGroot2018}.}
+\noindent{Classic techniques for obtaining paleomagnetic data, e.g., thermal demagnetization and alternating fields, are based on the progressive acquisition of the magnetization contained in cylindrical samples, usually of 10 cm$^3$. The magnetic signal of a single specimen is the result of the sum of moments contained in the assembly of ferromagnetic grains, including stable and unstable registers~\citep{DeGroot2021}. Although there are recent well-structured studies of imaging magnetic minerals in thin-sections \citep[e.g.,][]{Almeida2014, Farchi2017,  Glenn2017, Lima2014, Lima2009, Nichols2016, Weiss2007, DeGroot2018, DeGroot2021}, obtaining NRM directions of individual grains in the rock fabric remains, to the best of our knowledge, a challenge deeply explored only by \cite{DeGroot2021}. With the possibility of isolating the individual contributions of a fairly large number ($10^6$ $>$ N $>$ $10^7$) of stable magnetic particles (SD/PSD) the magnetic directions recovered, using the average of their NRM vectors, would have an accurate paleomagnetic response \citep{Berndt2016}, however such number of observations is unfeasible for the currently insufficient measurements scales of the equipaments \citep{DeGroot2018}.}
 
 \noindent{Several branches of Earth Sciences have demonstrated the importance of the “spatiality" of data on a microscopic scale, mainly in Geochemistry and Geochronology, where it is possible to perform punctual analyzes and compositional maps, which allowed significant advances in the understanding of igneous, metamorphic and sedimentary processes~\citep[e.g.,][]{ Barnes2019, Davidson2007, Verberne2020}. In Paleomagnetism there has been an interest in point magnetic analyses, or microscale magnetic maps, from magnetic microscopy techniques~\citep{DeGroot2014, DeGroot2018, Lima2014, Weiss2007}. However, despite recent advances in this area, still there is no well-established inversion protocol to determine the magnetic vector direction of each individual ferromagnetic grains, nor the intensity of magnetization, without using additional information of the positioning and shape of these sources, such as micromagnetic tomography \citep[e.g.,][]{DeGroot2018, DeGroot2021, Fabian2019}, which is a measurement spatially even more limited than the magnetic microscopy itself.}
 
@@ -208,7 +211,7 @@ f(\bar{p} ) = {\lVert e\lVert}^2 = {(\bar{\bar{G}} \cdot \bar{p}-\bar{d})}^T \cd
 \bar{p}=\left({\bar{\bar{G}}}^T\cdot ~ \bar{\bar{G}}\right)^{-1} \cdot \ \left({\bar{\bar{G}}}^T\cdot ~ \bar{d}\right)
 \end{equation}
 
-\noindent{Thus, $\bar{p}=\left[x_c\ \ y_c\ \ z_c\ \ b\right]^T$ will be the solution vector that satisfies Euler's Equation with the least possible error containing the position coordinates font center ($x_c$, $y_c$, $z_c$) and the base level (b).}
+\noindent{Thus, $\bar{p}=\left[x_c\ \ y_c\ \ z_c\ \ b\right]^T$ will be the solution vector that satisfies Euler's Equation with the least possible error containing the position coordinates source center ($x_c$, $y_c$, $z_c$) and the base level (b).}
 
 
 
@@ -294,10 +297,10 @@ m_j =\left[\begin{matrix}{{Mx}_{j\ }} \cdot \frac{4}{3}\pi\cdot R_j^3\\{{My}_{j\
 =\left[{Bz}_{i\ }\right]_{\text{\tiny N $\times$ 1}}
 \end{equation}
 
-\noindent{The magnetization is usually represented in spherical coordinates of intensity (Q (A/m)), declination (D (°)) and inclination (I (°)). Thus, the vector ${\bar{M}}_j$, containing the cartesian coordinates of magnetization, of the direct model can also be calculated as follows:}
+\noindent{The magnetization is usually represented in spherical coordinates of intensity (M (A/m)), declination (D (°)) and inclination (I (°)). Thus, the vector ${\bar{M}}_j$, containing the cartesian coordinates of magnetization, of the direct model can also be calculated as follows:}
 
 \begin{equation} \label{eq:sphere7}
-\small \left[\begin{matrix}{Mx}_j\\{My}_j\\{Mz}_j\\\end{matrix}\right]_{\text{\tiny 3L $\times$ 1}}=Q_j\cdot\left[\begin{matrix}cos\left(I_j\right)\cdot c o s\left(D_j\right)\\cos\left(I_j\right)\cdot s i n\left(D_j\right)\\sin\left(I_j\right)\\\end{matrix}\right]_{\text{\tiny 3L $\times$ 1}}  
+\small \left[\begin{matrix}{Mx}_j\\{My}_j\\{Mz}_j\\\end{matrix}\right]_{\text{\tiny 3L $\times$ 1}}=M_j\cdot\left[\begin{matrix}cos\left(I_j\right)\cdot c o s\left(D_j\right)\\cos\left(I_j\right)\cdot s i n\left(D_j\right)\\sin\left(I_j\right)\\\end{matrix}\right]_{\text{\tiny 3L $\times$ 1}}  
 \end{equation}
 
 \noindent{We can simplify the \cref{eq:sphere6} to:}
@@ -336,48 +339,13 @@ m_j =\left[\begin{matrix}{{Mx}_{j\ }} \cdot \frac{4}{3}\pi\cdot R_j^3\\{{My}_{j\
 \small \bar{m}\ =\left({\bar{\bar{A}}}^T\cdot\bar{\bar{A}}\right)^{-1}\cdot ~ \left({\bar{\bar{A}}}^T\cdot{\bar{B}}_z\right)\ 
 \end{equation}
 
-\noindent{As the least squares estimate (\cref{eq:sphere11}) is very sensitive to the presence of outliers in the observed data, the estimated parameters could be seriously misleading. To counteract this problem \cite{OliveiraJr.2015} suggest a robust scheme based on the minimization of the objective function obtained with the absolute error:}
-
-\begin{equation} \label{eq:sphere12}
-\centering
-\small f\left(\widetilde{m}\right)=\left(\sum_{i=1}^{N}\left| { \left(\bar{\bar{A}} \cdot \bar{m} \right)}_{i} - {{\bar{\left(B_z\right)}}}_{i} \right|\right)
-\end{equation}
-
-\noindent{Unlike the solution presented for the objective function in \cref{eq:sphere11}, the parameter vector minimizing \cref{eq:sphere12} cannot be obtained as a simple linear system. A practical way is the iteratively reweighted least squares algorithm \citep{Aster2019, OliveiraJr.2015}. In this algorithm, at each iteration k, the following linear system is solved:}
-
-\begin{equation} \label{eq:sphere13}
-\centering
-\small {\widetilde{m}}^{k+1}=\left({\bar{\bar{A}}}^T\cdot{\bar{\bar{R}}}^k\cdot\bar{\bar{A}}\right)^{-1}\cdot\left({\bar{\bar{A}}}^T\cdot{\bar{\bar{R}}}^k\cdot{\bar{B}}_z\right)\ \ 
-\end{equation}
-
-\noindent{The term ${\bar{\bar{R}}}^k$ is an N $\times$ N diagonal matrix whose i-th element $r_i^k$ (i = 1, 2, ..., N) is given by:}
-
-\begin{equation} \label{eq:sphere14}
-{r_i}^k=\frac{1}{\left|\left(\bar{\bar{A}}\cdot\bar{m}\right)_i-{{\bar{B_z}}}_i+e\right|}
-\end{equation}
-
-\begin{FlushRight}
-\noindent{Where: $e$ is a small positive number used to prevent singularities}
-\end{FlushRight}
-
-\noindent{This iterative process starts (k = 0) with the solution vector obtained by the least squares estimator (\cref{eq:sphere11}). From this initial approximation ${\widetilde{m}}^0$, we calculate the matrix ${\bar{\bar{R}}}^0$ (\cref{eq:sphere14}). Which is used in the solution of the linear system given by \cref{eq:sphere13} to obtain the estimate ${\widetilde{m}}^1$. Later using this updated estimate to calculate the new matrix ${\bar{\bar{R}}}^1$ (\cref{eq:sphere14}), we solve the linear system (\cref{eq:sphere13}) to obtain a new estimate ${\widetilde{m}}^ 2$, and so on. As the iterations progress, this iterative procedure tends to converge and estimate $\widetilde{m}$, which is called robust estimate \citep{OliveiraJr.2015}. According to \cite{Aster2019} this convergence can be limited by a tolerance $\tau$, given by:}
-
-\begin{equation} \label{eq:sphere15}
-\centering
-\frac{\lVert {\widetilde{m}}^{k+1} - {\widetilde{m}}^{k} \lVert}{1 + \lVert \widetilde{m}^{k+1} \lVert} ≤ \tau
-\end{equation}
-
-\begin{FlushRight}
-\noindent{Where: $\tau$ is a positive number (\emph{e.g.}, ${10}^{-2}$) chosen by the algorithm user.}
-\end{FlushRight}
-
 
 
 
 %%
 \subsubsection{Directions of Magnetization and Uncertainty Propagation}
 
-\noindent{In paleomagnetic studies the magnetization vectors are represented in terms of their declination (D) and inclination (I). These are given as a function of the magnetization vector ${\bar{h}}_j$ (\cref{eq:sphere8}) and represented in spherical coordinates (as shown in \cref{fig:VECTORS}).}
+\noindent{In paleomagnetic studies the magnetization vectors are represented in terms of their declination (D) and inclination (I). These are given as a function of the magnetization vector ${\bar{m}}_j$ (\cref{eq:sphere8}) and represented in spherical coordinates (as shown in \cref{fig:VECTORS}).}
 
 \begin{figure}[htbp]
 \centering
@@ -419,7 +387,7 @@ m_j =\left[\begin{matrix}{{Mx}_{j\ }} \cdot \frac{4}{3}\pi\cdot R_j^3\\{{My}_{j\
 
 \begin{equation} \label{eq:sphere20}
 \centering
-\footnotesize \bar{\bar{Cov}} =\left[\begin{matrix}Var({mx}_1)&\cdots&\cdots&\cdots&\cdots&\cdots&\cdots\\\cdots&Var({my}_1)&\cdots&\cdots&\cdots&\cdots&\cdots\\\cdots&\cdots&Var({mz}_1)&\cdots&\cdots&\cdots&\cdots\\\cdots&\cdots&\cdots&\ddots&\cdots&\cdots&\cdots\\\cdots&\cdots&\cdots&\cdots&Var({mx}_L)&\cdots&\cdots\\\cdots&\cdots&\cdots&\cdots&\cdots&Var({my}_L)&\cdots\\\cdots&\cdots&\cdots&\cdots&\cdots&\cdots&Var({mz}_L)\\\end{matrix}\right]_{\text{\tiny 3L $\times$ 3L}}\ 
+\small \bar{\bar{Cov}}= \left[~ \text{\emph{diag}}\left(\begin{matrix}{\sigma_{{mx}_1}}^2&{\sigma_{{my}_1}}^2&{\sigma_{{mz}_1}}^2&\cdots&{\sigma_{{mz}_L}}^2\end{matrix}\right) \right]_{\text{\tiny 3L $\times$ 3L}}\
 \end{equation}
 
 \bigskip
@@ -428,27 +396,133 @@ m_j =\left[\begin{matrix}{{Mx}_{j\ }} \cdot \frac{4}{3}\pi\cdot R_j^3\\{{My}_{j\
 
 \begin{equation} \label{eq:sphere20}
 \centering
-\sigma_{{mx}_j}=\sqrt{Var({mx}_j)},\ \ \ \  \sigma_{{my}_j}=\sqrt{Var({my}_j)}\ \ \ \text{and}\ \ \ \  \sigma_{{mz}_j}=\sqrt{Var({mz}_j)}
+\sigma_{{mx}_j}=\sqrt{{\sigma_{{mx}_j}}^2},\ \ \ \  \sigma_{{my}_j}=\sqrt{{\sigma_{{my}_j}}^2}\ \ \ \text{and}\ \ \ \  \sigma_{{mz}_j}=\sqrt{{\sigma_{{mz}_j}}^2}
 \end{equation}
 
-\noindent{Thus, the propagation of uncertainties of the declination ($D_j$), inclination ($I_j$) and magnetic moment ($m_j$) results are given as a function of the parameters obtained in \cref{eq:sphere20}:}
+\noindent{Thus, the propagation of uncertainties of the declination ($D_j$), inclination ($I_j$) and magnetic moment ($m_j$) results are given as a function of the parameters (detailed in Appendix A.2) obtained in \cref{eq:sphere20}:}
 
 \begin{equation} \label{eq:sphere21}
 \centering
-\sigma_{D_j}=\sqrt{\left(\frac{\partial D_j}{\partial{mx}_j}\right)^2\cdot\ \left(\sigma_{{mx}_j}\right)^2+\left(\frac{\partial D_j}{\partial{my}_j}\right)^2\cdot\ \left(\sigma_{{my}_j}\right)^2}
+\small \sigma_{D_j}=\sqrt{\left(\frac{\partial D_j}{\partial{mx}_j}\right)^2\cdot\ \left(\sigma_{{mx}_j}\right)^2+\left(\frac{\partial D_j}{\partial{my}_j}\right)^2\cdot\ \left(\sigma_{{my}_j}\right)^2}
 \end{equation}
 
 \begin{equation} \label{eq:sphere22}
 \centering
-\sigma_{I_j}=\sqrt{\left(\frac{\partial I_j}{\partial{mx}_j}\right)^2\cdot\ \left(\sigma_{{mx}_j}\right)^2+\left(\frac{\partial I_j}{\partial{my}_j}\right)^2\cdot\ \left(\sigma_{{my}_j}\right)^2+\left(\frac{\partial I_j}{\partial{mz}_j}\right)^2\cdot\ \left(\sigma_{{mz}_j}\right)^2}
+\small \sigma_{I_j}=\sqrt{\left(\frac{\partial I_j}{\partial{mx}_j}\right)^2\cdot\ \left(\sigma_{{mx}_j}\right)^2+\left(\frac{\partial I_j}{\partial{my}_j}\right)^2\cdot\ \left(\sigma_{{my}_j}\right)^2+\left(\frac{\partial I_j}{\partial{mz}_j}\right)^2\cdot\ \left(\sigma_{{mz}_j}\right)^2}
 \end{equation}
 
 \begin{equation} \label{eq:sphere22_m}
 \centering
-\sigma_{m_j}=\sqrt{\left(\frac{\partial m_j}{\partial{mx}_j}\right)^2\cdot\ \left(\sigma_{{mx}_j}\right)^2+\left(\frac{\partial m_j}{\partial{my}_j}\right)^2\cdot\ \left(\sigma_{{my}_j}\right)^2+\left(\frac{\partial m_j}{\partial{mz}_j}\right)^2\cdot\ \left(\sigma_{{mz}_j}\right)^2}
+\small \sigma_{m_j}=\sqrt{\left(\frac{\partial m_j}{\partial{mx}_j}\right)^2\cdot\ \left(\sigma_{{mx}_j}\right)^2+\left(\frac{\partial m_j}{\partial{my}_j}\right)^2\cdot\ \left(\sigma_{{my}_j}\right)^2+\left(\frac{\partial m_j}{\partial{mz}_j}\right)^2\cdot\ \left(\sigma_{{mz}_j}\right)^2}
 \end{equation}
 
-\noindent{Where:}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%
+\section{Results}
+
+%%%
+\subsection{Synthetic Data}
+
+\noindent{We applied the proposed method in a numerical simulation of a geological thin-section of dimensions 1000 μm x 1000 μm in a regular grid (1000 x 1000) for estimating the magnetization directions of four spherical sources uniformly magnetized (but with different directions), according to \cref{tab:ModelTab}. Totaling an observation number N = $10^6$ obtained at a sensor-sample distance of 5 μm and a grid spacing of 1 μm. Subsequently, the data vector was contaminated with a pseudo-random noise of normal Gaussian distribution with a zero mean and 25 nT standard deviation, as shown in \cref{fig:SimpleSynthetic}a.}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=1.0\textwidth]{SimpleSynthetic.png}
+\caption{blablabla.}
+\label{fig:SimpleSynthetic}
+\end{figure}
+
+
+\floatsetup[table]{capposition=top} % to put the caption on the top of the table
+
+
+% If you use beamer only pass "xcolor=table" option, i.e. \documentclass[xcolor=table]{beamer}
+\input{input_par_table}
+
+
+\subsubsection{Euler Solution}
+
+\noindent{The first step is to calculate the magnetic horizontal gradient in order to isolate the window data of each source. In the horizontal gradient, the magnetic anomaly caused by a body tends to overlap its limits, thus obtaining a robust positioning \citep{Blakely1996}.  \cite{VanderWalt2014}.}
+
+% If you use beamer only pass "xcolor=table" option, i.e. \documentclass[xcolor=table]{beamer}
+\input{solution_par_table}
+
+
+
+
+\section{Discussion}
+
+\section{Conclusion}
+\noindent{We developed an efficient semi-automated method to determine the direction of magnetization of dipolar sources on a microscale, as well as the recovery of their magnetic moment. Being ideal for a reinterpretation for the application of methods of paleomagnetic studies using thin sections of rock samples. This would be an attempt to improve the quality of results obtained by isolating the responses of more reliable recorders of the Earth's geomagnetic field. }
+
+\noindent{We also present a new, faster and cleaner way to solve the Euler equation in determining the positioning of magnetic anomaly sources using a pre-selection of magnetic anomaly source windows based on the Laplacian of the Gaussian applied to total gradient anomaly maps. In this way, reducing the numerous solutions to just one data window per source. After estimating the structural index (N=3) by approximating the sources generating the magnetic anomaly to spheres/points, the Euler deconvolution is performed and the central position of each source is determined.}
+
+\noindent{Since for the recovery of direction and magnetization we only need to assume that the sources have their central positions known (so we apply Euler deconvolution) and that their magnetizations are uniform. This last premise aligns with the theory of magnetically stable particles, which are the basis of classical paleomagnetism. Also, there is no need for any kind of prior knowledge other than the observed magnetic anomaly, and the structural index of the sources. Therefore, this method can be quickly replicated in a dataset of thin sections of rocks to obtain the distributions of magnetic directions of each source identified in the sample.}
+
+\noindent{The test using a simply synthetic sample shows the great capability of the method by retrieving not only the precisely center positions \ref{AppendixA.1} }
+
+\begin{singlespace}
+\doublespacing
+\bibliographystyle{agu}  % style file is seg.bst
+\bibliography{article1}
+\end{singlespace}
+
+
+\section{Appendix A}
+\subsection{Appendix A.1} \label{AppendixA.1}
+
+\noindent{As the least squares estimate (\cref{eq:sphere11}) is very sensitive to the presence of outliers in the observed data, the estimated parameters could be seriously misleading. To counteract this problem \cite{OliveiraJr.2015} suggest a robust scheme based on the minimization of the objective function obtained with the absolute error:}
+
+\begin{equation} \label{eq:sphere12}
+\centering
+\small f\left(\widetilde{m}\right)=\left(\sum_{i=1}^{N}\left| { \left(\bar{\bar{A}} \cdot \bar{m} \right)}_{i} - {{\bar{\left(B_z\right)}}}_{i} \right|\right)
+\end{equation}
+
+\noindent{Unlike the solution presented for the objective function in \cref{eq:sphere11}, the parameter vector minimizing \cref{eq:sphere12} cannot be obtained as a simple linear system. A practical way is the iteratively reweighted least squares algorithm \citep{Aster2019, OliveiraJr.2015}. In this algorithm, at each iteration k, the following linear system is solved:}
+
+\begin{equation} \label{eq:sphere13}
+\centering
+\small {\widetilde{m}}^{k+1}=\left({\bar{\bar{A}}}^T\cdot{\bar{\bar{R}}}^k\cdot\bar{\bar{A}}\right)^{-1}\cdot\left({\bar{\bar{A}}}^T\cdot{\bar{\bar{R}}}^k\cdot{\bar{B}}_z\right)\ \ 
+\end{equation}
+
+\noindent{The term ${\bar{\bar{R}}}^k$ is an N $\times$ N diagonal matrix whose i-th element $r_i^k$ (i = 1, 2, ..., N) is given by:}
+
+\begin{equation} \label{eq:sphere14}
+{r_i}^k=\frac{1}{\left|\left(\bar{\bar{A}}\cdot\bar{m}\right)_i-{{\bar{B_z}}}_i+e\right|}
+\end{equation}
+
+\begin{FlushRight}
+\noindent{Where: $e$ is a small positive number used to prevent singularities}
+\end{FlushRight}
+
+\noindent{This iterative process starts (k = 0) with the solution vector obtained by the least squares estimator (\cref{eq:sphere11}). From this initial approximation ${\widetilde{m}}^0$, we calculate the matrix ${\bar{\bar{R}}}^0$ (\cref{eq:sphere14}). Which is used in the solution of the linear system given by \cref{eq:sphere13} to obtain the estimate ${\widetilde{m}}^1$. Later using this updated estimate to calculate the new matrix ${\bar{\bar{R}}}^1$ (\cref{eq:sphere14}), we solve the linear system (\cref{eq:sphere13}) to obtain a new estimate ${\widetilde{m}}^ 2$, and so on. As the iterations progress, this iterative procedure tends to converge and estimate $\widetilde{m}$, which is called robust estimate \citep{OliveiraJr.2015}. According to \cite{Aster2019} this convergence can be limited by a tolerance $\tau$, given by:}
+
+\begin{equation} \label{eq:sphere15}
+\centering
+\frac{\lVert {\widetilde{m}}^{k+1} - {\widetilde{m}}^{k} \lVert}{1 + \lVert \widetilde{m}^{k+1} \lVert} ≤ \tau
+\end{equation}
+
+\begin{FlushRight}
+\noindent{Where: $\tau$ is a positive number (\emph{e.g.}, ${10}^{-2}$) chosen by the algorithm user.}
+\end{FlushRight}
+
+
+
+\subsection{Appendix A.2} \label{AppendixA.2}
 
 \begin{equation} \label{eq:sphere23}
 \centering
@@ -491,112 +565,4 @@ m_j =\left[\begin{matrix}{{Mx}_{j\ }} \cdot \frac{4}{3}\pi\cdot R_j^3\\{{My}_{j\
 \end{equation}
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-%%%%%%%%%%%%%
-\section{Results}
-
-%%%
-\subsection{Synthetic Data}
-
-\noindent{We applied the proposed method in a numerical simulation of a geological thin-section of dimensions 1000 μm x 1000 μm in a regular grid (1000 x 1000) for estimating the magnetization directions of four spherical sources uniformly magnetized (but different directions), according to \cref{tab:directmodel}. Totaling an observation number N = $10^6$ obtained at a sensor-sample distance of 5 μm and a spacing of 1 μm. Subsequently, a pseudorandom noise of normal Gaussian distribution, with a zero mean and standard variation ≅ 5\% of the anomaly amplitude, was added to the data as shown in Figure XX.}
-
-
-\floatsetup[table]{capposition=top} % to put the caption on the top of the table
-
-% If you use beamer only pass "xcolor=table" option, i.e. \documentclass[xcolor=table]{beamer}
-\begin{table}[htbp]
-\caption{Initial position and magnetization parameters for each spherical source.}
-\label{tab:directmodel}
-\centering
-\begin{tabular}[width=1.0\textwidth]{ccccccc}
-\rowcolor[HTML]{E7E7E7} 
-\cellcolor[HTML]{E7E7E7}                         & \multicolumn{3}{c}{\cellcolor[HTML]{E7E7E7}Center coordinates} & \multicolumn{3}{c}{\cellcolor[HTML]{E7E7E7}Magnetization} \\
-\rowcolor[HTML]{E7E7E7} 
-\multirow{-2}{*}{\cellcolor[HTML]{E7E7E7}Sphere} & X (µm)              & Y (µm)             & Z (µm)             & Q (A/m)            & D (°)            & I (°)            \\
-1                                                & 250                 & 250                & 8.50               & 6.0                & -140             & -30              \\
-\rowcolor[HTML]{E7E7E7} 
-2                                                & 500                 & 500                & 10.0               & 6.0                & 0                & 62               \\
-3                                                & 750                 & 750                & 5.30               & 6.0                & -70              & -50              \\
-\rowcolor[HTML]{E7E7E7} 
-4                                                & 200                 & 800                & 7.75               & 6.0                & 125              & 22              
-\end{tabular}
-\end{table}
-
-
-
-\subsubsection{Euler Solution}
-
-\noindent{The first step is to calculate the magnetic horizontal gradient in order to isolate the window data of each source. In the horizontal gradient, the magnetic anomaly caused by a body tends to overlap its limits, thus obtaining a robust positioning \citep{Blakely1996}.  \cite{VanderWalt2014}.}
-
-
-
-\begin{table}[htbp]
-\caption{Central positions of sources input vs Euler deconvolution solutions.}
-\label{tab:eulerresults}
-\centering
-\begin{tabular}[width=1.0\textwidth]{ccccccc}
-\rowcolor[HTML]{E7E7E7} 
-\cellcolor[HTML]{E7E7E7}                         & \multicolumn{3}{c}{\cellcolor[HTML]{E7E7E7}Posição do Centro de   Entrada} & \multicolumn{3}{c}{\cellcolor[HTML]{E7E7E7}Solução de Euler} \\
-\rowcolor[HTML]{E7E7E7} 
-\multirow{-2}{*}{\cellcolor[HTML]{E7E7E7}Esfera} & X (µm)                  & Y (µm)                  & Z (µm)                 & X (µm)             & Y (µm)             & Z (µm)             \\
-1                                                & 250                     & 250                     & 8.50                   & 249.144984         & 250.084691         & 8.17863468         \\
-\rowcolor[HTML]{E7E7E7} 
-2                                                & 500                     & 500                     & 10.0                   & 500.213134         & 500.443637         & 9.85904976         \\
-3                                                & 750                     & 750                     & 5.30                   & 749.873747         & 750.127834         & 5.26685529         \\
-\rowcolor[HTML]{E7E7E7} 
-4                                                & 200                     & 800                     & 7.75                   & 200.177971         & 800.331017         & 7.82974687        
-\end{tabular}
-\end{table}
-
-
-\begin{table}[htbp]
-\caption{Input magnetization directions vs inversion solutions and their error propagation.}
-\label{tab:inversionresults}
-\centering
-\begin{tabular}[width=1.0\textwidth]{ccccccc}
-\rowcolor[HTML]{E7E7E7} 
-\cellcolor[HTML]{E7E7E7}                         & \multicolumn{2}{c}{\cellcolor[HTML]{E7E7E7}Direção de Entrada} & \multicolumn{4}{c}{\cellcolor[HTML]{E7E7E7}Direções Recuperadas e   Incertezas} \\
-\rowcolor[HTML]{E7E7E7} 
-\multirow{-2}{*}{\cellcolor[HTML]{E7E7E7}Esfera} & D (°)                          & I (°)                         & D (°)               & $\sigma$ D (°)            & I (°)             & $\sigma$ I (°)           \\
-1                                                & -140                           & -30                           & -137.0294           & ± 0.7641          & -32.6550          & ± 0.5169          \\
-\rowcolor[HTML]{E7E7E7} 
-2                                                & 0                              & 62                            & 2.5167              & ± 1.5004          & 60.5473           & ± 0.6917          \\
-3                                                & -70                            & -50                           & -68.3316            & ± 0.6752          & -49.0172          & ± 0.3923          \\
-\rowcolor[HTML]{E7E7E7} 
-4                                                & 125                            & 22                            & 124.8320            & ± 0.6449          & 21.9940           & ± 0.4515         
-\end{tabular}
-\end{table}
-
-
-
-
-
-\section{Discussion}
-
-\section{Conclusion}
-\noindent{We developed an efficient semi-automated method to determine the direction of magnetization of dipolar sources on a microscale, as well as the recovery of their magnetic moment. Being ideal for a reinterpretation for the application of methods of paleomagnetic studies using thin sections of rock samples. This would be an attempt to improve the quality of results obtained by isolating the responses of more reliable recorders of the Earth's geomagnetic field. }
-
-\noindent{We also present a new, faster and cleaner way to solve the Euler equation in determining the positioning of magnetic anomaly sources using a pre-selection of magnetic anomaly source windows based on the Laplacian of the Gaussian applied to total gradient anomaly maps. In this way, reducing the numerous solutions to just one data window per source. After estimating the structural index (N=3) by approximating the sources generating the magnetic anomaly to spheres/points, the Euler deconvolution is performed and the central position of each source is determined.}
-
-\noindent{Since for the recovery of direction and magnetization we only need to assume that the sources have their central positions known (so we apply Euler deconvolution) and that their magnetizations are uniform. This last premise aligns with the theory of magnetically stable particles, which are the basis of classical paleomagnetism. Also, there is no need for any kind of prior knowledge other than the observed magnetic anomaly, and the structural index of the sources. Therefore, this method can be quickly replicated in a dataset of thin sections of rocks to obtain the distributions of magnetic directions of each source identified in the sample.}
-
-\noindent{The test using a simply synthetic sample shows the great capability of the method by retrieving not only the precisely center positions }
-
-\begin{singlespace}
-\doublespacing
-\bibliographystyle{agu}  % style file is seg.bst
-\bibliography{article1}
-\end{singlespace}
 \end{document}
