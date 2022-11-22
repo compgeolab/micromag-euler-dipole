@@ -1,0 +1,291 @@
+\section{Methodology}
+%%%
+\subsection{Scanning Magnetic Microscopy}
+
+\noindent{Scanning magnetic microscopy (SMM) is the imaging technique in which a thin-section sample of geological material is horizontally displaced under a high-precision (fixed) micromagnetometer to obtain magnetization \citep{Weiss2007}. The SMM performed at a fixed height above the sample also has the advantage of facilitating the subtraction of the ambient field (constant), to which it might be subject during the scan \citep{Lima2013}. The availability of high-performance and low-cost magnetic sensors has promoted a great advance in the application of SMM in recent years. However, its sensitivity is still a few orders of magnitude lower than that of superconducting quantum interference devices (SQUIDs), the latter being between 10$^{-12}$ and 10$^{-15}$ Am$^2$ \citep{Lima2013}. This disadvantage is offset by (i) the high spatial resolution of the SMM, as it is performed at a few tens of micrometers from the sampled surface; and (ii) SQUID magnetic microscopy is performed at low temperatures ($<$ 100K), which can cause changes in the original NRM of the sample, while SMM is performed at room temperature \citep{Lima2013, Weiss2007}.}
+
+\noindent{The SMM can also be considered as a form of aeromagnetic survey, carried out at microscales on sources of flat topography, with high spatial resolution and greater sensitivity to magnetic moment \citep{Lima2013}. An emerging magnetic imaging technology is the quantum diamond microscope (QDM) with very high spatial resolution ($≅$ 1 μm), and can recover magnetic moments as weak as 10$^{-17}$ Am$^2$, through magnetic sensors located at altitudes between 1 and 5 µm relative to the sample surface \citep{Fu2020} capable of detecting the magnetic signals of SD magnetite particles (\cref{fig:QDM}). Another promising type of magnetic microscope is the magnetic tunnel junction (MTJ) with a spatial resolution greater than 7 µm, a magnetic moment sensitivity of up to 10$^{-14}$ Am$^2$ and sample-sensor distance of 7 µm. Its advantages reside in the fact that these MTJ devices do not require high bias current to operate (few tens of µA), which avoids induced magnetization signals created by artificial magnetic field during the measurements \citep{Lima2014}.}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{QDM.png}
+\caption{Sample classes accessible to QDM, SQUID microscope and 2G Enterprises SRM. The accessible region for the QDM was calculated assuming a magnetic field noise threshold of 5 nT and a minimum sensor-sample distance of 5 μm. The calculation for the SQUID microscope assumed field noise values of 15 pT and sensor-sample distance of 150 μm. Source: \cite{Fu2020}.}
+\label{fig:QDM}
+\end{figure}
+
+\noindent{Due to the similarities between magnetic microscopy techniques and aeromagnetic surveys, the methodologies of data inversion of the latter, densely studied in the last decades, can be adapted for magnetic microscopy. However, \cite{Lima2013} report important distinctions between SMM and aeromagnetic surveys, namely: (i) the source distribution in the SMM can often be accurately modeled in a two-dimensional model; (ii) the SMM measures the field produced directly by the sample's NRM; (iii) the sensor positioning is very accurate in the SMM, and the vertical component of the magnetic field is usually measured, rather than the total field; (iv) there is no need for correction to bring all measurements to the same surface or to grid the data; and (v) the distributions of the magnetization sources are finite and known.}
+
+
+
+
+%%%
+\subsection{Euler Deconvolution}
+
+\noindent{\cite{Thompson1982} proposed the Euler Deconvolution technique, which is a consolidated method classically applied to data from aeromagnetic surveys that uses first order x, y and z derivatives to determine the positioning and depth of ideal targets (e.g., sphere, cylinder), each characterized by a structural index \citep{Nabighian2005}. Euler deconvolution is one of the most useful methods for estimating the three-dimensional positioning of magnetic sources/geological bodies \citep{Reid1990}. Given the similarities between SMM and aeromagnetic data, its application becomes plausible for determining the positions of magnetic sources caused by ferromagnetic minerals (l.s).} 
+
+\noindent{The classic Euler approach is basically the application of a mobile operator in a small data window over the sampled dataset. The observations made within this window are used to estimate the horizontal and vertical positions of the source by solving a small linear system of equations using the gradients of the potential field, provided that the shapes of the sources are assumed. Despite this, this methodology usually yields a large number of solutions \citep{Barbosa2011}, which becomes a limitation for the method. In an attempt to circumvent the problem of this expressive cloud of solutions, we suggest a previous application of a method for delimitating the region of each source that generates the potential field and later the application of Euler's Deconvolution. Hence giving a single system of linear equations to be solved for each source.}
+
+\noindent{Derivative-based filters are widely used to emphisize the potencial anomaly signal of shallower sources and applied in modern methods for edge/position detection, as of the solution of Euler equation itself requires the gradient of the potential field. Since the calculation of first order derivatives is a must in this case, we might as well give preference to filtering techniques that use the same products. One good filtering example is the so called horizontal gradient method ($\nabla H$, \cref{eq:HG}) \citep{Cordell1982}, which is a source edge detection methodology where the response of a target's horizontal gradient tends to overlap its own limits, thus obtaining a two-dimensional robust map of the sources location \cite{Blakely1996}. Another popular method for locating edges of magnetic bodies is the total gradient ($\nabla T$, \cref{eq:TG}), which places the source's maximum anomaly values over the area inside its boundaries, despite of  geomagnetic latitude, magnetization direction or source dip/geometry \citep{Nabighian2005}. Both total and horizontal gradients are reliable techniques to be applied with the SMM data.}
+
+
+\begin{equation} \label{eq:HG}
+\centering
+\nabla H= \sqrt{ {\left( \frac{∂F}{∂x} \right)}^2+{\left( \frac{∂F}{∂y} \right)}^2 }
+\end{equation}
+
+\begin{equation} \label{eq:TG}
+\centering
+\nabla T= \sqrt{ {\left( \frac{∂F}{∂x} \right)}^2+{\left( \frac{∂F}{∂y} \right)}^2+{\left( \frac{∂F}{∂z} \right)}^2 }
+\end{equation}
+
+
+\noindent{After pre processing the data with derivative-based filter, highlighting the sources edges, it is possible to apply blob detection techniques. The latter refers to visual algorithms and/or modules with the ability of detecting points/regions that are either darker or brighter than the neighborhood. The most common and accurate approach to detect brighter blobs on dark surroundings is the Laplacian of Gaussian (LoG), its downside is also being slower than other approaches \citep{Han2016, Kong2013}. We used the \href{https://scikit-image.org/docs/stable/auto_examples/features_detection/plot_blob.html#sphx-glr-auto-examples-features-detection-plot-blob-py}{scikit-image blob detection} python library \citep{VanderWalt2014} to identify the window region of data that embraces each isolated source by applying the algorithm on the highlighted sources map ($\nabla T$ or $\nabla H$). Therefore, the blobs selected are local maxima obtained with successively LoG images. Once the target location window is determined, subsequently, the Euler Deconvolution can applied in this single static data window yeilding only one solution per source. Thus, being an automatic, faster and easier way than the classical methodology of solving the Euler equation.}
+
+
+%%%
+\subsubsection{Euler Deconvolution Formulation}
+
+\noindent{The anomaly of a potential field F produced by a three-dimensional source, whose cartesian coordinates of its central position are x$_c$, y$_c$ and z$_c$, satisfies the homogeneous Euler equation \citep{Reid1990} expressed by:}
+
+\begin{equation} \label{eq:euler1}
+\centering
+(x-x_c) \cdot \frac{\partial F}{\partial x} + (y-y_c) \cdot \frac{\partial F}{\partial y}+(z-z_c) \cdot \frac{\partial F}{\partial z}=n \cdot (b-F)  \ \ 
+\end{equation}
+
+\begin{tabular}{ l }
+\noindent{where: n is the structural index, that is, a gauge of the geometric shape of the}  \\
+\noindent{sources causing the anomaly; and b is the constant, and unknown, base level.}  \\
+\end{tabular}
+
+\bigskip
+
+\noindent{The Euler's Deconvolution uses the gradient of a potential field and the structural index, which can be defined by the geometric nature of the sources. The structural index is the only necessary a priori knowledge. Once a value for n is assumed (n = 3 for spherical/punctual magnetic sources), the homogeneous Euler equation can be rearranged as follows:}
+
+\begin{equation} \label{eq:euler2}
+\centering
+x_c \cdot \frac{\partial F}{\partial x} + y_c \cdot \frac{\partial F}{\partial y} + z_c \cdot \frac{\partial F}{\partial z} + n \cdot b = x \cdot \frac{\partial F}{\partial x} + y \cdot \frac{\partial F}{\partial y} + z \cdot \frac{\partial F}{\partial z} + n \cdot F  \ \ 
+\end{equation}
+
+\noindent{The \cref{eq:euler2} can be written in matrix form as:}
+
+\begin{equation} \label{eq:euler3}
+\centering
+\left[\begin{matrix}{Fx}_1&{Fy}_1&{Fz}_1&n\\{Fx}_2&{Fy}_2&{Fz}_2&n\\\vdots&\vdots&\vdots&\vdots\\{Fx}_N&{Fy}_N&{Fz}_N&n\\\end{matrix}\right]\left[\begin{matrix}x_c\\y_c\\z_c\\b\\\end{matrix}\right]=\left[\begin{matrix}x_1\cdot{Fx}_1+y_1 \cdot {Fy}_1+z_1 \cdot {Fz}_1+n\cdot F_1\\x_2\cdot{Fx}_2+y_2\cdot{Fy}_2+z_2\cdot{Fz}_2+n\cdot F_2\\\vdots\\x_N\cdot{Fx}_N+y_N\cdot{Fy}_N+z_N\cdot{Fz}_N+n\cdot F_N\\\end{matrix}\right]\ 
+\end{equation}
+
+\begin{tabular}{ l }
+\noindent{Where: $Fx_i$, $Fy_i$ and $Fz_i$ represent, respectively, the gradients $\frac{\partial F}{\partial x}$, $\frac{\partial F}{\partial y}$ and $\frac{\partial F}{\partial z}$}   \\
+\noindent{evaluated on the i-th observation point ($i=1,2, ..., N$). While $x_i$, $y_i$ and $z_i$}   \\
+\noindent{represent the cartesian coordinates at the i-th observation point.}
+\end{tabular}
+
+\bigskip
+
+\noindent{Note that \cref{eq:euler3} is a linear system $\bar{\bar{G}} \cdot \bar{p}=\bar{d}$ and its objective function $f(\bar{p} )$ expressed by:}
+
+\begin{equation} \label{eq:euler4}
+\centering
+f(\bar{p} ) = {\lVert e\lVert}^2 = {(\bar{\bar{G}} \cdot \bar{p}-\bar{d})}^T \cdot ~ (\bar{\bar{G}} \cdot \bar{p}-\bar{d})
+\end{equation}
+
+\noindent{The solution $\bar{p}$ of the system can be obtained by minimizing the objective function $(\frac{\partial f}{\partial p_k}=\bar{0})$ through the least squares estimator given by:}
+
+\begin{equation} \label{eq:euler5}
+\centering
+\bar{p}=\left({\bar{\bar{G}}}^T\cdot ~ \bar{\bar{G}}\right)^{-1} \cdot \ \left({\bar{\bar{G}}}^T\cdot ~ \bar{d}\right)
+\end{equation}
+
+\noindent{Thus, $\bar{p}=\left[x_c\ \ y_c\ \ z_c\ \ b\right]^T$ will be the solution vector that satisfies Euler's Equation with the least possible error containing the position coordinates source center ($x_c$, $y_c$, $z_c$) and the base level (b).}
+
+
+
+
+
+
+
+
+
+%%%
+\subsection{Magnetic Inversion}
+
+\noindent{The rapid inversion of the total field is a method developed by \cite{OliveiraJr.2015} being computationally efficient to invert the magnetic anomalies produced by multiple sources with approximately spherical shapes to estimate their magnetization directions (inclination and declination). This methodology requires the central position of the magnetic sources, which can be obtained with Euler Deconvolution, and the information on their geometry helps to reduce the non-exclusivity of the problem. In this way, it is possible to estimate the direction of magnetization from multiple sources. The method does not require that all sources have the same magnetization direction nor the use of regularly spaced data on a horizontal grid, and can still be implemented in linear and non-linear inversion problems.}
+
+\noindent{Currently, the main inversion limitations for these type of data are: (i) in part because the sampling scale during measurement is insufficiently accurate and (ii) because of the non-singularity of the magnetic inversion  \citep{Lima2013}. The basic mathematical structure associated with the inverse problem of aeromagnetic data can be adapted and used in SMM data due to its similarity, despite the non-singularity caused by the infinite number of solutions for the same observed magnetic field  \citep{Weiss2007}. Assigning as much information as possible about the analyzed sample and the experimental environment can reduce this ambiguity by recovering the magnetization direction. In particles with unidirectional magnetization, and without magnetization sources outside the sample area, it is possible to guarantee singularity for the inverse problem in SMM  \citep{Baratchart2013}. Associating the fact that there is a singularity in the response of uniformly magnetized particles and that ferromagnetic particles (\emph{l.s.}) with stable magnetization have such a characteristic, therefore, the inversion method becomes ideal for the purpose of this project.}
+
+%%
+\subsubsection{Parametrization and Forward Model}
+
+\noindent{Let $\bar{B}$ be the observed data vector, whose i-th element ${\bar{B}}_i$, $i= 1, 2, ..., N$, is a total field anomaly, resulting from the NRM contribution of each ferromagnetic particle (\emph{l.s.}), measured at position ($x_i$, $y_i$, $z_i$) (black dots, \cref{fig:model_plus_vector}a). In this cartesian coordinate system, x points to geographic north, y points east, and z points down. In general, the magnetic field that is produced in the thin section is the result solely and exclusively of the NRM contribution of the particles without considering the induced component, since the measurements carried out in the magnetic microscope are usually made under magnetic shielding conditions. Thereby, approximating the shape of ferromagnetic minerals (\emph{l.s.}) to NRM magnetizing spheric/punctual sources. According to \cite{Blakely1996} the equation of a uniformly magnetized sphere is given by:}
+
+\begin{equation} \label{eq:sphere1}
+\centering
+b =\ C_m \cdot \frac{4}{3} \cdot \pi \cdot R^3 \cdot M \cdot \hat{M} \cdot \frac{1}{r^2} \cdot \hat{r}
+\end{equation}
+
+\noindent{Whereas the magnetic sources can be represented by a set of L uniformly magnetized spheres. In this case, each sphere will have a contribution in the field measured at the position ($x_i$, $y_i$, $z_i$):}
+
+\begin{equation} \label{eq:sphere2}
+\centering
+{b_i}^j=\ C_m \cdot \frac{4}{3}\pi \cdot {R_j}^3 \cdot {\bar{M}}^j\cdot\frac{1}{r_{i,j}^2}\cdot{\hat{r}}_{i,j}\ ,\ \ j=1,\ 2\ldots,\ L
+\end{equation}
+
+\begin{tabular}{ l }
+\noindent{Where: $C_m=\ \frac{\mu_0}{4\pi}=\ {10}^{-7}\frac{\ H}{m}$; $R_j$ is the radius of the j-th sphere; $r_{i,j}$ is the distance}   \\ 
+\noindent{(unit vector ${\hat{r}}_{i,j}$) between the center of the j-th sphere and the observation point i,}    \\  
+\noindent{i = 1, 2, . .. N; and ${\bar{M}}^j=\left[{Mx}_j\ {My}_j\ {Mz}_j\right]^T$ is the vector formed by the cartesian} \\
+\noindent{components of the magnetization of the j-th sphere (unit vector ${\hat{M}}^j)$.}
+\end{tabular}
+
+\bigskip
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.8\textwidth]{model_plus_vector.pdf}
+\caption{a) Schematic representation of spheres (L = 2) uniformly magnetized in the subsurface, whose magnetic effect can be observed at points ($x_i$, $ y_i$, $z_i$), i = 1, 2, ..., N (black dots). In this cartesian coordinate system x, y and z corresponds to geographic north, east and z, respectively. b) Schematic cartesian representation of vector $m_j$ with elements $mx_j$, $my_j$ and $mz_j$, with declination $D_j$ (positive clockwise) and inclination $I_j$ (positive downwards), j = 1, 2, ... L. Modified from: \cite{OliveiraJr.2015}.}
+\label{fig:model_plus_vector}
+\end{figure}
+
+\noindent{Thus, the total magnetization measured at the position ($x_i$, $y_i$, $z_i$) will be the sum of contributions from the L spheres, given by:}
+
+\begin{equation} \label{eq:sphere3}
+\centering
+B_i=\sum_{j=1}^{L}b_i^j
+\end{equation}
+
+\noindent{The \cref{eq:sphere2} presents the sensitive matrix $A_i^j$ and the $m_j$, which is the vector that encompasses the cartesian components of the magnetc moment (magnetization times volume) of each sphere:}
+
+\begin{equation} \label{eq:sphere4}
+\small A_i^j ={C}_{m} \cdot \left[\begin{matrix}\left(\frac{\partial^2}{\partial x\partial x}\cdot\frac{1}{r_{i,j}}\right)&\left(\frac{\partial^2}{\partial x\partial y}\cdot\frac{1}{r_{i,j}}\right)&\left(\frac{\partial^2}{\partial x\partial z}\cdot\frac{1}{r_{i,j}}\right)\\\left(\frac{\partial^2}{\partial x\partial y}\cdot\frac{1}{r_{i,j}}\right)&\left(\frac{\partial^2}{\partial y\partial y}\cdot\frac{1}{r_{i,j}}\right)&\left(\frac{\partial^2}{\partial x\partial z}\cdot\frac{1}{r_{i,j}}\right)\\\left(\frac{\partial^2}{\partial x\partial z}\cdot\frac{1}{r_{i,j}}\right)&\left(\frac{\partial^2}{\partial y\partial z}\cdot\frac{1}{r_{i,j}}\right)&\left(\frac{\partial^2}{\partial z\partial z}\cdot\frac{1}{r_{i,j}}\right)\\\end{matrix}\right]_{\text{\tiny 3N $\times$ 3L}},
+m_j =\left[\begin{matrix}{{Mx}_{j\ }} \cdot \frac{4}{3}\pi\cdot R_j^3\\{{My}_{j\ }} \cdot \frac{4}{3}\pi\cdot R_j^3\\{{Mz}_{j\ }} \cdot \frac{4}{3}\pi\cdot R_j^3\\\end{matrix}\right]_{\text{\tiny 3L $\times$ 1}}
+\end{equation}
+
+\begin{FlushRight}
+\noindent{Where: $\frac{1}{r_j}\equiv\frac{1}{\sqrt{\left(x_i-{xc}_j\right)^2+\left(y_i-{yc}_j\right)^2+\left(z_i-{zc}_j\right)^2}}$}
+\end{FlushRight}
+
+\noindent{Subsequently, the components of the total magnetizing field can be obtained (from \cref{eq:sphere3}), as shown below:}
+
+\begin{equation} \label{eq:sphere5}
+\small {C}_{m} \cdot \left[\begin{matrix}\left(\frac{\partial^2}{\partial x\partial x}\cdot\frac{1}{r_{i,j}}\right)&\left(\frac{\partial^2}{\partial x\partial y}\cdot\frac{1}{r_{i,j}}\right)&\left(\frac{\partial^2}{\partial x\partial z}\cdot\frac{1}{r_{i,j}}\right)\\\left(\frac{\partial^2}{\partial x\partial y}\cdot\frac{1}{r_{i,j}}\right)&\left(\frac{\partial^2}{\partial y\partial y}\cdot\frac{1}{r_{i,j}}\right)&\left(\frac{\partial^2}{\partial x\partial z}\cdot\frac{1}{r_{i,j}}\right)\\\left(\frac{\partial^2}{\partial x\partial z}\cdot\frac{1}{r_{i,j}}\right)&\left(\frac{\partial^2}{\partial y\partial z}\cdot\frac{1}{r_{i,j}}\right)&\left(\frac{\partial^2}{\partial z\partial z}\cdot\frac{1}{r_{i,j}}\right)\\\end{matrix}\right]_{\text{\tiny 3N $\times$ 3L}}
+\cdot\ 
+\left[\begin{matrix}{{Mx}_{j\ }} \cdot \frac{4}{3}\pi\cdot R_j^3\\{{My}_{j\ }} \cdot \frac{4}{3}\pi\cdot R_j^3\\{{Mz}_{j\ }} \cdot \frac{4}{3}\pi\cdot R_j^3\\\end{matrix}\right]_{\text{\tiny 3L $\times$ 1}}
+=\left[\begin{matrix}{Bx}_{i\ }\\{By}_{i\ }\\{Bz}_{i\ }\\\end{matrix}\right]_{\text{\tiny 3N $\times$ 1}}
+\end{equation}
+
+\noindent{As in the specific case in the study of magnetic microscopy, in the routine practice, the vertical component of magnetization is usually measured. In this case, there is a need to adapt the \cref{eq:sphere5} to isolate the response from the vertical component ($B_z$). Therefore, the equation of the direct model will be given by:}
+
+\begin{equation} \label{eq:sphere6}
+\small {C}_{m} \cdot \left[\begin{matrix}\left(\frac{\partial^2}{\partial x\partial z}\cdot\frac{1}{r_{i,j}}\right)&\left(\frac{\partial^2}{\partial y\partial z}\cdot\frac{1}{r_{i,j}}\right)&\left(\frac{\partial^2}{\partial z\partial z}\cdot\frac{1}{r_{i,j}}\right)\\\end{matrix}\right]_{\text{\tiny N $\times$ 3L}}
+\cdot\ 
+\left[\begin{matrix}{{Mx}_{j\ }} \cdot \frac{4}{3}\pi\cdot R_j^3\\{{My}_{j\ }} \cdot \frac{4}{3}\pi\cdot R_j^3\\{{Mz}_{j\ }} \cdot \frac{4}{3}\pi\cdot R_j^3\\\end{matrix}\right]_{\text{\tiny 3L $\times$ 1}}
+=\left[{Bz}_{i\ }\right]_{\text{\tiny N $\times$ 1}}
+\end{equation}
+
+\noindent{The magnetization is usually represented in spherical coordinates of intensity (M (A/m)), declination (D (°)) and inclination (I (°)). Thus, the vector ${\bar{M}}_j$, containing the cartesian coordinates of magnetization, of the direct model can also be calculated as follows:}
+
+\begin{equation} \label{eq:sphere7}
+\small \left[\begin{matrix}{Mx}_j\\{My}_j\\{Mz}_j\\\end{matrix}\right]_{\text{\tiny 3L $\times$ 1}}=M_j\cdot\left[\begin{matrix}cos\left(I_j\right)\cdot c o s\left(D_j\right)\\cos\left(I_j\right)\cdot s i n\left(D_j\right)\\sin\left(I_j\right)\\\end{matrix}\right]_{\text{\tiny 3L $\times$ 1}}  
+\end{equation}
+
+\noindent{We can simplify the \cref{eq:sphere6} to:}
+
+\begin{equation} \label{eq:sphere8}
+\small {C}_{m} \cdot \left[\begin{matrix}\left(\frac{\partial^2}{\partial x\partial z}\cdot\frac{1}{r_{i,j}}\right)&\left(\frac{\partial^2}{\partial y\partial z}\cdot\frac{1}{r_{i,j}}\right)&\left(\frac{\partial^2}{\partial z\partial z}\cdot\frac{1}{r_{i,j}}\right)\\\end{matrix}\right]_{\text{\tiny N $\times$ 3L}}
+\cdot\ 
+\left[\begin{matrix}{mx}_j\\{my}_j\\{mz}_j\\\end{matrix}\right]_{\text{\tiny 3L $\times$ 1}}
+=\left[{Bz}_{i\ }\right]_{\text{\tiny N $\times$ 1}}
+\end{equation}
+
+\noindent{With this, the \cref{eq:sphere8} can be rewritten in linear form, given by:}
+
+\begin{equation} \label{eq:sphere9}
+\centering
+\small \bar{\bar{A}}\cdot{\bar{m}}={\bar{B}}_z
+\end{equation}
+
+
+%%
+\subsubsection{Inverse Model}
+
+\noindent{Assuming that the ferromagnetic minerals (\emph{l.s.}) that give rise to the observed magnetization component data vector ${\bar{B}}_z$ can be approximated by a set of L uniformly magnetized spheres with known coordinates ($xc_j$, $yc_j$, $zc_j$), j = 1, 2, ..., L, of their centers. Also assuming that there is no induced magnetization component, only that of the NRM. Under these assumptions, a superdetermined inverse linear problem is formulated to estimate the vector of parameters $\bar{m}$ (\cref{eq:sphere9}) from the observed data ${\bar{B}}_z$ and $\bar{\bar{A}}$, the latter being obtained previously with the Euler Deconvolution.}
+
+\noindent{The problem of estimating a parameter vector $\bar{m}$ containing the spheres' magnetic moment vectors can be solved by minimizing the objective function $f\left(\bar{m}\right)$:}
+
+\begin{equation} \label{eq:sphere10}
+\centering
+\small f\left(\bar{m}\right)={\lVert e\lVert}^2= e^T\cdot e = {(\bar{\bar{A}} \cdot \bar{m}-\bar{d})}^T \cdot ~ (\bar{\bar{A}} \cdot \bar{m}-\bar{B_z})
+\end{equation}
+
+\noindent{When differentiating the (\cref{eq:sphere10}) by $\bar{m}$ and equating the result to the zero vector ($\frac{\partial f}{\partial m_k}=\bar{0}$). Then we obtain the normal equation for estimating least squares solution given by:}
+
+\begin{equation} \label{eq:sphere11}
+\centering
+\small \bar{m}\ =\left({\bar{\bar{A}}}^T\cdot\bar{\bar{A}}\right)^{-1}\cdot ~ \left({\bar{\bar{A}}}^T\cdot{\bar{B}}_z\right)\ 
+\end{equation}
+
+\noindent{The least squares estimator is also known to be affected by outliers in the data set \citep{Aster2019}. Since the environment of an SMM acquisition is very well controlled, the probability of occurrence of ouliers is considerably low. With that, in case there is an exception to the rule, we also implement a robust estimator to remove the influence of outliers \citep[Also adapted from:][]{OliveiraJr.2015}. This formulation is detailed in the~\nameref{AppendixA1}.}
+
+
+
+%%
+\subsubsection{Directions of Magnetization and Uncertainty Propagation}
+
+\noindent{In paleomagnetic studies the magnetization vectors are represented in terms of their declination (D) and inclination (I). These are given as a function of the magnetization vector ${\bar{m}}_j$ (\cref{eq:sphere8}) and represented in spherical coordinates (as shown in \cref{fig:model_plus_vector}b).}
+
+\noindent{In this way, it is possible to determine the directions ($D_j$ and $I_j$) and magnetic moment ($m_j$) for the j-th sphere of the set of L spheres by using:}
+
+\begin{equation} \label{eq:sphere16}
+\centering
+\small D_j=\tan^{-1}{\left(\frac{{my}_j}{{mx}_j}\right)}
+\end{equation}
+
+\begin{equation} \label{eq:sphere17}
+\centering
+\small I_j=\tan^{-1}{\left(\frac{{mz}_j}{\sqrt{\left({mx}_j\right)^2+\left({my}_j\right)^2}}\right)}
+\end{equation}
+
+\begin{equation} \label{eq:sphere17_m}
+\centering
+\small m_j=\sqrt{ {\left({mx}_j\right)}^{2} + {\left({my}_j\right)}^{2} + {\left({mz}_j\right)}^{2} } 
+\end{equation}
+
+\noindent{In a micromagnetic survey, or any geophysical survey, measurements are affected by noise caused by experimental errors and equipment inaccuracies. Noise in the observed data vector ${\bar{B}}_z$ affects the solution of the estimated parameter vector ${\bar{m}}_j$, regardless of the method used. Assuming that the noise during the measurement of the observed data is independent and with variance ${\sigma_0}^2$, one can quantify this effect on the estimated parameters through propagation of the covariance \citep{Aster2019}. The covariance matrix of these parameters will be given by:}
+
+\begin{equation} \label{eq:sphere18}
+\centering
+\small \bar{\bar{Cov}}\left({\bar{m}}_j\right)=\ {\sigma_0}^2\cdot\left({\bar{\bar{A}}}^T\cdot ~ \bar{\bar{A}}\right)^{-1} \ \ \text{(\emph{least square})}
+\end{equation}
+
+
+\noindent{The main diagonal of the covariance matrix  (\cref{eq:sphere18} contains the variance of each member of the parameter vector, as expressed below:}
+
+\begin{equation} \label{eq:sphere20}
+\centering
+\small \bar{\bar{Cov}}= \left[~ \text{\emph{diag}}\left(\begin{matrix}{\sigma_{{mx}_1}}^2&{\sigma_{{my}_1}}^2&{\sigma_{{mz}_1}}^2&\cdots&{\sigma_{{mz}_L}}^2\end{matrix}\right) \right]_{\text{\tiny 3L $\times$ 3L}}\
+\end{equation}
+
+\bigskip
+
+\noindent{Thus, for the j-th sphere:}
+
+\begin{equation} \label{eq:sphere20}
+\centering
+\sigma_{{mx}_j}=\sqrt{{\sigma_{{mx}_j}}^2},\ \ \ \  \sigma_{{my}_j}=\sqrt{{\sigma_{{my}_j}}^2}\ \ \ \text{and}\ \ \ \  \sigma_{{mz}_j}=\sqrt{{\sigma_{{mz}_j}}^2}
+\end{equation}
+
+\noindent{Thus, the propagation of uncertainties of the declination ($D_j$), inclination ($I_j$) and magnetic moment ($m_j$) results are given as a function of the parameters (detailed in \nameref{AppendixA2}) obtained in \cref{eq:sphere20}:}
+
+\begin{equation} \label{eq:sphere21}
+\centering
+\small \sigma_{D_j}=\sqrt{\left(\frac{\partial D_j}{\partial{mx}_j}\right)^2\cdot\ \left(\sigma_{{mx}_j}\right)^2+\left(\frac{\partial D_j}{\partial{my}_j}\right)^2\cdot\ \left(\sigma_{{my}_j}\right)^2}
+\end{equation}
+
+\begin{equation} \label{eq:sphere22}
+\centering
+\small \sigma_{I_j}=\sqrt{\left(\frac{\partial I_j}{\partial{mx}_j}\right)^2\cdot\ \left(\sigma_{{mx}_j}\right)^2+\left(\frac{\partial I_j}{\partial{my}_j}\right)^2\cdot\ \left(\sigma_{{my}_j}\right)^2+\left(\frac{\partial I_j}{\partial{mz}_j}\right)^2\cdot\ \left(\sigma_{{mz}_j}\right)^2}
+\end{equation}
+
+\begin{equation} \label{eq:sphere22_m}
+\centering
+\small \sigma_{m_j}=\sqrt{\left(\frac{\partial m_j}{\partial{mx}_j}\right)^2\cdot\ \left(\sigma_{{mx}_j}\right)^2+\left(\frac{\partial m_j}{\partial{my}_j}\right)^2\cdot\ \left(\sigma_{{my}_j}\right)^2+\left(\frac{\partial m_j}{\partial{mz}_j}\right)^2\cdot\ \left(\sigma_{{mz}_j}\right)^2}
+\end{equation}
