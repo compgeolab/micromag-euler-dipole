@@ -690,9 +690,6 @@ def least_square_solver(X, Y, Z, Xc, Yc, Zc, Bz):
     """
 
     Bz = np.squeeze(np.reshape(Bz, (np.size(Bz),1))) # to avoid matrix dimension miss match
-    background = Bz.mean()
-
-    Bz = Bz - background # remove signal caused by deeper sources
 
     A = sensibility_matrix(X, Y, Z, Xc, Yc, Zc)
     m = np.linalg.solve(A.T@A, A.T@Bz)
@@ -712,7 +709,7 @@ def least_square_solver(X, Y, Z, Xc, Yc, Zc, Bz):
         mz = np.append(mz, m_T[row, 2] )
         
     
-    forward_model = (A@m) + background
+    forward_model = (A@m)
 
     return(mx, my, mz, A, forward_model)
 
@@ -744,8 +741,9 @@ def directions(mx, my, mz, plot = False, show_mean = False, show_alpha95 = False
             
         
     if plot == True:
-        settings['figsize'] = (7, 7)
-        
+        from apsg.feature import LineationSet
+    
+        fig = plt.figure(figsize=(5, 5))
         s = StereoNet(grid=True, legend=True)
         
         group = []
@@ -760,25 +758,25 @@ def directions(mx, my, mz, plot = False, show_mean = False, show_alpha95 = False
                 color = 'k'
             
             if w == 0:
-                s.line((Lin(float(D[w]), np.round(np.absolute(I[w])))), color=color, marker=symbol)
-                group.append((Lin(float(D[w]), np.round(np.absolute(I[w])))))
+                s.line((lin(float(D[w]), np.round(np.absolute(I[w])))), color=color, marker=symbol)
+                group.append((lin(float(D[w]), np.round(np.absolute(I[w])))))
 
             else:
-                s.line((Lin(float(D[w]), np.round(np.absolute(I[w])))), color=color, marker=symbol)
-                group.append((Lin(float(D[w]), np.round(np.absolute(I[w])))))
-        
-        group = Group(group) # create a group variable with all lines
+                s.line((lin(float(D[w]), np.round(np.absolute(I[w])))), color=color, marker=symbol)
+                group.append((lin(float(D[w]), np.round(np.absolute(I[w])))))
+         
+        group = LineationSet(group) # create a group variable with all lines
         
         if show_mean == True:
             mean = group.R
             s.line(mean,'b.')
-            s.line((Lin(float(D_mean), np.round(np.absolute(I_mean)))), color='g', marker='o')
+            s.line((lin(float(D_mean), np.round(np.absolute(I_mean)))), color='g', marker='o')
             print('Mean direction: '+str(D_mean)+' / '+str(I_mean))
         if show_alpha95 == True:
-            s.cone(group.R, group.fisher_stats['a95'], 'b') # gives the a95 cone for the group
+            s.cone(group.fisher_cone_a95(), color='b') # gives the a95 cone for the group
 
 
-                             
+        s.render2fig(fig)                       
     
     return(D, I)
 
