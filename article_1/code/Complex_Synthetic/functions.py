@@ -768,8 +768,6 @@ def directions(mx, my, mz, plot = False, show_mean = False, show_alpha95 = False
         group = LineationSet(group) # create a group variable with all lines
         
         if show_mean == True:
-            mean = group.R
-            s.line(mean,'b.')
             s.line((lin(float(D_mean), np.round(np.absolute(I_mean)))), color='g', marker='o')
             print('Mean direction: '+str(D_mean)+' / '+str(I_mean))
         if show_alpha95 == True:
