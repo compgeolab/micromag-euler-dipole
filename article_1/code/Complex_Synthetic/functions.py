@@ -3,7 +3,7 @@ import scipy as sp
 import matplotlib.pyplot as plt
 import math
 from skimage.feature import blob_log
-from apsg import *
+import mplstereonet as mpl
 
 
 microm2m = 1.0E-6
@@ -727,7 +727,7 @@ def directions(mx, my, mz, plot = False, show_mean = False, show_alpha95 = False
         * show_mean: boolean, if plot = True the mean direction will also be plotted
         * show_alpha95: boolean, if plot = True the alpha95 cone will also be plotted
     """
-
+    confidence = 95
     D = []
     I = []
     
@@ -739,45 +739,50 @@ def directions(mx, my, mz, plot = False, show_mean = False, show_alpha95 = False
         I = np.append( I, (math.atan2( mz[i], (np.sqrt(my[i]**2+mx[i]**2)) ) )* (180/np.pi))
         D = np.append( D, (math.atan2( my[i],  mx[i] ) * (180/np.pi) ) )
             
-        
+            
     if plot == True:
-        from apsg.feature import LineationSet
-    
-        fig = plt.figure(figsize=(5, 5))
-        s = StereoNet(grid=True, legend=True)
-        
-        group = []
-        
-        for w in range (np.size(D)):
-            
-            if I[w] >= 0:
-                symbol = '.'
+
+        fig = plt.figure()
+        ax = fig.add_subplot(111, projection='stereonet')
+           
+
+        for i in range(len(D)):
+            if I[i]>0:
                 color = 'r'
+                marker='.'
             else:
-                symbol = '.'
-                color = 'k'
-            
-            if w == 0:
-                s.line((lin(float(D[w]), np.round(np.absolute(I[w])))), color=color, marker=symbol)
-                group.append((lin(float(D[w]), np.round(np.absolute(I[w])))))
+                color='k'
+                marker='.'
+            ax.line(abs(I[i]), D[i], color=color, marker=marker, markersize=4)
 
-            else:
-                s.line((lin(float(D[w]), np.round(np.absolute(I[w])))), color=color, marker=symbol)
-                group.append((lin(float(D[w]), np.round(np.absolute(I[w])))))
-         
-        group = LineationSet(group) # create a group variable with all lines
-        
+
         if show_mean == True:
-            s.line((lin(float(D_mean), np.round(np.absolute(I_mean)))), color='g', marker='o')
-            print('Mean direction: '+str(D_mean)+' / '+str(I_mean))
+            vector, _ = mpl.find_fisher_stats(I, D, conf=confidence)
+            ax.line(vector[0], vector[1], marker='o', color="green", markersize=4)
+            print('Mean direction: '+str(vector[1])+' / '+str(vector[0]))
+            ax.text(-0.95,-0.9, 'mean = '+str('{:.2f}'.format(vector[1]))+'°/ '+str('{:.2f}'.format(vector[0]))+'°')
+            # cartesian mean
+#             ax.line(abs(I_mean), D_mean, color='k', marker='x', markersize=4)
+#             print('Mean direction: '+str(D_mean)+' / '+str(I_mean))
+        
         if show_alpha95 == True:
-            s.cone(group.fisher_cone_a95(), color='b') # gives the a95 cone for the group
+            vector, stats = mpl.find_fisher_stats(I, D, conf=confidence)
+            # gives the a95 cone
+            ax.cone(vector[0], vector[1], stats[1], facecolor="None", edgecolor="green")
+            print(r'Alpha_95 cone =  ', str(stats[1])+'°')
+            ax.text(-0.6,-0.7, r'$\alpha 95$ cone = '+str('{:.2f}'.format(stats[1]))+'°')
 
-
-        s.render2fig(fig)                       
+        
+        ax.line(90,90, marker='+', color='k', markersize=8) # center mark
+        ax.set_azimuth_ticks([])
+        ax.grid(which='both', linestyle=':', color='gray', alpha=0.4)
+        
+        
+        
+        
+        plt.show()                  
     
     return(D, I)
-
     
 def uncertainties(sigma_zero, A, mx, my, mz):
 
