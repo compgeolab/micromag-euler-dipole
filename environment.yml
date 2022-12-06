@@ -17,4 +17,4 @@ dependencies:
   - verde
   - harmonica
   # For stereonets
-  - apsg
+  - mplstereonet
