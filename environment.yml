@@ -12,9 +12,11 @@ dependencies:
   - xarray
   - netcdf4
   - jupyterlab
+  - numba
   # Fatiando
   - pooch
   - verde
   - harmonica
+  - choclo
   # For stereonets
   - apsg
