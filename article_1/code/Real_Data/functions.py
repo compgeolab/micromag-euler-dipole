@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import math
 from skimage.feature import blob_log
 import mplstereonet as mpl
-
+import pandas as pd
 
 microm2m = 1.0E-6
 m2microm = 1.0E6
@@ -609,7 +609,7 @@ def solve_euler(X, Y, Z, data_2D, x_derivative, y_derivative, z_derivative, delt
     # solving linear system using least square to find the parameters vector p
     p = np.linalg.solve(G.T@G, G.T@d)
     
-    return(p[0],p[1],p[2]) # Return source center positions(Xc, Yc, Zc)
+    return(p[0],p[1],p[2],p[3]) # Return source center positions(Xc, Yc, Zc)
 
 
 
@@ -639,11 +639,11 @@ def solve_euler_windows(euler_windows, X, Y, Z, data_2D, x_derivative, y_derivat
         x2 = int(euler_windows[i, 1])
         y1 = int(euler_windows[i, 2])
         y2 = int(euler_windows[i, 3])
-        source_position = solve_euler( X[x1:x2, y1:y2], Y[x1:x2, y1:y2], Z[x1:x2, y1:y2], 
+        p1, p2, p3, p4 = solve_euler( X[x1:x2, y1:y2], Y[x1:x2, y1:y2], Z[x1:x2, y1:y2], 
                                        data_2D[x1:x2, y1:y2], x_derivative[x1:x2, y1:y2], 
                                        y_derivative[x1:x2, y1:y2], z_derivative[x1:x2, y1:y2], 
                                        delta_z = delta_z, structural_index = structural_index)
-        euler_position = np.append(euler_position, source_position)
+        euler_position = np.append(euler_position, np.array([p1, p2, p3]).ravel())
 
     euler_position = np.reshape(euler_position, (int(np.size(euler_position)/3),3))
     
@@ -919,3 +919,269 @@ def robust_solver(X, Y, Z, Xc, Yc, Zc, Bz, tolerance=1.0E-5):
     forward_model = (A@m)+background
 
     return(mx, my, mz, A, forward_model)
+
+
+
+
+def window_least_square_solver_new(euler_windows, X_2D, Y_2D, Z_2D, data_2D, 
+                                   standart_deviation, delta_z_list=np.linspace(0.1, 5.1, 20),
+                                   structural_index=3, show=False):
+    
+    D_window, I_window, m_window = [], [], []
+    mx_window, my_window, mz_window = [], [], []
+    sigma_D_window, sigma_I_window, sigma_m_window = [], [], []
+    Xc_window, Yc_window, Zc_window = [], [], []
+    deter_coef_window = []
+    alpha_window = []
+    
+    wx, wy, wz = wave_numbers(data_2D, X_2D, Y_2D)
+    
+    dic = {}
+    
+    for i in range(np.size(delta_z_list)):
+        delta_z = -1*abs(delta_z_list[i])*microm2m  
+        upward = upward_continuation(data_2D, delta_z, wz)
+        X_derivative, Y_derivative = derivative_fd(upward, X_2D, Y_2D)
+        Z_derivative = z_derivative_fft(upward, wz)
+
+        dic[i,0] = upward
+        dic[i,1] = X_derivative
+        dic[i,2] = Y_derivative
+        dic[i,3] = Z_derivative
+        dic[i,4] = delta_z
+
+    for j in range(np.shape(euler_windows)[0]):
+        x1 = int(euler_windows[j, 0])
+        x2 = int(euler_windows[j, 1])
+        y1 = int(euler_windows[j, 2])
+        y2 = int(euler_windows[j, 3])
+
+        bubble_1 = -np.inf
+        bubble_2 =  np.inf
+        for l in range(np.size(delta_z_list)):
+            upward       = dic[l,0]       
+            X_derivative = dic[l,1]
+            Y_derivative = dic[l,2]
+            Z_derivative = dic[l,3]  
+            delta_z      = dic[l,4]  
+
+            Xc, Yc, Zc, background = solve_euler(X_2D[x1:x2, y1:y2], Y_2D[x1:x2, y1:y2], Z_2D[x1:x2, y1:y2], 
+                                                          upward[x1:x2, y1:y2], X_derivative[x1:x2, y1:y2], 
+                                                          Y_derivative[x1:x2, y1:y2], Z_derivative[x1:x2, y1:y2],
+                                                          delta_z=delta_z, structural_index=structural_index)
+            if Zc >= 0:
+                shape = np.shape(upward[x1:x2, y1:y2])
+                data_orig = np.copy(upward[x1:x2, y1:y2])
+                data = upward[x1:x2, y1:y2] - background
+                mx, my, mz, A , model = least_square_solver(X_2D[x1:x2, y1:y2].ravel(), Y_2D[x1:x2, y1:y2].ravel(),
+                                                            (Z_2D[x1:x2, y1:y2]+delta_z).ravel(), Xc, Yc, Zc,
+                                                            upward[x1:x2, y1:y2].ravel() )
+                D, I = directions(mx, my, mz)
+
+                m = np.sqrt(mx**2 + my**2 + mz**2)
+
+                sigma_D, sigma_I, sigma_m = uncertainties(standart_deviation, A, mx, my, mz)
+
+                model = model + background
+                model = model.reshape(shape)
+
+                # determinant coeficient
+                SQ_tot = np.sum( (data_orig-np.mean(data_orig))**2 )
+                SQ_res = np.sum( (data_orig-model)**2 )
+                deter_coef = 1 - (SQ_res/SQ_tot)
+
+                # shape-of-anomaly misfit
+                alpha = np.sum( (data_orig*model) ) / np.sum( (model)**2 )
+
+                if deter_coef > bubble_1 and alpha < bubble_2:
+                    D_bubble = D
+                    I_bubble = I
+                    m_bubble = m
+                    sigma_D_bubble = sigma_D
+                    sigma_I_bubble = sigma_I
+                    sigma_m_bubble = sigma_m
+                    Xc_bubble =  Xc
+                    Yc_bubble =  Yc
+                    Zc_bubble =  Zc
+                    deter_coef_bubble =  deter_coef
+                    alpha_bubble = alpha
+                    mx_bubble = mx
+                    my_bubble = my
+                    mz_bubble = mz
+                    
+
+
+                bubble_1 = deter_coef
+                bubble_2 = alpha
+
+        D_window  = np.append(D_window, D_bubble)
+        I_window  = np.append(I_window, I_bubble)
+        m_window  = np.append(m_window, m_bubble)
+        sigma_D_window  = np.append(sigma_D_window, sigma_D_bubble)
+        sigma_I_window  = np.append(sigma_I_window, sigma_I_bubble)
+        sigma_m_window  = np.append(sigma_m_window, sigma_m_bubble)
+        mx_window  = np.append(mx_window, mx_bubble)
+        my_window  = np.append(my_window, my_bubble)
+        mz_window  = np.append(mz_window, mz_bubble)
+        Xc_window = np.append(Xc_window, Xc_bubble)
+        Yc_window = np.append(Yc_window, Yc_bubble)
+        Zc_window = np.append(Zc_window, Zc_bubble)
+        deter_coef_window = np.append(deter_coef_window, deter_coef_bubble)
+        alpha_window = np.append(alpha_window, alpha_bubble)
+
+
+        if show:
+            print('R2: ', deter_coef_bubble,' alpha: ', alpha_bubble)
+
+            fig, ((ax1, ax2, ax3)) = plt.subplots(1,3, figsize=(20,5))
+
+            ax1_plot = ax1.contourf(Y_2D[x1:x2, y1:y2]*m2microm, X_2D[x1:x2, y1:y2]*m2microm, 
+                                    data_orig*10**9, levels=50, cmap='viridis')
+            plt.colorbar(ax1_plot, ax=ax1)
+            ax1.set_title('Bz (Original Data)', fontsize=18)
+            ax1.set_xlabel('Y (µm)', fontsize=14)
+            ax1.set_ylabel('X (µm)', fontsize=14)
+
+
+            ax2_plot = ax2.contourf(Y_2D[x1:x2, y1:y2]*m2microm, X_2D[x1:x2, y1:y2]*m2microm, 
+                                    model.reshape(shape)*10**9, levels=50, cmap='viridis')
+            plt.colorbar(ax2_plot, ax=ax2)
+            ax2.set_title('Bz (Forward Model)', fontsize=18)
+            ax2.set_xlabel('Y (µm)', fontsize=14)
+
+            residual = (data_orig - model.reshape(shape))*10**9
+            ax3_plot = ax3.contourf(Y_2D[x1:x2, y1:y2]*m2microm, X_2D[x1:x2, y1:y2]*m2microm, residual, levels=50, cmap='viridis')
+            plt.colorbar(ax3_plot, ax=ax3)
+            ax3.set_title('Bz (residual Data)', fontsize=18)
+            ax3.set_xlabel('Y (µm)', fontsize=14)
+
+            plt.tight_layout()
+            plt.show()
+
+
+    # save parameter into a dataframe
+    df = pd.DataFrame(data={r'Dec (°)': (np.round(D_window, decimals=4)),
+                        r'$\sigma D$ (°)':    (np.round(sigma_D_window, decimals=4)),
+                        r'Inc (°)': (np.round(I_window, decimals=4)),
+                        r'$\sigma I$ (°)':    (np.round(sigma_I_window, decimals=4)),
+                        r'm  ($A \cdot m^2$)':  (m_window),
+                        r'$\sigma m$ ($A \cdot m^2$)':  (sigma_m_window),
+                        r'mx  ($A \cdot m^2$)':  (mx_window),
+                        r'my  ($A \cdot m^2$)':  (my_window),
+                        r'mz  ($A \cdot m^2$)':  (mz_window),
+                        r'Xc (µm)': Xc_window*m2microm,
+                        r'Yc (µm)': Yc_window*m2microm,
+                        r'Zc (µm)': Zc_window*m2microm,
+                        r'$R^2$': deter_coef_window,
+                        # r'$\alpha$': alpha_window
+                       })   
+    return(df)
+
+
+
+
+def window_least_square_solver(euler_windows, X_2D, Y_2D, Z_2D, data_2D, upward, delta_z, 
+                               X_derivative, Y_derivative, Z_derivative, standart_deviation,
+                              structural_index=3, show=False):
+    
+    D_window, I_window, m_window = [], [], []
+    mx_window, my_window, mz_window = [], [], []
+    sigma_D_window, sigma_I_window, sigma_m_window = [], [], []
+    Xc_window, Yc_window, Zc_window = [], [], []
+    deter_coef_window = []
+    alpha_window = []
+        
+    for j in range(np.shape(euler_windows)[0]):
+        x1 = int(euler_windows[j, 0])
+        x2 = int(euler_windows[j, 1])
+        y1 = int(euler_windows[j, 2])
+        y2 = int(euler_windows[j, 3])
+
+        Xc, Yc, Zc, background = solve_euler(X_2D[x1:x2, y1:y2], Y_2D[x1:x2, y1:y2], Z_2D[x1:x2, y1:y2], 
+                                                      upward[x1:x2, y1:y2], X_derivative[x1:x2, y1:y2], 
+                                                      Y_derivative[x1:x2, y1:y2], Z_derivative[x1:x2, y1:y2],
+                                                      delta_z=delta_z, structural_index=structural_index)
+        if Zc >= 0:
+
+            shape = np.shape(data_2D[x1:x2, y1:y2])
+            data = data_2D[x1:x2, y1:y2] - background
+            mx, my, mz, A , model = least_square_solver(X_2D[x1:x2, y1:y2].ravel(), Y_2D[x1:x2, y1:y2].ravel(),
+                                                                               Z_2D[x1:x2, y1:y2].ravel(),
+                                                                               Xc, Yc, Zc,
+                                                                               data.ravel() )
+            D, I = directions(mx, my, mz)
+
+            m = np.sqrt(mx**2 + my**2 + mz**2)
+
+            sigma_D, sigma_I, sigma_m = uncertainties(standart_deviation, A, mx, my, mz)
+
+
+            SQ_tot = np.sum( (data-np.mean(data))**2 )
+            SQ_res = np.sum( (data-model.reshape(shape))**2 )
+            deter_coef = 1 - (SQ_res/SQ_tot)
+
+            # shape-of-anomaly misfit
+            alpha = np.sum( (data.ravel()*model.ravel()) ) / np.sum( (model.ravel())**2 )
+
+            D_window  = np.append(D_window, D)
+            I_window  = np.append(I_window, I)
+            m_window  = np.append(m_window, m)
+            sigma_D_window  = np.append(sigma_D_window, sigma_D)
+            sigma_I_window  = np.append(sigma_I_window, sigma_I)
+            sigma_m_window  = np.append(sigma_m_window, sigma_m)
+            mx_window  = np.append(mx_window, mx)
+            my_window  = np.append(my_window, my)
+            mz_window  = np.append(mz_window, mz)
+            Xc_window = np.append(Xc_window, Xc)
+            Yc_window = np.append(Yc_window, Yc)
+            Zc_window = np.append(Zc_window, Zc)
+            deter_coef_window = np.append(deter_coef_window, deter_coef)
+            alpha_window = np.append(alpha_window, alpha)
+
+
+            if show:
+                print('R2: ', deter_coef,' alpha: ', alpha)
+
+                fig, ((ax1, ax2, ax3)) = plt.subplots(1,3, figsize=(20,5))
+
+                ax1_plot = ax1.contourf(Y_2D[x1:x2, y1:y2]*m2microm, X_2D[x1:x2, y1:y2]*m2microm, 
+                                        data*10**9, levels=50, cmap='viridis')
+                plt.colorbar(ax1_plot, ax=ax1)
+                ax1.set_title('Bz (Original Data)', fontsize=18)
+                ax1.set_xlabel('Y (µm)', fontsize=14)
+                ax1.set_ylabel('X (µm)', fontsize=14)
+
+
+                ax2_plot = ax2.contourf(Y_2D[x1:x2, y1:y2]*m2microm, X_2D[x1:x2, y1:y2]*m2microm, 
+                                        model.reshape(shape)*10**9, levels=50, cmap='viridis')
+                plt.colorbar(ax2_plot, ax=ax2)
+                ax2.set_title('Bz (Forward Model)', fontsize=18)
+                ax2.set_xlabel('Y (µm)', fontsize=14)
+
+                residual = (data - model.reshape(shape))*10**9
+                ax3_plot = ax3.contourf(Y_2D[x1:x2, y1:y2]*m2microm, X_2D[x1:x2, y1:y2]*m2microm, residual, levels=50, cmap='viridis')
+                plt.colorbar(ax3_plot, ax=ax3)
+                ax3.set_title('Bz (residual Data)', fontsize=18)
+                ax3.set_xlabel('Y (µm)', fontsize=14)
+
+                plt.tight_layout()
+                plt.show()
+
+        
+        
+    # save parameter into a dataframe
+    df = pd.DataFrame(data={r'Dec (°)': (np.round(D_window, decimals=4)),
+                        r'$\sigma D$ (°)':    (np.round(sigma_D_window, decimals=4)),
+                        r'Inc (°)': (np.round(I_window, decimals=4)),
+                        r'$\sigma I$ (°)':    (np.round(sigma_I_window, decimals=4)),
+                        r'm  ($A \cdot m^2$)':  (m_window),
+                        r'$\sigma m$ ($A \cdot m^2$)':  (sigma_m_window),
+                        r'mx  ($A \cdot m^2$)':  (mx_window),
+                        r'my  ($A \cdot m^2$)':  (my_window),
+                        r'mz  ($A \cdot m^2$)':  (mz_window),
+                        r'Xc (µm)': Xc_window*m2microm,
+                        r'Yc (µm)': Yc_window*m2microm,
+                        r'Zc (µm)': Zc_window*m2microm,
+                        r'$R^2$': deter_coef_window
+                       })   
+    return(df)
