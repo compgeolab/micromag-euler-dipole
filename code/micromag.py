@@ -20,8 +20,8 @@ def cartesian_vector(inclination, declination, amplitude):
     """
     Generate a 3-component vector from inclination, declination, and amplitude
 
-    Inclination is positive downwards and declination is the angle with the x
-    component. The vector has x, y, and z (downward) Cartesian components.
+    Inclination is positive downwards and declination is the angle with the y
+    component. The vector has x, y, and z (upward) Cartesian components.
 
     Parameters
     ----------
@@ -40,19 +40,19 @@ def cartesian_vector(inclination, declination, amplitude):
     inclination = np.radians(inclination)
     declination = np.radians(declination)
     amplitude = np.asarray(amplitude)
-    cos_inc = np.cos(inclination)
-    sin_inc = np.sqrt(1 - cos_inc**2)
+    sin_inc = np.sin(-inclination)
+    cos_inc = np.cos(-inclination)
+    sin_dec = np.sin(declination)
     cos_dec = np.cos(declination)
-    sin_dec = np.sqrt(1 - cos_dec**2)
-    y = cos_inc * sin_dec * amplitude
-    x = cos_inc * cos_dec * amplitude
+    x = cos_inc * sin_dec * amplitude
+    y = cos_inc * cos_dec * amplitude
     z = sin_inc * amplitude
     return x, y, z
 
 
 def dipole_bz(coordinates, dipole_coordinates, dipole_moments):
     """
-    Calculate the z component (downward) of the magnetic field of dipoles
+    Calculate the z component (upward) of the magnetic field of dipoles
 
     Units:
 
@@ -76,7 +76,7 @@ def dipole_bz(coordinates, dipole_coordinates, dipole_moments):
     Returns
     -------
     bz : array
-        The calculated bz (positive downward) in nT. The array will have the
+        The calculated bz (positive upward) in nT. The array will have the
         same shape as the input coordinate arrays.
     """
     # Save the data coordinate shape so we can reshape the bz afterwards
@@ -92,7 +92,7 @@ def dipole_bz(coordinates, dipole_coordinates, dipole_moments):
         dipole_moments = np.array([dipole_moments])
     # Initialize and allocate the output array for bz
     bz = np.zeros(coordinates[0].shape)
-    _dipole_bz_fast(
+    _dipole_bu_fast(
         coordinates[0],
         coordinates[1],
         coordinates[2],
@@ -107,22 +107,22 @@ def dipole_bz(coordinates, dipole_coordinates, dipole_moments):
 
 
 @numba.jit(nopython=True, parallel=True)
-def _dipole_bz_fast(x, y, z, dx, dy, dz, dipole_moments, bz):
+def _dipole_bu_fast(e, n, u, de, dn, du, dipole_moments, bu):
     """
     This is the bit that runs the fast for-loops
     """
-    for i in numba.prange(x.size):
-        for j in range(dx.size):
+    for i in numba.prange(e.size):
+        for j in range(de.size):
             result = choclo.dipole.magnetic_u(
-                easting_p=y[i],
-                northing_p=x[i],
-                upward_p=-z[i],
-                easting_q=dy[j],
-                northing_q=dx[j],
-                upward_q=-dz[j],
+                easting_p=e[i],
+                northing_p=n[i],
+                upward_p=u[i],
+                easting_q=de[j],
+                northing_q=dn[j],
+                upward_q=du[j],
                 magnetic_moment=dipole_moments[j, :],
             )
-            bz[i] += -result
+            bu[i] += result
 
 
 def gaussian_noise(error, shape, seed=None):
@@ -144,8 +144,9 @@ def data_gradients(data):
     # Need to set the exact same coordinates because the xrft inverse transform
     # creates slightly different ones because of round-off errors.
     data_up = hm.upward_continuation(data, spacing).assign_coords(dict(x=data.x, y=data.y))
+    data_down = hm.upward_continuation(data, -spacing).assign_coords(dict(x=data.x, y=data.y))
     # Forward difference only to avoid downward continuation.
-    dz = (data_up - data) / spacing
+    dz = (data_up - data_down) / (2 * spacing)
     tga = np.sqrt(dx**2 + dy**2 + dz**2)
     tga.attrs = {"long_name": "total gradient amplitude", "units": "nT/µm"}
     dx.attrs = {"long_name": "x-derivative", "units": "nT/µm"}
@@ -154,20 +155,21 @@ def data_gradients(data):
     return xr.Dataset({"tga": tga, "x_deriv": dx, "y_deriv": dy, "z_deriv": dz})
 
 
-def detect_anomalies(data, min_sigma, max_sigma, size_increment=2, num_sigma=10, threshold=0.5, overlap=0.5):
+def detect_anomalies(data, size_range, size_increment=2, nsizes=10, threshold=0.5, overlap=0.5):
     """
     """
+    min_sigma, max_sigma = [0.5 * i for i in size_range]
     spacing = np.mean([np.abs(data.x[1] - data.x[0]), np.abs(data.y[1] - data.y[0])])
-    ix, iy, sigma_pix = skimage.feature.blob_log(
+    iy, ix, sigma_pix = skimage.feature.blob_log(
         data,
         min_sigma=min_sigma / spacing,
         max_sigma=max_sigma / spacing,
         threshold=threshold,
-        num_sigma=num_sigma,
+        num_sigma=nsizes,
         overlap=overlap,
     ).T
-    blob_coords = (data.x.loc[ix].values, data.y.loc[iy].values)
-    blob_sizes = sigma_pix * spacing * size_increment
+    blob_coords = (data.x.values[ix.astype("int")], data.y.values[iy.astype("int")])
+    blob_sizes = sigma_pix * np.sqrt(2) * spacing * size_increment
     windows = [
         [x - size, x + size, y - size, y + size]
         for size, x, y in zip(blob_sizes, *blob_coords)
