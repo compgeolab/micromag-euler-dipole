@@ -1,9 +1,9 @@
-name: inversion-microscopy
+name: micromag-euler-dipole
 channels:
   - conda-forge
   - defaults
 dependencies:
-  - python==3.9.*
+  - python==3.10.*
   - numpy
   - scipy
   - matplotlib
@@ -12,9 +12,12 @@ dependencies:
   - xarray
   - netcdf4
   - jupyterlab
+  # For stereonets
+  - mplstereonet
   # Fatiando
   - pooch
   - verde
   - harmonica
-  # For stereonets
-  - mplstereonet
+  - choclo
+  - pip:
+    - git+https://github.com/fatiando/harmonica
