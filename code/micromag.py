@@ -9,6 +9,7 @@ import xarray as xr
 import skimage.feature
 import numba
 import harmonica as hm
+import verde as vd
 import choclo
 
 
@@ -157,6 +158,7 @@ def data_gradients(data):
 
 def detect_anomalies(data, size_range, size_increment=2, nsizes=10, threshold=0.5, overlap=0.5):
     """
+    Run the blob detection and produce bounding boxes in data coordinates
     """
     min_sigma, max_sigma = [0.5 * i for i in size_range]
     spacing = np.mean([np.abs(data.x[1] - data.x[0]), np.abs(data.y[1] - data.y[0])])
@@ -175,3 +177,31 @@ def detect_anomalies(data, size_range, size_increment=2, nsizes=10, threshold=0.
         for size, x, y in zip(blob_sizes, *blob_coords)
     ]
     return windows
+
+
+def euler_deconvolution(data, x_deriv, y_deriv, z_deriv):
+    """
+    Estimate the (x, y, z) position and base level by Euler Deconvolution
+    """
+    si = 3
+    grids = xr.Dataset(
+        dict(field=data, x_deriv=x_deriv, y_deriv=y_deriv, z_deriv=z_deriv)
+    )
+    table = vd.grid_to_table(grids)
+    # Verde drops non-dimension coordinates so we have to add z back.
+    # This is a bug in Verde.
+    table["z"] = grids.z.values.ravel()
+    n_data = table.shape[0]
+    G = np.empty((n_data, 4))
+    G[:, 0] = table.x_deriv
+    G[:, 1] = table.y_deriv
+    G[:, 2] = table.z_deriv
+    G[:, 3] = si
+    h = (
+        table.x * table.x_deriv
+        + table.y * table.y_deriv
+        + table.z * table.z_deriv
+        + si * table.field
+    )
+    p = np.linalg.solve(G.T @ G, G.T @ h)
+    return p[:3], p[3]
