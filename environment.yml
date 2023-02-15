@@ -12,6 +12,7 @@ dependencies:
   - xarray
   - netcdf4
   - jupyterlab
+  - black
   # For stereonets
   - mplstereonet
   # Fatiando
