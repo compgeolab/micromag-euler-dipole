@@ -1,0 +1,160 @@
+% Template for an EarthArXiv preprint of the manuscript.
+% Includes the standard disclaimers and formatting that is required.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Set a class and import packages
+\documentclass[onecolumn,11pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{orcidlink}
+\usepackage{geometry}
+\usepackage{booktabs}
+\usepackage{microtype}
+% To customize the title page
+\usepackage{titling}
+% For adding multiple authors
+\usepackage{authblk}
+% improved urls with proper hyphenation
+\usepackage{xurl}
+% Tweak the look of captions
+\usepackage{caption}
+% To control the style of section titles
+\usepackage{titlesec}
+% Import natbib and doi packages
+\usepackage[round,authoryear,sort]{natbib}
+% show dois as links on references
+\usepackage{doi}
+% Remove extra space between references
+\usepackage{natbibspacing}
+% Use a different font
+\usepackage[subscriptcorrection]{notomath}
+% Icons and fonts (requires using xelatex or luatex)
+\usepackage{fontawesome5}
+\usepackage{academicons}
+\usepackage{setspace}
+% To get the number of pages in the document
+\usepackage{lastpage}
+\usepackage{lipsum}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Import variables with title, authors, etc.
+\input{variables.tex}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Configuration of the document
+
+\geometry{%
+  left=25mm,
+  right=25mm,
+  top=25mm,
+  bottom=25mm,
+  headsep=0mm,
+  headheight=0mm,
+  footskip=10mm,
+  includehead=true,
+  includefoot=true
+}
+
+% Control line and table row spacing
+\onehalfspacing
+\renewcommand{\arraystretch}{1.2}
+
+% Customize the title and author section
+\setlength{\droptitle}{-2cm}
+\pretitle{\begin{flushleft}\huge}
+\posttitle{\par\end{flushleft}\vspace{1pt}}
+\preauthor{\begin{flushleft}\large}
+\postauthor{\par\end{flushleft}}
+\predate{\begin{flushleft}\small}
+\postdate{\par\end{flushleft}}
+
+% Set the spacing between bibliography entries (requires natbib)
+\setlength{\bibsep}{0pt}
+
+% Custom colors
+\definecolor{darkgray}{gray}{0.3}
+\definecolor{mediumblue}{RGB}{32, 96, 194}
+
+% Configure captions
+\captionsetup[table]{position=below}
+\captionsetup{labelfont=bf,font={small,color=darkgray},skip=0pt}
+
+% Make urls use the same font as every other text
+\urlstyle{same}
+
+% Configure hyperref and add PDF metadata
+\hypersetup{
+    colorlinks,
+    allcolors=mediumblue,
+    pdftitle={\Title},
+    pdfauthor={\AuthorShort},
+    pdftex,
+    breaklinks=true,
+}
+
+% Configure header and footer
+% Inspired by LaPreprint: https://github.com/roaldarbol/LaPreprint
+\newcommand{\RightFoot}{%
+  \footnotesize\color{darkgray}
+  doi:\href{https://doi.org/\PreprintDOI}{\PreprintDOI}
+  \hspace{3pt}|\hspace{3pt}EarthArXiv
+  \hspace{3pt}|\hspace{3pt}\thepage\space of\space \pageref*{LastPage}
+}
+\newcommand{\LeftFoot}{%
+  \footnotesize\color{darkgray}
+  \AuthorShort{} (\Year)\hspace{3pt}|\hspace{3pt}\TitleShort
+}
+\pagestyle{fancy}
+\fancyhf{}
+\lfoot{\LeftFoot}
+\rfoot{\RightFoot}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0.5pt}
+\preto{\footrule}{\color{darkgray}}
+\fancypagestyle{plain}{%
+  \fancyhf{}
+  \lfoot{\LeftFoot}
+  \rfoot{\RightFoot}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+    \input{abstract}
+\end{abstract}
+
+\vspace{0.25cm}
+{\small
+  \noindent
+  \textbf{Disclaimer:}
+  This is a pre-copyedited, author-produced PDF of an article
+  submitted for publication in \textit{\Journal{}}.
+  It is available from EarthArXiv at
+  \url{https://doi.org/\PreprintDOI}.
+  \\[0.25cm]
+  \noindent
+  \textbf{License:}
+  \textcopyright{} \Year{} The Authors.
+  Available under a Creative Commons Attribution 4.0 International license
+  (\href{https://creativecommons.org/licenses/by/4.0/}{CC-BY}).
+  \\[0.25cm]
+  \noindent
+  \textbf{Keywords:} \Keywords{}
+}
+
+\input{content.tex}
+
+\bibliographystyle{apalike-doi}
+\bibliography{references}
+
+\end{document}

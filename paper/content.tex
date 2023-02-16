@@ -1,0 +1,451 @@
+\section{Introduction}
+
+Several branches of Earth Sciences have demonstrated the importance of the
+``spatiality" of the data on a microscopic scale, mainly in geochemistry and
+geochronology applications where it is possible to perform punctual analysis
+and compositional maps, allowing significant advances in the understanding of
+igneous, metamorphic and sedimentary processes \citep{Verberne2020, Barnes2019,
+Davidson2007}. Classical paleomagnetic techniques, on the other hand, consist
+in analyzing bulk samples, where the magnetic signal of a single specimen is
+the result of the sum of moments of a large assembly of ferromagnetic grains
+\citep{Dunlop1997}. Typically, a standard paleomagnetic sample of
+{\textasciitilde}10 cm³ would contain hundreds of thousands
+to millions of magnetic particles with sizes varying from magnetically stable
+single-domain (SD) and vortex state grains (also called pseudo-single domain,
+PSD) with sizes below 1 µm, to large ($\gg 1$ µm) grains with
+multi-domain (MD) magnetic structures, which are less stable magnetic recorders
+\citep{Berndt2016}. These large MD grains usually conceal the signal of the SD
+and PSD grains, and techniques of stepwise thermal and magnetic treatments are
+needed to unveil the more stable and reliable magnetic record
+\citep{Tauxe2018}. Recently, magnetic microscopy techniques opened the
+possibility of performing magnetic maps at the micro-scale and recovering the
+magnetization of each grain, therefore enabling the separate analysis of stable
+and unstable magnetic particles \citep{DeGroot2018, Lima2014, Weiss2007,
+DeGroot2014}.
+
+In order to apply magnetic microscopy to paleomagnetic studies, it is necessary
+to recover from the magnetic images a large amount of individual magnetic
+moments, corresponding to at least tens of thousands of stable fine-grained
+grains (\textless1 µm), in order to provide statistical significance to the
+remanence vector \citep[e.g.][]{Berndt2016}. Nowadays, with the development of
+magnetic microscopy techniques, this task is no longer limited by the
+resolution of magnetic microscopes \citep{Fu2020, Weiss2007, DeGroot2018,
+Glenn2017, Lima2014}, but essentially by the intrinsic problem presented by the
+ambiguity in the inversion of potential field data \citep{Barbosa2011,
+DeGroot2021, Oliveira2015Estimation}, and ultimately by the lack of a fast and
+automated way to recover such a large number of individual magnetic moments
+from a set of magnetic images \citep{CortesOrtuno2022, Lima2013, Lima2009}. A
+solution to the non-uniqueness of magnetic moment inversion is to add
+independent a priori information, such as the position of the ferromagnetic
+particles \citep{Fabian2019}. This can be obtained, for example, from X-ray
+computed tomography \citep[microCT; ][]{Fabian2019, DeGroot2021, DeGroot2018}.
+Nonetheless, the standard microCT techniques do not provide adequate resolution
+to resolve the finer and more stable magnetic grains \citep{CortesOrtuno2022,
+DeGroot2021}, whereas other more sophisticated techniques such as ptychographic
+X-ray tomography \citep[e.g., ][]{Maldanis2020} are not readily available and
+too time-consuming to be routinely used in paleomagnetic studies.
+
+Another route to be explored in the inversion of magnetic microscopy images is
+to obtain all the information, i.e. the magnetic moment and the position of the
+sources, from the magnetic data itself \citep[e.g., ][]{Fu2020}. For that, we can
+explore the techniques developed in exploration geophysics, in spite of the
+differences between aeromagnetic surveys and magnetic microscopy
+\citep{Lima2013}. Magnetic microscopy images commonly show the combined signal
+of multiple magnetic particles and can vary greatly in wavelength, strength,
+and spatial separation, depending on the NRM and location of each particle. We
+usually assume that the signal measured by the magnetic microscope is the
+vertical component of the magnetic induction vector ($b_z$), the measurements
+are performed on a regular grid with evenly spaced grid points and at a
+constant height, and the data are contaminated with random Gaussian noise and
+long-wavelength noise (akin to a regional signal in aeromagnetic data). Here,
+we provide a methodological routine to retrieve the individual magnetic moment
+of ferromagnetic grains in magnetic microscopy images following the approach
+devised by \citet{Oliveira2015Estimation} for the interpretation of
+aeromagnetic anomalies. The method we propose allows one to quickly and
+semi-automatically estimate the individual magnetic moment vector of the stable
+magnetic carriers, making use of only the magnetic images themselves and an
+assumption of approximately dipolar sources. If used on a large scale, the
+method provides the means to scan large areas of the rock sample, attaining
+potentially the number of magnetic moments necessary for paleomagnetic studies.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Methodology}
+
+We will achieve the goal of estimating the dipole moment of several individual
+grains per image in a semi-automatic fashion by dividing the task into three
+parts that can be performed independently:
+
+\begin{enumerate}
+\item \textbf{Source detection and separation:} Identify and spatially isolate
+  the magnetic field caused by each source. We will do this through a
+  combination of classic potential field data processing (\textit{total
+  gradient amplitude}) and image processing (histogram stretching and
+  equalization) and segmentation methods (watershed segmentation).
+\item \textbf{Position estimation}: Estimate the 3D position of a magnetic
+  particle based on the magnetic field measurements and the assumption of a
+  dipolar source. This can be achieved by applying the Euler Deconvolution
+  method to the data segment identified in step 1.
+\item \textbf{Magnetic moment inversion:} Estimate the 3-component dipole
+  moment vector by inverting the magnetic field data using the position
+  obtained from Euler Deconvolution as a constraint and the assumption of a
+  dipolar source. This leads to a linear inverse problem that is stable and
+  computationally efficient, particularly since the inversion is performed
+  separately for each data segment identified in step 1.
+\end{enumerate}
+
+In the sections below, we describe the methodology used in each step of our
+proposed workflow.
+
+\subsection{Automatic source detection and separation}
+
+Our first task is to automatically identify the signal of individual particles
+and spatially segregate the data into windows, each containing the signal of a
+single particle. We implemented the following workflow to achieve this:
+
+\begin{enumerate}
+\item Calculate the \textit{total gradient amplitude} (TGA)
+  \citep{Roest1992Magnetic} of the observed vertical component of the magnetic
+  field. The TGA is entirely positive and tends to be more concentrated on top
+  of the magnetic field sources than the observed magnetic field. The
+  derivative calculation also acts as a high-pass filter, removing
+  long-wavelength noise from the data.
+\item Apply a contrast stretching method to rescale the TGA to a new range
+  defined by the lower and upper percentiles of the data in order to highlight
+  the weaker signals, either coming from small or from deep-seated particles.
+\item Use the Laplacian of Gaussian (LoG) method \citep{Kong2013} on the
+  rescaled TGA data to estimate the position and size of data windows
+  containing the signal of each particle.
+\end{enumerate}
+
+The total gradient amplitude (TGA) was devised as a filter that can be applied
+to aeromagnetic data to reduce the signal's dependence on the direction of
+magnetization of the source and that concentrates the signal above the sources
+\citep{Roest1992Magnetic, Nabighian2005}. The TGA is defined as the norm of the
+gradient vector of a scalar field $f(x, y, z)$
+
+\begin{equation}
+\label{FeY0gwnRIU}
+\|\vec{\mathbf{\nabla}}f(x, y, z)\|  = \sqrt{(\partial_x f)^2 + (\partial_y f)^2 + (\partial_z f)^2}\ ,
+\end{equation}
+
+in which $\partial_x f$ is the partial derivative of $f$ with respect to $x$
+and likewise for the $y$ and $z$ directions. The partial derivatives are best
+approximated using a second-order accurate central finite-difference scheme
+
+\begin{equation}
+\label{DEJCQQSFoD}
+\partial_x f(x, y, z) \approx \dfrac{f(x + \Delta x, y, z) - f(x - \Delta x, y, z)}{2 \Delta x} \ ,
+\end{equation}
+
+and likewise for the $y$ and $z$ directions, in which $\Delta x$ is the grid
+spacing (assumed to be equal in the $x$ and $y$ directions). For the $z$
+component, $\Delta z$ is a small value (here set to $0.1\ \mu m$ by
+trail-and-error) and $f(x, y, z + \Delta z)$ and $f(x, y, z - \Delta z)$ are
+calculated by upward and downward continuation, respectively, performed in the
+wavenumber domain. The 2D maps of the $x$, $y$, and $z$ derivates will also be
+used in the Euler Deconvolution step described below, which is known to be
+highly sensitive to noise in the derivatives \citep{Saleh2012Applying}. This is
+why e prefer the finite-differences based derivatives, which are less prone to
+amplifying short-wavelength noise than those calculated in the wavenumber
+domain through the Fast Fourier Transform (FFT).
+
+Once we have obtained a TGA image, we apply a contrast stretching method to
+rescale the TGA values in order to highlight the weaker signals present in the
+image. This is a necessary step to make sure that the blob detection algorithm
+is able to identify particles causing both weak and strong signals. The
+following contrast stretching operation is performed per pixel of the TGA image
+
+\begin{equation}
+\label{mQIpUM2TkF}
+\text{TGA}_{rescaled} = 2\left(\dfrac{\text{TGA} - v_{min}}{v_{max} - v_{min}}\right) - 1 \ ,
+\end{equation}
+
+in which $v_{min}$ and $v_{max}$ are the upper and lower bounds of TGA values
+that will be stretched to the range $[ -1, 1]$. By experimentation, we found
+that values of $v_{min} = 1^\text{st}$ and $v_{max} = 99^\text{th}$
+percentiles of the TGA range work well on real magnetic microscopy datasets.
+
+The rescaled TGA image is then used as input for a Laplacian of Gaussian (LoG)
+blob detection algorithm \citep{Kong2013}. This method is able to identify the
+location and size of multiple windows in the image containing ``blobs''. In our
+case, the blobs are the rescaled TGA field of each particle and the LoG method
+detects the local TGA maxima. The LoG method is particularly well suited for
+the detection of bright blobs on a dark background at the expense of a longer
+computation time \citep{Han2016}. For the image sizes routinely found in
+magnetic microscopy, the computation is fast and only needs to be performed
+once per image.
+
+\subsection{Euler Deconvolution}
+
+Once the locations and sizes of the windows containing the isolated signals of
+each particle are determined, we can apply the Euler Deconvolution (ED)
+estimate of the $x$, $y$, and $z$ positions of the center of the particles
+under a dipolar approximation. This technique was first proposed by
+\citet{Thompson1982} under the name EULDPH and later extended to three
+dimensions and renamed ``Euler Deconvolution'' by \citet{Reid1990}. ED is
+traditionally performed on a set of moving windows that scan the entire
+dataset, producing a large scatter of position estimates, most of which are
+spurious \citep{Silva20033D}. This is only done because it is impractical to
+segment an aeromagnetic dataset into individual anomalies. Fortunately,
+magnetic microscopy images contain fewer elongated features (e.g., dikes and
+suture zones) and regional signals (e.g., Curie depth variations) that are
+difficult to separate. This makes it possible for us to produce isolated
+signals for each magnetic particle through the source detection step described
+above. Since each data window contains only the signal of a single particle, we
+are able to apply ED and generate only a single position estimate per particle.
+
+\begin{figure}[!htbp]
+\centering
+\includegraphics[width=1\linewidth]{figures/coordinate-system-sketch.png}
+\caption{Caption needed.}
+\label{yflpcyrggj}
+\end{figure}
+
+Euler Deconvolution is formulated as a least-squares inversion of Euler's
+homogeneity equation
+
+\begin{equation}
+\label{I3VD2haX7z}
+(x - x_c)\partial_x f
++ (y - y_c)\partial_y f
++ (z - z_c)\partial_z f
+= (b - f)\eta
+\ ,
+\end{equation}
+
+in which $(x_c, y_c, z_c)$ are the coordinates of the magnetic field source
+(Figure~\ref{V1wGQXY2TA}), $b$ is the base level representing a constant shift
+in the signal, and $\eta$ is the structural index corresponding to the nature
+of the source \citep{Reid1990}. This equation holds true for simple geometric
+sources, like spheres, dipoles, and vertical cylinders. Here, we assume that
+the magnetic particles are small enough and the sensor is far enough away that
+the sources can be represented by dipoles, yielding an $\eta=3$.
+
+The inversion is performed by rearranging (\ref{I3VD2haX7z}) into a
+pseudo-parametric model with parameters $x_c$, $y_c$, $z_c$, and $b$
+
+\begin{equation}
+\label{GXMwpUoOoH}
+x_c \partial_x f + y_c \partial_x f + z_c \partial_x f + \eta b
+=
+x \partial_x f + y \partial_y f + z \partial_z f + \eta f
+\ .
+\end{equation}
+
+Given a set of $N$ observations of the magnetic field as the harmonic function $f$ and its spatial derivatives, we can form the $N \times 4$ system of equations
+
+\begin{equation}
+\label{BoqTDcY8gR}
+\begin{bmatrix}
+{\partial_x f}_1 & {\partial_y f}_1 & {\partial_z f}_1 & \eta \\
+{\partial_x f}_2 & {\partial_y f}_2 & {\partial_z f}_2 & \eta \\
+\vdots & \vdots & \vdots & \vdots \\
+{\partial_x f}_N & {\partial_y f}_N & {\partial_z f}_N & \eta
+\end{bmatrix}
+\begin{bmatrix}
+x_c \\ y_c \\ z_c \\ b
+\end{bmatrix}
+=
+\begin{bmatrix}
+x_1 {\partial_x f}_1 + y_1 {\partial_y f}_1 + z_1 {\partial_z f}_1 + \eta f_1 \\
+x_2 {\partial_x f}_2 + y_2 {\partial_y f}_2 + z_2 {\partial_z f}_2 + \eta f_2 \\
+\vdots \\
+x_N {\partial_x f}_N + y_N {\partial_y f}_N + z_N {\partial_z f}_N + \eta f_N \\
+\end{bmatrix}
+\ .
+\end{equation}
+
+In matrix notation, this linear system can be written as
+
+\begin{equation}
+\label{ef59ZPDbY0}
+\mathbf{G} \mathbf{p} = \mathbf{h} \ .
+\end{equation}
+
+We can arrive at a solution to (\ref{ef59ZPDbY0}) by assuming that the three spatial derivatives of $f$ have negligible error and minimizing the misfit $\phi(\mathbf{p})$ between a pseudo-observation vector $\mathbf{h}^o$ and the predictions $\mathbf{h}$. The least-squares misfit $\phi(\mathbf{p})$ is defined as
+
+\begin{equation}
+\label{ZTSuSBbL16}
+\phi(\mathbf{p}) = \|\mathbf{h}^o - \mathbf{h}\|^2 = (\mathbf{h}^o - \mathbf{G}\mathbf{p})^T (\mathbf{h}^o - \mathbf{G}\mathbf{p})\ .
+\end{equation}
+
+The minimum of $\phi(\mathbf{p})$ is obtained by solving the $4 \times 4$ system of normal equations
+
+\begin{equation}
+\mathbf{G}^T \mathbf{G} \mathbf{p} = \mathbf{G}^T \mathbf{h}^o\ .
+\end{equation}
+
+The solution vector $\hat{\mathbf{p}} = \begin{bmatrix}x_c & y_c & z_c & b \end{bmatrix}^T$ provides an estimate of the position and base level $b$ for the source located inside of a data window. Repeating this process for each window produced by the source detection algorithm will yield the horizontal locations and depths of each magnetic particle.
+
+\subsection{Magnetic moment inversion}
+
+Once the source position is known and we can assume that it is approximately spherical or dipolar, we can apply the method developed by \citet{Oliveira2015Estimation} to estimate the dipole moment vector $\mathbf{m}$ of the source. We begin by following \citet{Oliveira2015Estimation} in formulating the magnetic induction vector $\mathbf{b}$ of a dipole as
+
+\begin{equation}
+\label{D7jZ9mepI2}
+\mathbf{b}
+=
+\begin{bmatrix}
+b_x \\ b_y \\ b_z
+\end{bmatrix}
+= \dfrac{\mu_0}{4\pi}
+\begin{bmatrix}
+\dfrac{\partial^2}{\partial x \partial x} \dfrac{1}{r}
+& \dfrac{\partial^2}{\partial x \partial y} \dfrac{1}{r}
+& \dfrac{\partial^2}{\partial x \partial z} \dfrac{1}{r}
+\\
+\dfrac{\partial^2}{\partial y \partial x} \dfrac{1}{r}
+& \dfrac{\partial^2}{\partial y \partial y} \dfrac{1}{r}
+& \dfrac{\partial^2}{\partial y \partial z} \dfrac{1}{r}
+\\
+\dfrac{\partial^2}{\partial z \partial x} \dfrac{1}{r}
+& \dfrac{\partial^2}{\partial z \partial y} \dfrac{1}{r}
+& \dfrac{\partial^2}{\partial z \partial z} \dfrac{1}{r}
+\end{bmatrix}
+\begin{bmatrix}
+m_x \\ m_y \\ m_z
+\end{bmatrix}
+= \dfrac{\mu_0}{4\pi} \mathbf{M}\,\mathbf{m}
+\ ,
+\end{equation}
+
+in which $r = \sqrt{(x - x_c)^2 + (y - y_c)^2 + (z - z_c)^2}$ is the Cartesian distance between the observation point $(x, y, z)$ and the source $(x_c, y_c, z_c)$ and $\mu_0$ is the vacuum magnetic permeability. Most magnetic microscopes provide measurements of only the vertical component $b_z$, which can be isolated from (\ref{D7jZ9mepI2}) as
+
+\begin{equation}
+\label{as4SGlTmGf}
+b_z
+= \dfrac{\mu_0}{4\pi}
+\begin{bmatrix}
+\dfrac{\partial^2}{\partial z \partial x} \dfrac{1}{r}
+& \dfrac{\partial^2}{\partial z \partial y} \dfrac{1}{r}
+& \dfrac{\partial^2}{\partial z \partial z} \dfrac{1}{r}
+\end{bmatrix}
+\begin{bmatrix}
+m_x \\ m_y \\ m_z
+\end{bmatrix}
+= \dfrac{\mu_0}{4\pi} \mathbf{M_z}\,\mathbf{m}
+\ .
+\end{equation}
+
+The three second-order derivatives in (\ref{as4SGlTmGf}) are
+
+\begin{equation}
+\begin{align*}
+\dfrac{\partial^2}{\partial z \partial x} \dfrac{1}{r} &=
+\dfrac{3(z - z_c)(x - x_c)}{r^5}\ ,
+\\
+\dfrac{\partial^2}{\partial z \partial y} \dfrac{1}{r} &=
+\dfrac{3(z - z_c)(y - y_c)}{r^5}\ ,
+\\
+\dfrac{\partial^2}{\partial z \partial z} \dfrac{1}{r} &=
+\dfrac{3(z - z_c)^2}{r^5} - \dfrac{1}{r^3}\ .
+\end{align*}
+\end{equation}
+
+Given a set of $N$ observations of $b_z$ made inside a window containing a single source, we can form the $N \times 3$linear equation system
+
+\begin{equation}
+\label{CgjOtKLQKT}
+\begin{bmatrix}
+\dfrac{\mu_0}{4\pi}\dfrac{3(z_1 - z_c)(x_1 - x_c)}{r_1^5}
+& \dfrac{\mu_0}{4\pi}\dfrac{3(z_1 - z_c)(y_1 - y_c)}{r_1^5}
+& \dfrac{\mu_0}{4\pi}\left(\dfrac{3(z_1 - z_c)^2}{r_1^5} - \dfrac{1}{r_1^3}\right)
+\\
+\dfrac{\mu_0}{4\pi}\dfrac{3(z_2 - z_c)(x_2 - x_c)}{r_2^5}
+& \dfrac{\mu_0}{4\pi}\dfrac{3(z_2 - z_c)(y_2 - y_c)}{r_2^5}
+& \dfrac{\mu_0}{4\pi}\left(\dfrac{3(z_2 - z_c)^2}{r_2^5} - \dfrac{1}{r_2^3}\right)
+\\
+\vdots & \vdots & \vdots
+\\
+\dfrac{\mu_0}{4\pi}\dfrac{3(z_N - z_c)(x_N - x_c)}{r_N^5}
+& \dfrac{\mu_0}{4\pi}\dfrac{3(z_N - z_c)(y_N - y_c)}{r_N^5}
+& \dfrac{\mu_0}{4\pi}\left(\dfrac{3(z_N - z_c)^2}{r_N^5} - \dfrac{1}{r_N^3}\right)
+\end{bmatrix}
+\begin{bmatrix}
+m_x \\ m_y \\ m_z
+\end{bmatrix}
+=
+\begin{bmatrix}
+{b_z}_1 \\ {b_z}_2 \\ \vdots \\ {b_z}_L
+\end{bmatrix}
+\ ,
+\end{equation}
+
+which can also be expressed in matrix form as
+
+\begin{equation}
+\label{qdhqM4s9Ln}
+\mathbf{A} \mathbf{m} = \mathbf{d} \ .
+\end{equation}
+
+As with Euler Deconvolution, we can find a dipole moment vector that best fits a set of $N$ observations of the vertical component of the magnetic field $\mathbf{d}^o$ in a least-squares sense by minimizing the misfit function
+
+\begin{equation}
+\label{uV9pRVYO4l}
+\Gamma (\mathbf{m}) = \| \mathbf{d}^o - \mathbf{d} \|^2 = (\mathbf{d}^o - \mathbf{A}\mathbf{m})^T  (\mathbf{d}^o - \mathbf{A}\mathbf{m})\ .
+\end{equation}
+
+The dipole moment vector that minimizes $\Gamma (\mathbf{m})$ can be found by solving the $3 \times 3$ normal equation system
+
+\begin{equation}
+\mathbf{A}^T \mathbf{A} \mathbf{m} = \mathbf{A}^T\mathbf{d}^o\ .
+\end{equation}
+
+The estimated dipole moment vector $\hat{\mathbf{m}} = \begin{bmatrix}m_x & m_y & m_z \end{bmatrix}^T$ can be converted into declination $D$, inclination $I$, and magnitude $m$, which are more intuitive quantities for interpreting paleomagnetic results, like so
+
+\begin{equation}
+\begin{align*}
+D &= \tan^{-1}\left(\dfrac{m_y}{m_x}\right) \ , \\
+I &= \tan^{-1}\left(\dfrac{m_z}{\sqrt{m_x^2 + m_y^2}}\right) \ , \\
+m &= \sqrt{m_x^2 + m_y^2 + m_z^2} \ .
+\end{align*}
+\end{equation}
+
+It's important to note that these are not paleomagnetic declination and inclination angles, but are instead related to the sample coordinate system. To obtain the paleomagnetic direction, the dipole moment vector must be rotated to the sample field orientation prior to the application of \ref{FNPcqF44iJ}.
+
+\begin{equation}
+\label{lPOQaqlV3N}
+\mathbf{C} =
+\begin{bmatrix}
+\sigma_x^2 & \sigma_{xy} & \sigma_{xz} \\
+\sigma_{yx} & \sigma_y^2 & \sigma_{yz} \\
+\sigma_{zx} & \sigma_{zy} & \sigma_z^2
+\end{bmatrix}
+=
+\sigma_0^2 (\mathbf{A}^T\mathbf{A})^{-1}
+\end{equation}
+
+From the main diagonal of $\mathbf{C}$ we can obtain the variances of the declination $\sigma_D^2$, inclination $\sigma_I^2$, and magnitude $\sigma_m^2$ by propagation of uncertainties
+
+\begin{equation}
+\begin{align*}
+\sigma_D^2 &= \dfrac{m_y^2\sigma_x^2 + m_x^2\sigma_y^2}{\left(m_x^2 + m_y^2\right)^2} \ , \\
+\sigma_I^2 &= \dfrac{m_x^2 m_z^2 \sigma_x^2 + m_y^2 m_z^2 \sigma_y^2 + \left(m_x^2 + m_y^2\right)^2\sigma_z^2}{\left(m_x^2 + m_y^2\right) m^4} \ , \\
+\sigma_m^2 &= \dfrac{m_x^2\sigma_x^2 + m_y^2\sigma_y^2 + m_z^2\sigma_z^2}{m^2} \ .
+\end{align*}
+\end{equation}
+
+These variances reflect the sensitivity of the estimated dipole moment to random noise in the magnetic field observations. However, they do not capture other, often larger, sources of uncertainty like systematic errors in the observations, data positioning errors, and the validity of the dipolar approximation. Therefore, we recommend that these estimated variances be treated with caution and should not be interpreted as ``the degree of certainty that the estimated values are the true values''.
+
+[FALAR SOBRE O CALCULO DE R2]
+
+[INCLUIR A ESTIMATIVA DE NÃO-DIPOLARIDADE]
+
+\section{Application to synthetic data}
+
+\begin{table}[t]
+  \begin{center}
+    \small
+  \input{simple-synthetic-results.tex}
+  \end{center}
+  \caption{Meh}
+\end{table}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Acknowledgements}
+
+We are indebted to the developers and maintainers of the open-source software
+without which this work would not have been possible.
