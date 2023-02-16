@@ -13,6 +13,9 @@ dependencies:
   - netcdf4
   - jupyterlab
   - black
+  # For building latex documents
+  - make
+  - tectonic
   # For stereonets
   - mplstereonet
   # Fatiando
