@@ -86,8 +86,6 @@ def vector_to_angles(vector):
         The vector amplitude values.
     """
     vector = np.asarray(vector)
-    # if vector.ndim == 1:
-        # vector = np.array([vector])
     x, y, z = vector.T
     amplitude = np.sqrt(x**2 + y**2 + z**2)
     inclination = -np.degrees(np.arctan2(z, np.hypot(x, y)))
@@ -218,9 +216,9 @@ def dipole_moment_inversion(data, dipole_coordinates):
     residuals = d - A @ dipole_moment
     residuals_sum_sq = np.sum(residuals**2)
     # Estimate of the true error variance (since we'll never know it)
-    chi_squared =  residuals_sum_sq / (n_data - n_params)
+    chi_squared = residuals_sum_sq / (n_data - n_params)
     covariance = chi_squared * np.linalg.inv(hessian)
-    r2 = 1 - residuals_sum_sq / np.linalg.norm(d - d.mean())**2
+    r2 = 1 - residuals_sum_sq / np.linalg.norm(d - d.mean()) ** 2
 
     return dipole_moment, covariance, r2
 
@@ -234,7 +232,12 @@ def _dipole_jacobian_fast(e, n, u, de, dn, du, jacobian):
     for i in numba.prange(e.size):
         # Calculating the distance only once saves a lot of computation time
         distance = choclo.utils.distance_cartesian(
-            e[i], n[i], u[i], de, dn, du,
+            e[i],
+            n[i],
+            u[i],
+            de,
+            dn,
+            du,
         )
         # These are the second derivatives of 1/r
         jacobian[i, 0] = constant * choclo.point.kernel_eu(
@@ -275,11 +278,11 @@ def covariance_to_angle_std(dipole_moment, covariance):
     var_x, var_y, var_z = np.diag(covariance)
     sigma_inc = np.degrees(
         np.sqrt(
-            (mx2 * mz2 * var_x + my2 * mz2 * var_y + (mx2 + my2)**2 * var_z)
+            (mx2 * mz2 * var_x + my2 * mz2 * var_y + (mx2 + my2) ** 2 * var_z)
             / ((mx2 + my2) * m**4)
         )
     )
-    sigma_dec = np.degrees(np.sqrt((my2 * var_x + mx2 * var_y) / (mx2 + my2)**2))
+    sigma_dec = np.degrees(np.sqrt((my2 * var_x + mx2 * var_y) / (mx2 + my2) ** 2))
     sigma_amp = np.sqrt((mx2 * var_x + my2 * var_y + mz2 * var_z) / m**2)
     return sigma_inc, sigma_dec, sigma_amp
 
@@ -293,8 +296,12 @@ def data_gradients(data):
     spacing = np.mean([np.abs(data.x[1] - data.x[0]), np.abs(data.y[1] - data.y[0])])
     # Need to set the exact same coordinates because the xrft inverse transform
     # creates slightly different ones because of round-off errors.
-    data_up = hm.upward_continuation(data, spacing).assign_coords(dict(x=data.x, y=data.y))
-    data_down = hm.upward_continuation(data, -spacing).assign_coords(dict(x=data.x, y=data.y))
+    data_up = hm.upward_continuation(data, spacing).assign_coords(
+        dict(x=data.x, y=data.y)
+    )
+    data_down = hm.upward_continuation(data, -spacing).assign_coords(
+        dict(x=data.x, y=data.y)
+    )
     # Forward difference only to avoid downward continuation.
     dz = (data_up - data_down) / (2 * spacing)
     tga = np.sqrt(dx**2 + dy**2 + dz**2)
@@ -305,7 +312,9 @@ def data_gradients(data):
     return xr.Dataset({"tga": tga, "x_deriv": dx, "y_deriv": dy, "z_deriv": dz})
 
 
-def detect_anomalies(data, size_range, size_increment=2, nsizes=10, threshold=0.5, overlap=0.5):
+def detect_anomalies(
+    data, size_range, size_increment=2, nsizes=10, threshold=0.5, overlap=0.5
+):
     """
     Run the blob detection and produce bounding boxes in data coordinates
     """
