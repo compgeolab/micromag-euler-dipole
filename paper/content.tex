@@ -15,7 +15,7 @@ single-domain (SD) and vortex state grains (also called pseudo-single domain,
 PSD) with sizes below \qty{1}{\um}, to large ($\gg \qty{1}{\um}$) grains with
 multi-domain (MD) magnetic structures, which are less stable magnetic recorders
 \citep{Berndt2016}. These large MD grains usually conceal the signal of the SD
-and PSD grains, and techniques of stepwise thermal and magnetic treatments are
+and PSD grains, and techniques of step-wise thermal and magnetic treatments are
 needed to unveil the more stable and reliable magnetic record
 \citep{Tauxe2018}. Recently, magnetic microscopy techniques opened the
 possibility of performing magnetic maps at the micro-scale and recovering the
@@ -27,7 +27,7 @@ In order to apply magnetic microscopy to paleomagnetic studies, it is necessary
 to recover from the magnetic images a large amount of individual magnetic
 moments, corresponding to at least tens of thousands of stable fine-grained
 grains ($< \qty{1}{\um}$), in order to provide statistical significance to the
-remanence vector \citep[e.g.][]{Berndt2016}. Nowadays, with the development of
+remanence vector \citep[e.g., ][]{Berndt2016}. Nowadays, with the development of
 magnetic microscopy techniques, this task is no longer limited by the
 resolution of magnetic microscopes \citep{Fu2020, Weiss2007, DeGroot2018,
 Glenn2017, Lima2014}, but essentially by the intrinsic problem presented by the
@@ -36,7 +36,7 @@ DeGroot2021, Oliveira2015Estimation}, and ultimately by the lack of a fast and
 automated way to recover such a large number of individual magnetic moments
 from a set of magnetic images \citep{CortesOrtuno2022, Lima2013, Lima2009}. A
 solution to the non-uniqueness of magnetic moment inversion is to add
-independent a priori information, such as the position of the ferromagnetic
+independent prior information, such as the position of the ferromagnetic
 particles \citep{Fabian2019}. This can be obtained, for example, from X-ray
 computed tomography \citep[microCT; ][]{Fabian2019, DeGroot2021, DeGroot2018}.
 Nonetheless, the standard microCT techniques do not provide adequate resolution
@@ -110,11 +110,11 @@ single particle. We implemented the following workflow to achieve this:
   more concentrated on top of the magnetic field sources than the observed
   magnetic field. The derivative calculation also acts as a high-pass filter,
   removing long-wavelength noise from the data.
-\item Apply a contrast stretching method to rescale the TGA to a new range
+\item Apply a contrast stretching method to re-scale the TGA to a new range
   defined by the lower and upper percentiles of the data in order to highlight
   the weaker signals, either coming from small or from deep-seated particles.
 \item Use the Laplacian of Gaussian (LoG) method \citep{Kong2013} on the
-  rescaled TGA data to estimate the position and size of data windows
+  re-scaled TGA data to estimate the position and size of data windows
   containing the signal of each particle.
 \end{enumerate}
 
@@ -143,7 +143,7 @@ spacing (assumed to be equal in the $x$ and $y$ directions). For the $z$
 component, $\Delta z = \Delta x$ and $f(x, y, z + \Delta z)$ and
 $f(x, y, z - \Delta z)$ are calculated by upward and downward continuation,
 respectively, performed in the wavenumber domain. The 2D maps of the $x$, $y$,
-and $z$ derivates will also be used in the Euler Deconvolution step described
+and $z$ derivatives will also be used in the Euler Deconvolution step described
 below, which is known to be highly sensitive to noise in the derivatives
 \citep{Saleh2012Applying}. This is why e prefer the finite-differences based
 derivatives, which are less prone to amplifying short-wavelength noise than
@@ -151,7 +151,7 @@ those calculated in the wavenumber domain through the Fast Fourier Transform
 (FFT).
 
 Once we have obtained a TGA image, we apply a contrast stretching method to
-rescale the TGA values in order to highlight the weaker signals present in the
+re-scale the TGA values in order to highlight the weaker signals present in the
 image. This is a necessary step to make sure that the blob detection algorithm
 is able to identify particles causing both weak and strong signals. The
 following contrast stretching operation is performed per pixel of the TGA image
@@ -166,10 +166,10 @@ that will be stretched to the range $[0, 1]$. By experimentation, we found
 that values of $v_{min} = 1^\text{st}$ and $v_{max} = 99^\text{th}$
 percentiles of the TGA range work well on real magnetic microscopy datasets.
 
-The rescaled TGA image is then used as input for a Laplacian of Gaussian (LoG)
+The re-scaled TGA image is then used as input for a Laplacian of Gaussian (LoG)
 blob detection algorithm \citep{Kong2013}. This method is able to identify the
 location and size of multiple windows in the image containing ``blobs''. In our
-case, the blobs are the rescaled TGA field of each particle and the LoG method
+case, the blobs are the re-scaled TGA field of each particle and the LoG method
 detects the local TGA maxima. The LoG method is particularly well suited for
 the detection of bright blobs on a dark background at the expense of a longer
 computation time \citep{Han2016}. For the image sizes routinely found in
@@ -534,7 +534,7 @@ sphere/punctual source, therefore obtaining the Cartesian coordinates of each
 source causing the magnetic potential anomaly in the observed data set (Table
 1).
 
-\begin{figure}[tbp]
+\begin{figure}[!t]
 \centering
 \includegraphics[width=0.75\linewidth]{figures/simple-synthetic-dipole-moment.png}
 \caption{
@@ -549,14 +549,15 @@ least squares (or robust) approximation solution for the vector of Cartesian
 magnetic moments $m_x, m_y, m_z$ and the corresponding magnetization directions
 (D and I) and intensity of magnetic moment $m$. We also obtained the
 uncertainty propagation of this inversion, using Equation (REFERENCE NEEDED)
-and considering $\sigma$ = 15 nT.\\
+and considering $\sigma = \qty{15}{\nano\tesla}$.
 
 \begin{table}[t]
   \begin{center}
     \small
-  \input{simple-synthetic-results.tex}
+    \input{simple-synthetic-results.tex}
   \end{center}
   \caption{Meh}
+  \label{tab_synthetic_simple_results}
 \end{table}
 
 \citet{Oliveira2015Estimation} proved that the magnetization directions (D and
@@ -564,7 +565,7 @@ I) recovered by the least squares estimator are sensitive to variations in the
 horizontal coordinates of the center of the magnetic sources, but are
 practically insensitive to variations in depth. Thus, they consider the Euler
 deconvolution method as an adequate technique to estimate the central positions
-that will be used as a priori information for inversion. This occurs mainly
+that will be used as prior information for inversion. This occurs mainly
 because, when well performed, the recovery of the horizontal coordinates of the
 source central position is considerably accurate, while the vertical coordinate
 can undergo greater variation even though it still provides satisfactory
