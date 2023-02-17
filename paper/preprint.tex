@@ -1,6 +1,6 @@
 % Template for an EarthArXiv preprint of the manuscript.
 % Includes the standard disclaimers and formatting that is required.
-% 
+%
 % This is the document structure. The actual content is written in:
 % * abstract.tex: The abstract.
 % * information.tex: Title, authors, journal, DOIs, dates.
@@ -42,7 +42,7 @@
 % Use a different font
 \usepackage{notomath}
 % Icons and fonts (requires using xelatex or luatex)
-\usepackage{fontawesome5}
+\usepackage[fixed]{fontawesome5}
 \usepackage{academicons}
 % Control the font size
 \usepackage{anyfontsize}
@@ -51,6 +51,9 @@
 \usepackage{lastpage}
 \usepackage{lipsum}
 \usepackage{ragged2e}
+\usepackage{mdframed}
+% To define custom environments
+\usepackage{environ}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Import the title, authors, etc.
@@ -62,11 +65,11 @@
 \geometry{%
   left=25mm,
   right=25mm,
-  top=23mm,
-  bottom=23mm,
+  top=20mm,
+  bottom=20mm,
   headsep=0mm,
   headheight=0mm,
-  footskip=10mm,
+  footskip=7mm,
   includehead=true,
   includefoot=true
 }
@@ -82,9 +85,9 @@
 \definecolor{darkgray}{gray}{0.4}
 \definecolor{mediumgray}{gray}{0.5}
 \definecolor{lightgray}{gray}{0.9}
-\definecolor{darkblue}{RGB}{30, 75, 150}
+\definecolor{verylightgray}{gray}{0.98}
 \definecolor{mediumblue}{RGB}{32, 96, 194}
-\definecolor{lightblue}{RGB}{190, 220, 250}
+\definecolor{lightblue}{RGB}{238, 245, 250}
 
 % Customize the title and author section
 \setlength{\droptitle}{-2cm}
@@ -137,7 +140,7 @@
   \fancyhf{}
   \lfoot{%
     \FooterFont{}
-    \faCreativeCommons\faCreativeCommonsBy{}
+    \faCreativeCommons{}\faCreativeCommonsBy{}
     \Separator{}
     \textcopyright{} \Year{} The Authors
   }
@@ -151,6 +154,30 @@
   }
 }
 
+% Define fancy text boxes
+\NewEnviron{summarybox}{%
+  \mdfdefinestyle{summarybox_}{%
+    leftline=true,
+    rightline=false,
+    topline=false,
+    bottomline=false,
+    linewidth=4pt,
+    linecolor=mediumblue,
+    backgroundcolor=verylightgray,
+    innertopmargin=15pt,
+    innerbottommargin=15pt,
+    innerleftmargin=15pt,
+    innerrightmargin=15pt,
+    skipbelow=10pt,
+    skipabove=10pt,
+  }
+  \newmdenv[style=summarybox_]{summarybox_}
+  \begin{summarybox_}
+    \small
+    \BODY
+  \end{summarybox_}
+}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{document}
 
@@ -160,8 +187,17 @@
     \input{abstract}
 \end{abstract}
 
-\vspace{0.25cm}
-{\small
+\begin{summarybox}
+  \noindent
+  \textbf{Reproducibility:}
+  The source code used to generate all of the results presented in this
+  research can freely accessed and reused under the terms of an open license.
+  You can find it at:
+  \\
+  • \faBoxOpen{} A permanent archive: \url{https://doi.org/\ArchiveRepository}
+  \\
+  • \faGithub{} GitHub: \url{https://github.com/\GitHubRepository}
+  \\[0.25cm]
   \noindent
   \textbf{Disclaimer:}
   This is a pre-copyedited, author-produced PDF of an article
@@ -177,7 +213,7 @@
   \\[0.25cm]
   \noindent
   \textbf{Keywords:} \Keywords{}
-}
+\end{summarybox}
 
 \input{content.tex}
 
