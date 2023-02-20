@@ -572,6 +572,281 @@ can undergo greater variation even though it still provides satisfactory
 results \citep{Silva20033D, Melo2013}.
 
 
+\subsection{Complex simulation: Testing applicability}
+
+This test represents a more complex scenario by simulating 100 sources randomly
+distributed in the imaged area of a synthetic thin section of 2000 x 1400 $\mu
+m$. The synthetic $b_z$ data were generated on a regular grid with 2 $\mu m$
+spacing and 5 $\mu m$ sample-sensor distance. For greater fidelity to real
+samples, the magnetic sources are modeled as spheres with different depths,
+radii, and magnetizations. The depths vary between 1 and 19 $\mu m$, while the
+radii range from 0.01 to 0.95 $\mu m$. The magnetizations of the sources have
+declination and inclination directions sampled from a pseudo-random Gaussian
+distribution with a mean of D, I = 45°, 45°, and a standard deviation of 8°.
+This randomness simulates the NRM found in real ferromagnetic particles that
+vary individually but average out to the inducing field direction. Finally, we
+contaminated the data with high-frequency normally-distributed pseudo-random
+noise with zero means and 5 nT standard deviations, as well as with
+low-frequency noise in the form of additional deep sources beyond the modeling
+domain. The noise-corrupted synthetic $b_z$ image is shown in
+Figure~\ref{E9td9j9aBB}a.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=1\linewidth]{figures/ComplexSynthetic.png}
+\caption{a) Complex synthetic data contaminated with  both high and low frequencies noise. b) Individual sources' window position (yellow squares) obtained with the blob detection algorithm applied on the total gradient map.}
+\label{e9td9j9abb}
+\end{figure}
+
+The result of the source detection method is shown in Figure~\ref{E9td9j9aBB}b,
+where 84 particles out of the original 100 were detected. The spatiality of the
+inversion results is one of the key advantages of magnetic microscopy over the
+classic techniques of paleomagnetism. Therefore, we present the inversion
+results spatially so that we can evaluate any patterns in their distribution.
+
+Figure~\ref{P8gMJ9mWpS} shows the difference between the estimated dipole
+moments and the true values for each of the 84 particles that were identified.
+Figure~\ref{P8gMJ9mWpS}c shows the R² coefficient of determination representing
+how well the dipolar model is able to fit the observed data in the given
+window. The depth and radius of each particle are represented by horizontal and
+vertical cross bars, respectively. The depth and radius are useful proxies for
+the width and amplitude of the magnetic signal of each particle, which is
+crucial to know when evaluating the inversion results.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=1\linewidth]{figures/ComplexComparison.png}
+\caption{
+The validation of the result obtained with the inversion was calculated for
+each individual particle based on the error between the real parameters modeled
+and their respective recovered values, being (a) the direction and (b)
+intensity of the magnetic moment, in addition to the R$^2$ score (c) obtained
+by comparing the forward model and the actual data. The depth and radius of the
+magnetic sources are also important factors that influence the final result,
+therefore, these data are given in the form of cross plots, with the vertical
+bar represented by the depth (1 - 19 $\\mu m$) and the horizontal bar by the
+radius (0.01 - 0.95 $\\mu m$).
+}
+\label{p8gmj9mwps}
+\end{figure}
+
+The application in complex synthetic data allows observing the strengths and
+limitations of the proposed methodology. Some of the strengths that can be
+mentioned are: (i) the applied technique not only detects most of the modeled
+sources but also (ii) most of the recovered magnetic parameters have
+considerably low errors, especially in the directions, usually less than 5°
+(Figure~\ref{P8gMJ9mWpS}a). (iii) The magnetic moments obtained also tend to
+not deviate much from the real values (Figure~\ref{P8gMJ9mWpS}b) when
+R\textsuperscript{2} scores are high (\textgreater 0.95)
+(Figure~\ref{P8gMJ9mWpS}c). (iv) Shallow particles grouped in clusters are
+usually well individualized during window selection, as well as (v) some
+particles that produce a weak magnetic signal but isolated particles.
+
+The main limitations observed are: (i) the blob detection fails when there are
+sources too close, grouping them into the same window, thus causing an
+erroneous result both for Euler deconvolution and for the magnetic parameters.
+(ii) The very same occurs when there is a source under another, in this case,
+the magnetic signal is the sum of both. (iii) In clusters of larger and/or
+deeper particles, although the method individualizes them well, the magnetic
+signal of the neighboring particles can considerably influence the result of
+the inversion. Apparently, there is a direct relationship between the size and
+depth with the observed errors. It is clear from the cross bars in
+Figure~\ref{P8gMJ9mWpS} that deep particles and/or particles with small radii
+generate worse results essentially because they will produce smaller anomalous
+fields in the magnetic maps. Note nonetheless that even small particles when
+close to the surface are adequately modeled by our method.
+
+Figure~\ref{RDs2vUEqCI} shows stereoplots with the directions generated by the
+model and the recovered data. The mean directions modeled are coincident with
+the model and the distribution is coincident within the 95\% confidence cone.
+When filtered to include only data with R\textsuperscript{2} \textgreater 0.95
+the obtained directions are closer to the model average and less sparse.
+
+\begin{figure}[!htbp]
+\centering
+\includegraphics[width=1\linewidth]{figures/ComplexStereo.png}
+\caption{
+a) Simulation of a thin section of rock with particles uniformly magnetized in
+the average direction of the induced field
+45{\textbackslash}textdegree/45{\textbackslash}textdegree. b) The recovered
+data, without any type of filtering, are sparse, but statistically generate the
+same average direction. c) It is still possible to filter only the directions
+of the magnetic sources with the best fitting determined by the coefficient of
+determination ($R^ 2 \\geq 0.95$) to ensure better grouping of the directions
+around the mean value.
+}
+\label{rds2vueqci}
+\end{figure}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Application to real data}
+
+To test whether the proposed method would be able to determine the
+magnetization directions and the magnetic moment of particles in natural
+samples, we selected a previously studied carbonate stalagmite sample from the
+Wintimdouine cave in the Agadir region (Morocco) \citep{Ait2019Hydro}. This
+speleothem contains both magnetite and hematite as the main carriers of
+magnetic remanence, as attested by thermomagnetic curves with temperature
+decays at {\textasciitilde}580 °C and {\textasciitilde}680 °C, and bimodal
+curves of isothermal remanent magnetization (IRM) acquisition (Carmo et al.,
+2019).
+
+In order to provide two distinct directions associated with the different
+magnetic mineral types in this sample, we applied two IRM pulse fields of 2.7 T
+and 0.3 T, respectively toward the +X and -X directions. In this way, the high
+coercivity grains (hematite) would point towards +X and the low coercivity ones
+(magnetite) would align in the -X direction.
+
+After remanence acquisition, we performed a magnetic map with the Quantum
+Diamond Microscope (QDM) at Harvard University over a sample section of
+approximately 1410 $\mu$m x 2256 $\mu$m (Figure~\ref{W1GfysVYnX}a) with a grid
+spacing of 2.35 $\mu$m and a sensor-sample distance of 5 $\mu$m, totaling
+576x10\textsuperscript{3} data points. The QDM is housed in a shielded room, in
+order to avoid the influence of the Earth's magnetic field \citep{Fu2020,
+Glenn2017}. After applying the magnetic anomaly detection algorithm, it was
+possible to determine the windows for 85 potential sources
+(Figure~\ref{W1GfysVYnX}b).
+
+\begin{figure}[tb]
+\centering
+\includegraphics[width=1\linewidth]{figures/RealData.png}
+\caption{
+a) Real sample data. b) Individual sources' window position (yellow squares)
+obtained with the blob detection algorithm applied on the total gradient map.
+}
+\label{w1gfysvynx}
+\end{figure}
+
+After applying the ED algorithm, we performed the inversion of the magnetic
+moment for each of the 85 windows selected previously. In order to reduce
+considerably the computation time, the inversions were done within each data
+window, instead of solving all sources parameters at the same time. We obtained
+the magnetic moment (not shown) and the direction for all 85 magnetic grains
+(Figure~\ref{NKOAMThaWA}a). Then, we calculated the residuals of the inversions
+in each window and subsequently the coefficient of determination
+R\textsuperscript{2}, which was used as a filter for the best directions
+obtained. We used a cut-off limit of the coefficient of determination at 0.7
+(Figure~\ref{NKOAMThaWA}b) EXPLICAR PORQUE USOU 0.7 AQUI E 0.95 NOS CASOS
+SINTÉTICOS. This filtering technique removed unreliable responses showing more
+clearly the expected directional clusters of hematite and magnetite crystals.
+NÃO SABEMOS SE OS PONTOS RETIRADOS SÃO `UNRELIABLE RESPONSES'\dots ALÉM DISSO,
+O FILTRO ELIMINA QUASE 50\% DAS FONTES IDENTIFICADAS, O QUE PODE SER UM
+PROBLEMA SE TIVERMOS QUE APLICAR EM OUTROS CASOS REAIS. USAR O TESTE DE
+NÃO-DIPOLARIDADE? TALVEZ SEJA MAIS INTERESSANTE, DADA A DISCUSSÃO QUE SEGUE.
+
+\begin{figure}[tb]
+\centering
+\includegraphics[width=1\linewidth]{figures/RealDataStereo.png}
+\caption{
+a) The recovered data, without any type of filtering. b) Recovered data
+filtered by the coefficient of determination ($R^ 2 \\geq 0.7$), which shows
+two clusters of direction located on each pole of the stereogram.
+}
+\label{nkoamthawa}
+\end{figure}
+
+NESSA PARTE SERIA INTERESSANTE INCLUIR MAPAS COMO OS DA FIGURA 4B E 4C, COM A
+ESPACIALIDADE DOS AJUSTES E DISCUTIR DA SEGUINTE FORMA:
+
+\begin{enumerate}
+\item RESULTADOS EM FUNÇÃO DA QUALIDADE DO AJUSTE
+\item RESULTADOS EM FUNÇÃO DA DIPOLARIDADE DAS FONTES
+\item CONTEXTUALIZAR O SEU MÉTODO EM RELAÇÃO A OUTROS. COMO OS OUTROS ESTIMAM
+  OS MISFITS? QUE FILTROS USAM? QUAL A DIFERENÇA COM SUA ABORDAGEM? POR
+  ENQUANTO SOMENTE O TRABALHO DE CORTEZ ESTÁ COMENTADO -> COMPARAR COM
+  OS OUTROS MÉTODOS DE INVERSÃO (Fu, de Groot, Egli2000, Lima2007)
+\end{enumerate}
+
+The application of the proposed algorithm to natural samples gives some
+indications of its ability to circumvent the prominent problems described by
+\citep{CortesOrtuno2022} [QUAIS PROBLEMAS FORAM LISTADOS POR CORTÉS-ORTUÑO?],
+namely: (i)\dots, (ii)\dots, (iii)\dots
+
+the same authors showed that particles in the single vortex PSD state present
+more accurate inversion results when considering the non-dipole components for
+small sample-sensor distances (\textless 1 $\mu$m), but for larger sensor
+distances the dipole as approximations are remarkably accurate, as the
+higher-order moments decay rapidly with distance and therefore have less
+influence on the particle's magnetic signal. Thus, our approach can be
+considered reasonable for working with particle signals in SD (already a
+dipole) and PSD states. The latter happens due to the QDM sensor height being
+usually greater than 5 $\\mu m$, considering a particle on the immediate
+surface of the sample the higher-order moments are already quite attenuated.\}
+
+Despite the excellent signal/noise ratio that the SMM provided with the
+proximity of the sensor to the sample, it is worth mentioning that the
+measurement noise can still overshadow the responses of very weak/small, or
+deep particles, generating unreliable inversion results. Therefore, it is
+necessary to keep a check to determine if the inversion reached a satisfactory
+result, such as the coefficient of determination that we used or the
+signal-to-noise ratio presented by \citep{CortesOrtuno2022}.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Conclusion}
+
+We developed an efficient semi-automated method to determine the direction of
+magnetization of dipolar sources on a microscale, as well as the recovery of
+their magnetic moment. Being ideal for a reinterpretation for the application
+of methods of paleomagnetic studies using thin sections of rock samples. This
+would be an attempt to improve the quality of results obtained by isolating the
+responses of more reliable recorders of the Earth's geomagnetic field.
+
+We also present a new, faster, and cleaner way to solve the Euler equation in
+determining the positioning of magnetic anomaly sources using a pre-selection
+of magnetic anomaly source windows based on the Laplacian of the Gaussian
+applied to total gradient anomaly maps. In this way, reducing the numerous
+solutions to just one data window per source. After estimating the structural
+index ($n = 3$) by approximating the sources generating the magnetic anomaly to
+spheres/points, the Euler deconvolution is performed and the central position
+of each source is determined.
+
+The recovery of direction and magnetization we only need to assume that the
+sources have their central positions known (so we apply Euler deconvolution)
+and that their magnetizations are uniform. This last premise aligns with the
+theory of magnetically stable particles SD (and the PSD ones at a reasonable
+sensor height), which is the basis of classical paleomagnetism. Also, there is
+no need for any kind of prior knowledge other than the observed magnetic
+anomaly, and the structural index of the sources. Therefore, this method can be
+quickly replicated in a dataset of thin sections of rocks to obtain the
+distributions of magnetic directions of each source identified in the sample.
+
+The test using a simple synthetic sample shows the great capability of the
+method by retrieving not only the precise center positions, but also retrieving
+the magnetization directions and intensity even under the considerable effect
+of high-frequency noise (15 nT). While the complex synthetic sample data allows
+observing the applicability of the method developed in real samples that are
+more complex with varied magnetization directions and intensity, in addition to
+also taking into account the high and low-frequency noise and sources with
+variable sizes and depths.
+
+The real sample data positively answered the question of the algorithm's
+ability to deal with rocks thin-sections. But also, showed the acceptable
+capacity (within the adequate R$^2$ threshold) of retrieving different
+magnetization directions recorded by magnetic minerals with different
+coercivities and magnetic signal disparities even greater than predicted in the
+complex synthetic test.
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Data and code availability}
+
+The Python source code used to produce all results and figures presented here
+is available at \url{https://github.com/\GitHubRepository} and
+\url{https://doi.org/\ArchiveRepository} under the MIT open-source license.
+
+The image rescaling and blob detection though the Laplacian of Gaussian method
+were performed with the scikit-image library \citep{VanderWalt2014}. CITE OTHER
+SOFTWARE TOOLS USED. Matplotlib for figures, numpy and scipy for almost
+everything. Verde for the regional residual separation and other things.
+
+The QDM image data is available at CITE A DATAVERSE/FIGSHARE ARCHIVE under the
+CC-XX license.
+
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Acknowledgements}
