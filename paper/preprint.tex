@@ -3,12 +3,13 @@
 %
 % This is the document structure. The actual content is written in:
 % * abstract.tex: The abstract.
+% * abstract-plain.tex: A plain language version of the abstract.
 % * information.tex: Title, authors, journal, DOIs, dates.
 % * content.tex: The actual manuscript text (minus the abstract).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Set a class and import packages
-\documentclass[onecolumn,11pt]{article}
+\documentclass[onecolumn,10pt]{article}
 
 \usepackage[utf8]{inputenc}
 \usepackage[TU]{fontenc}
@@ -65,11 +66,11 @@
 \geometry{%
   left=25mm,
   right=25mm,
-  top=20mm,
-  bottom=20mm,
+  top=18mm,
+  bottom=15mm,
   headsep=0mm,
   headheight=0mm,
-  footskip=7mm,
+  footskip=10mm,
   includehead=true,
   includefoot=true
 }
@@ -139,7 +140,7 @@
   \fancyhf{}
   \lfoot{%
     \FooterFont{}
-    \faCreativeCommons{}\faCreativeCommonsBy{}
+    \faCreativeCommons\faCreativeCommonsBy
     \Separator{}
     \textcopyright{} \Year{} The Authors
   }
@@ -160,19 +161,19 @@
     rightline=false,
     topline=false,
     bottomline=false,
-    linewidth=4pt,
+    linewidth=2pt,
     linecolor=mediumblue,
     backgroundcolor=verylightgray,
-    innertopmargin=15pt,
-    innerbottommargin=15pt,
-    innerleftmargin=15pt,
-    innerrightmargin=15pt,
+    innertopmargin=10pt,
+    innerbottommargin=10pt,
+    innerleftmargin=10pt,
+    innerrightmargin=10pt,
     skipbelow=10pt,
-    skipabove=10pt,
+    skipabove=15pt,
   }
   \newmdenv[style=summarybox_]{summarybox_}
   \begin{summarybox_}
-    \small
+    \footnotesize
     \BODY
   \end{summarybox_}
 }
@@ -181,22 +182,14 @@
 \begin{document}
 
 \maketitle
+\vspace{-1cm}
+\section*{\large Abstract}
+{\small \input{abstract}}
 
-\begin{abstract}
-    \input{abstract}
-\end{abstract}
+\section*{\large Plain language summary}
+{\small \input{abstract-plain}}
 
 \begin{summarybox}
-  \noindent
-  \textbf{Reproducibility:}
-  The source code used to generate all of the results presented in this
-  research can freely accessed and reused under the terms of an open license.
-  You can find it at:
-  \\
-  • \faBoxOpen{} A permanent archive: \url{https://doi.org/\ArchiveRepository}
-  \\
-  • \faGithub{} GitHub: \url{https://github.com/\GitHubRepository}
-  \\[0.25cm]
   \noindent
   \textbf{Disclaimer:}
   This is a pre-copyedited, author-produced PDF of an article
@@ -209,6 +202,11 @@
   \textcopyright{} \Year{} The Authors.
   Available under a Creative Commons Attribution 4.0 International license
   (\href{https://creativecommons.org/licenses/by/4.0/}{CC-BY}).
+  \\[0.25cm]
+  \noindent
+  \textbf{Reproducibility:}
+  The source code used to generate all of the results presented in this
+  research can freely accessed and reused under the terms of an open license. You can find it at \url{https://doi.org/\ArchiveRepository} and \url{https://github.com/\GitHubRepository}.
   \\[0.25cm]
   \noindent
   \textbf{Keywords:} \Keywords{}
