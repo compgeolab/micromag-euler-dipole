@@ -125,7 +125,7 @@ magnetization of the source and that concentrates the signal above the sources
 gradient vector of a scalar field $f(x, y, z)$
 
 \begin{equation}
-\|\vec{\mathbf{\nabla}}f(x, y, z)\|  = 
+\|\vec{\mathbf{\nabla}}f(x, y, z)\|  =
 \sqrt{(\partial_x f)^2 + (\partial_y f)^2 + (\partial_z f)^2}
 \ ,
 \end{equation}
@@ -136,8 +136,8 @@ and likewise for the $y$ and $z$ directions. The partial derivatives are best
 approximated using a second-order accurate central finite-difference scheme
 
 \begin{equation}
-\partial_x f(x, y, z) \approx 
-\dfrac{f(x + \Delta x, y, z) - f(x - \Delta x, y, z)}{2 \Delta x} 
+\partial_x f(x, y, z) \approx
+\dfrac{f(x + \Delta x, y, z) - f(x - \Delta x, y, z)}{2 \Delta x}
 \ ,
 \end{equation}
 
@@ -161,8 +161,8 @@ is able to identify particles causing both weak and strong signals. The
 following contrast stretching operation is performed per pixel of the TGA image
 
 \begin{equation}
-\text{TGA}_{rescaled} = 
-2\left(\dfrac{\text{TGA} - v_{min}}{v_{max} - v_{min}}\right) - 1 
+\text{TGA}_{rescaled} =
+2\left(\dfrac{\text{TGA} - v_{min}}{v_{max} - v_{min}}\right) - 1
 \ ,
 \end{equation}
 
@@ -206,14 +206,15 @@ are able to apply ED and generate only a single position estimate per particle.
 \includegraphics[width=\linewidth]{figures/coordinate-system-sketch.png}
 \caption{
 Schematic representation of the coordinates systems and modelling elements.
-The left panel shows the $x, y, z$ right-handed coordinate system with $z$ 
-pointing upward and away from the sample. A dipole with dipole moment vector 
-$\mathbf{\vec{m}}$ is also shown at coordinates $(x_c, y_c, z_c)$. The 
-observation points are located at regular intervals on an $x-y$ plane. 
-The right panel zooms in on the dipole and shows the dipole moment vector
-expressed in terms of inclination ($I$, positive downwards), declination
-($D$, angle with the $\hat{y}$ direction), and moment magnitude
-$m = \|\mathbf{m}\|$.
+The left panel shows the $x, y, z$ right-handed coordinate system with $z$
+pointing upward and away from the sample. The top surface of the sample defines
+the $z=0$ surface. A dipole with dipole moment vector $\mathbf{\vec{m}}$ is
+also shown at coordinates $(x_c, y_c, z_c)$. The observation points are located
+at regular intervals on an $x-y$ plane at a positive $z$ separation from the
+sample surface. The right panel zooms in on the dipole and shows the dipole
+moment vector expressed in terms of inclination ($I$, positive downwards),
+declination ($D$, angle with the $\hat{y}$ direction), and moment magnitude $m
+= \|\mathbf{m}\|$.
 }
 \label{fig_coordinate_systems}
 \end{figure}
