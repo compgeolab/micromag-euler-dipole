@@ -313,7 +313,7 @@ def data_gradients(data):
 
 
 def detect_anomalies(
-    data, size_range, size_increment=2, nsizes=10, threshold=0.5, overlap=0.5
+    data, size_range, size_increment=2, nsizes=10, threshold=0.5, overlap=0.5, exclude_border=0
 ):
     """
     Run the blob detection and produce bounding boxes in data coordinates
@@ -327,6 +327,7 @@ def detect_anomalies(
         threshold=threshold,
         num_sigma=nsizes,
         overlap=overlap,
+        exclude_border= int(exclude_border / spacing),
     ).T
     blob_coords = (data.x.values[ix.astype("int")], data.y.values[iy.astype("int")])
     blob_sizes = sigma_pix * np.sqrt(2) * spacing * size_increment
@@ -336,7 +337,7 @@ def detect_anomalies(
     ]
     return windows
 
-
+    
 def euler_deconvolution(data, x_deriv, y_deriv, z_deriv):
     """
     Estimate the (x, y, z) position and base level by Euler Deconvolution
