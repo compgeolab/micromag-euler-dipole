@@ -218,7 +218,8 @@ def dipole_moment_inversion(data, dipole_coordinates):
     # Estimate of the true error variance (since we'll never know it)
     chi_squared = residuals_sum_sq / (n_data - n_params)
     covariance = chi_squared * np.linalg.inv(hessian)
-    r2 = 1 - residuals_sum_sq / np.linalg.norm(d - d.mean()) ** 2
+    r2 = 1 - residuals_sum_sq / np.linalg.norm(d - d.mean()) ** 2  # determination coeficient (dimensionless)
+    SNR = 10*np.log10(np.var(d, ddof=1)/np.var(residuals, ddof=1)) # signal-to-noise ratio in decibels (dB)
 
     return dipole_moment, covariance, r2
 
