@@ -221,7 +221,7 @@ def dipole_moment_inversion(data, dipole_coordinates):
     r2 = 1 - residuals_sum_sq / np.linalg.norm(d - d.mean()) ** 2  # determination coeficient (dimensionless)
     SNR = 10*np.log10(np.var(d, ddof=1)/np.var(residuals, ddof=1)) # signal-to-noise ratio in decibels (dB)
 
-    return dipole_moment, covariance, r2
+    return dipole_moment, covariance, r2, SNR
 
 
 @numba.jit(nopython=True, parallel=True)
