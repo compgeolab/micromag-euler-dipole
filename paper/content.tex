@@ -472,7 +472,7 @@ MISSING PARAGRAPH ABOUT THE COVARIANCE ESTIMATION AND $\sigma_0$.
 
 From the main diagonal of $\mathbf{C}$ we can obtain the variances of the
 declination $\sigma_D^2$, inclination $\sigma_I^2$, and magnitude $\sigma_m^2$
-by propagation of uncertainties
+by the propagation of uncertainties
 
 \begin{equation}
 \begin{aligned}
@@ -483,17 +483,25 @@ by propagation of uncertainties
 \end{equation}
 
 \noindent
-These variances reflect the sensitivity of the estimated dipole moment to
-random noise in the magnetic field observations. However, they do not capture
-other, often larger, sources of uncertainty like systematic errors in the
-observations, data positioning errors, and the validity of the dipolar
-approximation. Therefore, we recommend that these estimated variances be
-treated with caution and should not be interpreted as ``the degree of certainty
-that the estimated values are the true values''.
+These variances reflect the sensitivity of the estimated dipole moment to random noise in the magnetic field observations. However, they do not capture other, often larger, sources of uncertainty like systematic errors in the observations, data positioning errors, and the validity of the dipolar approximation. Therefore, we recommend that these estimated variances be treated with caution and should not be interpreted as ``the degree of certainty that the estimated values are the true values''.
 
-[FALAR SOBRE O CALCULO DE R2]
+It is important to note that parameters retrieved during inversion procedures do not always explain the observed data, so it is necessary to evaluate the fitting of the predicted data obtained with these parameters. \cite{Fu2020} apply the calculation of the "non-dipolarity parameter (\emph{D})" by calculating the coefficient of determination ($R^2$, Eq.~\ref{R2}). The latter has a maximum value of 1, if \emph{D} is close enough to this value, a simple dipole model is able to explain the measured data. On the other hand, low values of $R^2$ indicate that the predicted model does not explain the observed data. Some authors \citep[e.g.,][]{Myre2019, CortesOrtuno2021, Lima2009} use another approach for the evaluation of the predicted model, called signal-to-noise ratio (SNR, Eq.~\ref{SNR}). SNR is the trade-off between the signal and its associated noise acquired during the measurement by any sensor. The higher the SNR (in decibels) values the better it will be the fit of the predicted model. For a signal to be “visible”,  \cite{Strum2014} suggest an SNR value of at least 3, which means the signal is 3 times bigger than the noise. Thus, both $R^2$ and SNR techniques are appropriate to be used as a criteria filtering for reliability for dipolar inversions.
 
-[INCLUIR A ESTIMATIVA DE NÃO-DIPOLARIDADE]
+\begin{equation}
+\label{R2}
+\begin{aligned}
+\large R^2 = 1 - \frac{ {\left( b_z - {b_{z}}_{dipole} \right)}^2 }{{\left( b_z - \bar{b_z} \right)}^2}
+\end{aligned}
+\end{equation}
+
+\begin{equation}
+\label{SNR}
+\begin{aligned}
+\large SNR = 10 \log_{10}{\left( \frac{{{\sigma}^2}_{dipole}}{{{\sigma}^2}_{residual}} \right)}
+\end{aligned}
+\end{equation}
+
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -522,13 +530,31 @@ synthetic data seeks to more faithfully emulate real magnetic microscopy data.
 
 \subsection{Simple simulation: Validating the methodology}
 
-\begin{figure}[tb]
-\centering
-\includegraphics[width=1\linewidth]{figures/simple-synthetic-data.png}
-\caption{
-  a) Synthetic data contaminated with psedo-random normal noise. b) Individual sources window position (yellow squares) obtained with the blob detection algorithm applied on the total gradient map.
-}
-\label{fig_synthetic_simple_data}
+\begin{figure}[!tb]
+  \centering
+  \includegraphics[width=1\linewidth]{figures/simple-synthetic-data.png}
+  \caption{
+    Synthetic data and the various processing steps performed prior to the
+    dipole moment inversion. 
+    a) The synthetic noise-corrupted $b_z$ observations at 
+    $z = \qty{5}{\micro\meter}$ due to four dipolar sources with different
+    depths and dipole moment vectors 
+    (see Table~\ref{tab_synthetic_simple_results}).
+    b) The upward-continued data to $z = \qty{10}{\micro\meter}$ showing
+    attenuated short-wavelength noise.
+    c) The total gradient amplitude (TGA) calculated from the 
+    upward-continued data, which is able to concentrate the signal on top
+    of each dipolar source. 
+    d) The contrast-stretched TGA, highlighting the signal of all four
+    sources, including the weak central source.
+    e) The detected source bounding boxes (black squares) which correctly
+    identify the signal of all four sources.
+    f) The estimated source locations (colored circles) from Euler 
+    Deconvolution of the upward-continued data inside each bounding box. 
+    The color represents the difference between the true and estimated 
+    $z$ coordinates.
+  }
+  \label{fig_synthetic_simple_data}
 \end{figure}
 
 Figure~\ref{fig_synthetic_simple_data}a shows the vertical component of the magnetic field
@@ -551,7 +577,7 @@ sphere/punctual source, therefore obtaining the Cartesian coordinates of each
 source causing the magnetic potential anomaly in the observed data set (Table
 1).
 
-\begin{figure}[!t]
+\begin{figure}[tb]
 \centering
 \includegraphics[width=0.75\linewidth]{figures/simple-synthetic-dipole-moment.png}
 \caption{
@@ -609,10 +635,12 @@ domain. The noise-corrupted synthetic $b_z$ image is shown in
 Figure~\ref{E9td9j9aBB}a.
 
 \begin{figure}[t]
-\centering
-\includegraphics[width=1\linewidth]{figures/ComplexSynthetic.png}
-\caption{a) Complex synthetic data contaminated with  both high and low frequencies noise. b) Individual sources' window position (yellow squares) obtained with the blob detection algorithm applied on the total gradient map.}
-\label{e9td9j9abb}
+  \centering
+  \includegraphics[width=1\linewidth]{figures/ComplexSynthetic.png}
+  \caption{
+    a) Complex synthetic data contaminated with  both high and low frequencies noise. b) Individual sources' window position (yellow squares) obtained with the blob detection algorithm applied on the total gradient map.
+  }
+  \label{e9td9j9abb}
 \end{figure}
 
 The result of the source detection method is shown in Figure~\ref{E9td9j9aBB}b,
