@@ -232,17 +232,9 @@ homogeneity equation
 \end{equation}
 
 \noindent
-in which $(x_c, y_c, z_c)$ are the coordinates of the magnetic field source
-(Figure~\ref{fig_coordinate_systems}), $b$ is the base level representing a
-constant shift in the signal, and $\eta$ is the structural index corresponding
-to the nature of the source \citep{Reid1990}. This equation holds true for
-simple geometric sources, like spheres, dipoles, and vertical cylinders. Here,
-we assume that the magnetic particles are small enough and the sensor is far
-enough away that the sources can be represented by dipoles, yielding an
-$\eta=3$.
+in which $(x_c, y_c, z_c)$ are the coordinates of the magnetic field source (Figure~\ref{fig_coordinate_systems}), $b$ is the base level representing a constant shift in the signal, and $\eta$ is the structural index corresponding to the nature of the source \citep{Reid1990}. This equation holds true for simple geometric sources, like spheres, dipoles, and vertical cylinders. Here, we assume that the magnetic particles are small enough and the sensor is far enough away that the sources can be represented by dipoles, yielding an $\eta=3$.
 
-The inversion is performed by rearranging Equation~\ref{eq_euler_homogeneity}
-into a pseudo-parametric model with parameters $x_c$, $y_c$, $z_c$, and $b$
+The inversion is performed by rearranging Equation~\ref{eq_euler_homogeneity} into a pseudo-parametric model with parameters $x_c$, $y_c$, $z_c$, and $b$
 
 \begin{equation}
 x_c \partial_x f + y_c \partial_x f + z_c \partial_x f + \eta b
@@ -251,9 +243,7 @@ x \partial_x f + y \partial_y f + z \partial_z f + \eta f
 \ .
 \end{equation}
 
-Given a set of $N$ observations of the magnetic field as the harmonic function
-$f$ and its spatial derivatives, we can form the $N \times 4$ system of
-equations
+Given a set of $N$ observations of the magnetic field as the harmonic function $f$ and its spatial derivatives, we can form the $N \times 4$ system of equations
 
 \begin{equation}
 \begin{bmatrix}
@@ -282,11 +272,7 @@ In matrix notation, this linear system can be written as
 \mathbf{G} \mathbf{p} = \mathbf{h} \ .
 \end{equation}
 
-We can arrive at a solution to Equation~\ref{eq_euler_forward} by assuming that
-the three spatial derivatives of $f$ have negligible error and minimizing the
-misfit $\phi(\mathbf{p})$ between a pseudo-observation vector $\mathbf{h}^o$
-and the predictions $\mathbf{h}$. The least-squares misfit $\phi(\mathbf{p})$
-is defined as
+We can arrive at a solution to Equation~\ref{eq_euler_forward} by assuming that the three spatial derivatives of $f$ have negligible error and minimizing the misfit $\phi(\mathbf{p})$ between a pseudo-observation vector $\mathbf{h}^o$ and the predictions $\mathbf{h}$. The least-squares misfit $\phi(\mathbf{p})$ is defined as
 
 \begin{equation}
 \label{ZTSuSBbL16}
@@ -344,11 +330,7 @@ $\mathbf{b}$ of a dipole as
 \end{equation}
 
 \noindent
-in which $r = \sqrt{(x - x_c)^2 + (y - y_c)^2 + (z - z_c)^2}$ is the Cartesian
-distance between the observation point $(x, y, z)$ and the source $(x_c, y_c,
-z_c)$ and $\mu_0$ is the vacuum magnetic permeability. Most magnetic
-microscopes provide measurements of only the vertical component $b_z$, which
-can be isolated from Equation~\ref{eq_vector_dipole_field} as
+in which $r = \sqrt{(x - x_c)^2 + (y - y_c)^2 + (z - z_c)^2}$ is the Cartesian distance between the observation point $(x, y, z)$ and the source $(x_c, y_c, z_c)$ and $\mu_0$ is the vacuum magnetic permeability. Most magnetic microscopes provide measurements of only the vertical component $b_z$, which can be isolated from Equation~\ref{eq_vector_dipole_field} as shown in Equation~\ref{eq_dipole_bz}, which is a similar approach to the uniform model proposed by \cite{Weiss2007}.
 
 \begin{equation}
 \label{eq_dipole_bz}
@@ -381,8 +363,7 @@ The three second-order derivatives in Equation~\ref{eq_dipole_bz} are
 \end{aligned}
 \end{equation}
 
-Given a set of $N$ observations of $b_z$ made inside a window containing a
-single source, we can form the $N \times 3$ linear equation system
+Given a set of $N$ observations of $b_z$ made inside a window containing a single source, we can form the $N \times 3$ linear equation system 
 
 \begin{equation}
 \label{CgjOtKLQKT}
@@ -452,7 +433,7 @@ m &= \sqrt{m_x^2 + m_y^2 + m_z^2} \ .
 
 It is important to note that these are not paleomagnetic declination and inclination angles, but are instead related to the sample coordinate system. To obtain the paleomagnetic direction, the dipole moment vector must be rotated to the sample field orientation prior to the application of Equation~\ref{eq_vector_to_incdec}.
 
-In a micromagnetic survey, or any geophysical survey, measurements are affected by noise caused by experimental errors, equipment inaccuracies and sensors limitations. This noise added to the observed data vector affects the solution of the estimated parameter vector $\mathbf{m}$, regardless of the method used. Assuming that the noise in the observed data measure is independent and of variance ${\sigma_0}^2$, the latter given by (i) the squared standard deviation used in synthetic cases (e.g., pseudo-random normal distributions) or (ii) the sensor limitations for real samples. Nevertheless, if the sample's variance is not known, one can typically estimate it by using the \emph{$\chi^2$} statistic, \citep[Eq.~\ref{chi_square},][]{Aster2019}, which depends on the residual sum of squares and the degrees of freedom (\emph{v}), the latter being the difference between the number of observed data points (N) and the parameters (m).
+In a micromagnetic survey, or any geophysical survey, measurements are affected by noise caused by experimental errors, equipment inaccuracies, and sensor limitations. This noise added to the observed data vector affects the solution of the estimated parameter vector $\mathbf{m}$, regardless of the method used. Assuming that the noise in the observed data measure is independent and of variance ${\sigma_0}^2$, the latter given by (i) the squared standard deviation used in synthetic cases (e.g., pseudo-random normal distributions) or (ii) the sensor limitations for real samples. Nevertheless, if the sample's variance is not known, one can typically estimate it by using the \emph{$\chi^2$} statistic, \citep[Eq.~\ref{chi_square},][]{Aster2019}, which depends on the residual sum of squares and the degrees of freedom (\emph{v}), the latter being the difference between the number of observed data points (N) and the parameters (m).
 
 \begin{equation}
   \label{chi_square}
@@ -488,7 +469,7 @@ by the propagation of uncertainties
 \noindent
 These variances reflect the sensitivity of the estimated dipole moment to random noise in the magnetic field observations. However, they do not capture other, often larger, sources of uncertainty like systematic errors in the observations, data positioning errors, and the validity of the dipolar approximation. Therefore, we recommend that these estimated variances be treated with caution and should not be interpreted as ``the degree of certainty that the estimated values are the true values''.
 
-It is relevant to highlight that parameters retrieved during inversion procedures do not always explain the observed data, so it is necessary to evaluate the fitting of the predicted data obtained with these parameters. \cite{Fu2020} apply the calculation of the "non-dipolarity parameter (\emph{D})" by calculating the coefficient of determination ($R^2$, Eq.~\ref{R2}). The latter has a maximum value of 1, if \emph{D} is close enough to this value, a simple dipole model is able to explain the measured data. On the other hand, low values of $R^2$ indicate that the predicted model does not explain the observed data. Some authors \citep[e.g.,][]{Myre2019, CortesOrtuno2021, Lima2009} use another approach for the evaluation of the predicted model, called signal-to-noise ratio (SNR, Eq.~\ref{SNR}). SNR is the trade-off between the signal and its associated noise acquired during the measurement by any sensor. The higher the SNR (in decibels) values the better it will be the fit of the predicted model. For a signal to be “visible”,  \cite{Strum2014} suggest an SNR value of at least 3, which means the signal is 3 times bigger than the noise. Thus, both $R^2$ and SNR techniques are appropriate to be used as a criteria filtering for reliability for dipolar inversions.
+It is relevant to highlight that parameters retrieved during inversion procedures do not always explain the observed data, so it is necessary to evaluate the fitting of the predicted data obtained with these parameters. \cite{Fu2020} apply the calculation of the "non-dipolarity parameter (\emph{D})" by calculating the coefficient of determination ($R^2$, Eq.~\ref{R2}). The latter has a maximum value of 1, if \emph{D} is close enough to this value, a simple dipole model is able to explain the measured data. On the other hand, low values of $R^2$ indicate that the predicted model does not explain the observed data. Some authors \citep[e.g.,][]{Myre2019, CortesOrtuno2021, Lima2009} use another approach for the evaluation of the predicted model, called signal-to-noise ratio (SNR, Eq.~\ref{SNR}). SNR is the trade-off between the signal and its associated noise acquired during the measurement by any sensor. The higher the SNR (in decibels) values the better it will be the fit of the predicted model. For a signal to be “visible”,  \cite{Strum2014} suggest an SNR value of at least 3, which means the signal is 3 times bigger than the noise. Thus, both $R^2$ and SNR techniques are appropriate to be used as criteria filtering for reliability for dipolar inversions.
 
 \begin{equation}
 \label{R2}
