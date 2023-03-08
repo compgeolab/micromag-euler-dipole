@@ -6,6 +6,7 @@ Functions for performing the processing and inversion of the microscopy data.
 """
 import numpy as np
 import xarray as xr
+import scipy.io
 import skimage.feature
 import numba
 import harmonica as hm
@@ -15,6 +16,7 @@ import choclo
 
 TESLA_TO_NANOTESLA = 1e9
 MICROMETER_TO_METER = 1e-6
+METER_TO_MICROMETER = 1e6
 
 
 def gaussian_noise(error, shape, seed=None):
@@ -218,9 +220,10 @@ def dipole_moment_inversion(data, dipole_coordinates):
     # Estimate of the true error variance (since we'll never know it)
     chi_squared = residuals_sum_sq / (n_data - n_params)
     covariance = chi_squared * np.linalg.inv(hessian)
-    r2 = 1 - residuals_sum_sq / np.linalg.norm(d - d.mean()) ** 2  # determination coeficient (dimensionless)
-    SNR = 10*np.log10(np.var(d, ddof=1)/np.var(residuals, ddof=1)) # signal-to-noise ratio in decibels (dB)
-
+    # R² Coeficient of Determination (dimensionless)
+    r2 = 1 - residuals_sum_sq / np.linalg.norm(d - d.mean()) ** 2
+    # signal-to-noise ratio in decibels (dB)
+    SNR = 10 * np.log10(np.var(d, ddof=1) / np.var(residuals, ddof=1)) 
     return dipole_moment, covariance, r2, SNR
 
 
@@ -365,3 +368,31 @@ def euler_deconvolution(data, x_deriv, y_deriv, z_deriv):
     )
     p = np.linalg.solve(G.T @ G, G.T @ h)
     return p[:3], p[3]
+
+
+def load_qdm(path):
+    """
+    Load QDM microscopy data in the Harvard group format.
+    """
+    contents = scipy.io.loadmat(path)
+    # For some reason, the spacing is returned as an array with a single
+    # value. That messes up operations below so get the only element out.
+    spacing = contents['step'].ravel()[0] * METER_TO_MICROMETER
+    bz = contents['Bz'] * TESLA_TO_NANOTESLA
+    sensor_sample_distance = contents['h'] * METER_TO_MICROMETER
+    x = np.arange(bz.shape[1]) * spacing
+    y = np.arange(bz.shape[0]) * spacing
+    z = np.full(bz.shape, sensor_sample_distance)
+    data = vd.make_xarray_grid(
+        (x, y, z), 
+        bz, 
+        data_names=["bz"], 
+        dims=("y", "x"), 
+        extra_coords_names="z",
+    )
+    data.x.attrs = {"units": "µm"}
+    data.y.attrs = {"units": "µm"}
+    data.z.attrs = {"long_name": "sensor sample distance", "units": "µm"}
+    data.bz.attrs = {"long_name": "vertical magnetic field", "units": "nT"}
+    data.attrs = {"file_name": str(path)}
+    return data
