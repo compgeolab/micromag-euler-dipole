@@ -21,7 +21,5 @@ dependencies:
   # Fatiando
   - pooch
   - verde
-  - harmonica
+  - harmonica>=0.6.0
   - choclo
-  - pip:
-    - git+https://github.com/fatiando/harmonica
