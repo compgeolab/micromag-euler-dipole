@@ -460,7 +460,7 @@ by the propagation of uncertainties
 \noindent
 These variances reflect the sensitivity of the estimated dipole moment to random noise in the magnetic field observations. However, they do not capture other, often larger, sources of uncertainty like systematic errors in the observations, data positioning errors, and the validity of the dipolar approximation. Therefore, we recommend that these estimated variances be treated with caution and should not be interpreted as ``the degree of certainty that the estimated values are the true values''.
 
-It is relevant to highlight that parameters retrieved during inversion procedures do not always explain the observed data, so it is necessary to evaluate the fitting of the predicted data obtained with these parameters. \cite{Fu2020} apply the calculation of the "non-dipolarity parameter (\emph{D})" by calculating the coefficient of determination ($R^2$, Eq.~\ref{R2}). The latter has a maximum value of 1, if \emph{D} is close enough to this value, a simple dipole model is able to explain the measured data. On the other hand, low values of $R^2$ indicate that the predicted model does not explain the observed data. Some authors \citep[e.g.,][]{Myre2019, CortesOrtuno2021, Lima2009} use another approach for the evaluation of the predicted model, called signal-to-noise ratio (SNR, Eq.~\ref{SNR}). SNR is the trade-off between the signal and its associated noise acquired during the measurement by any sensor. The higher the SNR (in decibels) values the better it will be the fit of the predicted model. For a signal to be “visible”,  \cite{Strum2014} suggest an SNR value of at least 3, which means the signal is 3 times bigger than the noise. Thus, both $R^2$ and SNR techniques are appropriate to be used as criteria filtering for reliability for dipolar inversions.
+It is relevant to highlight that parameters retrieved during inversion procedures do not always explain the observed data, so it is necessary to evaluate the fitting of the predicted data obtained with these parameters. \cite{Fu2020} apply the calculation of the "non-dipolarity parameter (\emph{D})" by calculating the coefficient of determination ($R^2$, Eq.~\ref{R2}). The latter has a maximum value of 1, if \emph{D} is close enough to this value, a simple dipole model is able to explain the measured data. On the other hand, low values of $R^2$ indicate that the predicted model does not explain the observed data. \cite{CortesOrtuno2021} use another approach for the evaluation of the predicted model fit, called signal-to-noise ratio (SNR), here we modified it to be given in decibels (Eq.~\ref{SNR}). SNR is the trade-off between the signal and its associated noise acquired during the measurement by any sensor. The higher the SNR values the better it will be the fit of the predicted model. For a signal to be “visible”, \cite{Strum2014} suggest an SNR value of at least 3, which means the signal is 3 times bigger than the noise. Thus, both $R^2$ and the concept of SNR are appropriate to be used as criteria filtering for reliability for dipolar inversions.
 
 \begin{equation}
 \label{R2}
@@ -538,18 +538,16 @@ The central positions of each source obtained with ED were used as an input para
     \small
     \input{simple-synthetic-results.tex}
   \end{center}
-  \caption{Meh}
+  \caption{Each source positioning and magnetization parameters modeled and recovered by the least square estimator, respectively.}
   \label{tab_synthetic_simple_results}
 \end{table}
-
-\citet{Oliveira2015Estimation} proved that the magnetization directions (D and I) recovered by the least squares estimator are sensitive to variations in the horizontal coordinates of the center of the magnetic sources, but are practically insensitive to variations in depth. Thus, they consider the Euler deconvolution method as an adequate technique to estimate the central positions that will be used as prior information for inversion. This occurs mainly because, when well performed, the recovery of the horizontal coordinates of the source central position is considerably accurate, while the vertical coordinate can undergo greater variation even though it still provides satisfactory results \citep{Silva20033D, Melo2013}.
 
 
 \subsection{Complex simulation: Testing applicability}
 
-This test represents a more complex scenario by simulating 100 sources randomly distributed in the imaged area of a synthetic thin section of 2000 x 2000 $\mu m$. The synthetic $b_z$ data were generated on a regular grid with 2 $\mu m$ spacing and 5 $\mu m$ sample-sensor distance. For greater fidelity to real samples, the magnetic sources are modeled as dipoles with different depths and magnetic moment intensity. The depths vary between 1 and 20 $\mu m$, while the magnetic moment intensity range from $10^{-12}$ to $10^{-14}$ $Am^2$. 
+This test represents a more complex scenario by simulating 100 sources randomly distributed in the imaged area of a synthetic thin section of 2000 x 2000 $\mu m$. The synthetic $b_z$ data were generated on a regular grid with 2 $\mu m$ spacing and 5 $\mu m$ sample-sensor distance. For greater fidelity to real samples, the magnetic sources are modeled as dipoles with different depths and magnetic moment intensity. The depths vary between 1 and 20 $\mu m$, while the magnetic moment intensity ranges from $10^{-12}$ to $10^{-14}$ $Am^2$. 
 
-To add more complexity, we simulate two stable magnetization  directions, both sampled from a pseudo-random Gaussian distribution, this randomness simulates the NRM found in real ferromagnetic particles that vary individually but average out to the inducing field direction. The first group of sources ($n = 70$) has a magnetization mean direction of D = 0°, I = 0°, and a standard deviation of 10°. While the second one ($n = 30$) has a magnetization mean direction of D = 180°, I = 0°, also with standard deviation of 10°. Finally, we contaminated the data with high-frequency normally-distributed pseudo-random noise with zero means and 50 nT standard deviations, as well as with low-frequency noise in the form of additional deep sources beyond the modeling domain. The noise-corrupted synthetic $b_z$ image is shown in Figure~\ref{complex-synthetic-data}a.
+To add more complexity, we simulate two stable magnetization  directions, both sampled from a pseudo-random Gaussian distribution, this randomness simulates the NRM found in real ferromagnetic particles that vary individually but average out to the inducing field direction. The first group of sources ($n = 70$) has a magnetization mean direction of D = 0°, I = 0°, and a standard deviation of 10°. While the second one ($n = 30$) has a magnetization mean direction of D = 180°, I = 0°, also with standard deviation of 10°. Finally, we contaminated the data with high-frequency normally-distributed pseudo-random noise with zero mean and 50 nT standard deviation, as well as with low-frequency noise in the form of additional deep sources beyond the modeling domain. The noise-corrupted synthetic $b_z$ image is shown in Figure~\ref{complex-synthetic-data}a.
 
 \begin{figure}[t]
   \centering
@@ -572,9 +570,9 @@ To add more complexity, we simulate two stable magnetization  directions, both s
   \label{complex-synthetic-data}
 \end{figure}
 
-Since now the data have both high and low-frequency noise, we performed a $5^{th}$ degree polynomial fitting to remove the low-frequency wavelength from the signal. Subsequently, we applied an upward continuation to get rid of the high-frequency ones (Fig.~\ref{complex-synthetic-data}b). Followed by the TGA map calculation (Fig.~\ref{complex-synthetic-data}c), stretched-contrast filter (Fig.~\ref{complex-synthetic-data}d), and blob detection algorithm (Fig.~\ref{complex-synthetic-data}e). The positioning result of each source by window detection method is shown in Figure~\ref{complex-synthetic-data}e, where 98 particles out of the original 100 were detected. 
+Since now the data have both high and low-frequency noise, we performed a $5^{th}$ degree polynomial fitting to remove the low-frequency wavelength from the signal. Subsequently, we applied an upward continuation to get rid of the high-frequency ones (Fig.~\ref{complex-synthetic-data}b). Followed by the TGA map calculation (Fig.~\ref{complex-synthetic-data}c), stretched-contrast filter (Fig.~\ref{complex-synthetic-data}d), and blob detection algorithm (Fig.~\ref{complex-synthetic-data}e). The positioning result of each source by window detection method is shown in Figure~\ref{complex-synthetic-data}e, where 97 particles out of the original 100 were detected. 
 
-The spatiality of the inversion results is one of the key advantages of magnetic microscopy over the classic techniques of paleomagnetism. Therefore, we present the inversion results spatially so that we can evaluate any patterns in their distribution.
+The spatiality of the inversion results is one of the key advantages of magnetic microscopy over the classic techniques of paleomagnetism. Therefore, we present the inversion results spatially so that we can evaluate any patterns in their distribution. The depth and dipolar moment of each particle are represented by horizontal and vertical error bars (Fig.~\ref{complex-synthetic-comparison}), respectively. These two variables are useful proxies for reliably determining the range for the width and amplitude range of the vertical component magnetic signal the technique is able to identify, which is crucial to know when evaluating these types of inversion results.
 
 Figure~\ref{complex-synthetic-comparison} shows the difference between the estimated dipole moments and the true values for each of the 97 particles that were identified and the model fitting tests. Firstly, we evaluate the magnetic direction misfits by calculating the module of the angular difference between the true and the estimated magnetization vectors (Fig.~\ref{complex-synthetic-comparison}a). Afterward, we calculate the dipole moment misfits in percentage (~$|~100 \left( m_{true} - m_{estimate}\right)~/~\left(m_{true}\right)~|$~), as shown in Figure~\ref{complex-synthetic-comparison}b). Then, the fitting tests were performed using the equations~\ref{R2}-~\ref{SNR} in an attempt to select which criterion best separates data with good fitting and low errors of direction and dipole moment. Figure~\ref{complex-synthetic-comparison}c shows the R² coefficient, or the \emph{D} parameter of the non-dipolarity test \citep{Fu2020}, representing how well the dipolar model is able to explain the observed data in the given window. On the other hand, the SNR is capable to express the power of the predicted model over its residual, therefore can select which sources are more "visible" by the sensor (Fig.~\ref{complex-synthetic-comparison}d). Consequently yielding results directly proportional to the R² coefficient. 
 
@@ -587,22 +585,6 @@ The validation of the result obtained with the inversion was calculated for each
 }
 \label{complex-synthetic-comparison}
 \end{figure}
-
-The depth and dipolar moment of each particle are represented by horizontal and vertical error bars (Fig.~\ref{complex-synthetic-comparison}), respectively. These two variables are useful proxies for reliably determining the range for the width and amplitude range of the vertical component magnetic signal the technique is able to identify, which is crucial to know when evaluating these types of inversion results.
-The application in complex synthetic data allows observing the strengths and limitations of the proposed methodology. Some of the strengths that can be mentioned are: (i) the applied technique not only detects most of the modeled sources but also (ii) most of the recovered magnetic parameters have considerably low errors, especially in the directions, usually less than 5° (Fig.~\ref{complex-synthetic-comparison}a). (iii) The magnetic moments obtained from well-individualized sources tend to not deviate much from the real values (Fig.~\ref{complex-synthetic-comparison}b) when R\textsuperscript{2} and SNR scores are high (e.g., $\geq 0.95$ and $\geq 10$, respectively) (Fig.~\ref{complex-synthetic-comparison}c-d). (iv) Shallow particles grouped in clusters are usually well individualized during window selection, as well as (v) some particles that produce a weak magnetic signal but isolated particles.
-
-The main limitations observed are: (i) the blob detection fails when there are sources too close, grouping them into the same window, thus causing an erroneous result both for Euler deconvolution and for the magnetic parameters. (ii) The very same occurs when there is a source under another, in this case, the magnetic signal is the sum of both. (iii) In clusters of larger and/or deeper particles, although the method individualizes them well, the magnetic signal of the neighboring particles can considerably influence the result of the inversion. Apparently, there is a direct relationship between the dipole intensity and depth with the observed errors. It is clear from the error bars in Figure~\ref{complex-synthetic-comparison} that deep particles and/or particles with small magnetic intensity generate worse results essentially because they will produce smaller anomalous fields in the magnetic maps. Note nonetheless, that even sources with small dipole moments when close to the surface are adequately modeled by our method, because of the trade-off between signal and noise.
-
-
-%\begin{figure}[!htbp]
-%\centering
-%\includegraphics[width=1\linewidth]{figures/complex-synthetic-fitting-test.png}
-%\caption{
-%a)
-%}
-%\label{complex-synthetic-fitting-test}
-%\end{figure}
-
 
 Figure~\ref{complex-synthetic-stereograms} shows stereograms with the directions generated by the modeled (Fig.~\ref{complex-synthetic-stereograms}a) and the estimated vectors (Fig.~\ref{complex-synthetic-stereograms}b) for each source. The distribution of the estimated directions is coincident with the true directions aside from a few sources, the same ones with the higher values of direction misfit (Fig.~\ref{complex-synthetic-comparison}a) which is probably associated with the mutual interference of sources close to each other or within the same window. When filtered to include only data with R\textsuperscript{2} \textgreater 0.95 and SNR \textgreater 10 the obtained direction distribution is closer to the true distribution (Fig.~\ref{complex-synthetic-stereograms}c).
 
@@ -627,8 +609,7 @@ Wintimdouine cave in the Agadir region (Morocco) \citep{Ait2019Hydro}. This
 speleothem contains both magnetite and hematite as the main carriers of
 magnetic remanence, as attested by thermomagnetic curves with temperature
 decays at {\textasciitilde}580 °C and {\textasciitilde}680 °C, and bimodal
-curves of isothermal remanent magnetization (IRM) acquisition (Carmo et al.,
-2019).
+curves of isothermal remanent magnetization (IRM) acquisition \citep{carmo2019speleothem}.
 
 In order to provide two distinct directions associated with the different
 magnetic mineral types in this sample, we applied two IRM pulse fields of 2.7 T
@@ -656,7 +637,7 @@ obtained with the blob detection algorithm applied on the total gradient map.
 \label{real-data}
 \end{figure}
 
-After applying the ED algorithm, we performed the inversion of the magnetic moment for each of the 103 windows selected previously. In order to reduce considerably the computation time, the inversions were done within each data window, instead of solving all sources parameters at the same time. We obtained the magnetic moment and the direction for all 103 magnetic grains (Figure~\ref{real-data-stereograms}a). Then, we calculated the residuals of the inversions in each window and subsequently the coefficient of determination R\textsuperscript{2} and signal-to-noise ratio (SNR), which were parameters used as filters for the best directions obtained. We considered a good fit to be achieved when $R^2$ was greater or equal to 0.85 and SNR was greater than to 10. An $R^2$ value of 0.85 indicates that 85\% of the measured magnetic data is explained by the predicted dipole model, which is equivalent as the non-dipolarity test approach \citep{Fu2020}. On the other hand, an SNR of 10 means that the dipolar signal is 10 times greater than the residual noise. By using these criteria, we ensured that the fit was sufficiently accurate and that the dipole model provided a reliable approximation of the original magnetic data. This filtering technique removed the poorly fit predicted models as well as the ones too corrupted with noise, showing more clearly the expected directional clusters of hematite and magnetite crystals (Figure~\ref{real-data-stereograms}b).
+After applying the ED algorithm, we performed the inversion of the magnetic moment for each of the 103 windows selected previously. In order to reduce considerably the computation time, the inversions were done within each data window, instead of solving all sources parameters at the same time. We obtained the magnetic moment and the direction for all 103 magnetic grains (Figure~\ref{real-data-stereograms}a). Then, we calculated the residuals of the inversions in each window and subsequently the coefficient of determination R\textsuperscript{2} and signal-to-noise ratio (SNR), which were parameters used as filters for the best directions obtained. We considered a good fit to be achieved when $R^2$ was greater or equal to 0.85 and SNR was greater than 10. An $R^2$ value of 0.85 indicates that 85\% of the measured magnetic data is explained by the predicted dipole model, which is equivalent as the non-dipolarity test approach \citep{Fu2020}. On the other hand, an SNR of 10 means that the dipolar signal is 10 times greater than the residual noise. By using these criteria, we ensured that the fit was sufficiently accurate and the dipole model provided a reliable approximation of the original magnetic data. This filtering technique removed the poorly fit predicted models as well as the ones too corrupted with noise, showing more clearly the expected directional clusters of hematite and magnetite crystals (Figure~\ref{real-data-stereograms}b).
 
 
 \begin{figure}[tb]
@@ -664,7 +645,7 @@ After applying the ED algorithm, we performed the inversion of the magnetic mome
 \includegraphics[width=1\linewidth]{figures/real-data-stereograms.png}
 \caption{
 a) The recovered data, without any type of filtering. b) Recovered data
-filtered by the coefficient of determination ($R^ 2 \geq 0.7$), which shows
+filtered by the coefficient of determination ($\geq 0.85$) and SNR ($\geq 10$), which shows
 two clusters of direction located on each pole of the stereogram.
 }
 \label{real-data-stereograms}
@@ -682,42 +663,64 @@ ESPACIALIDADE DOS AJUSTES E DISCUTIR DA SEGUINTE FORMA:
   OS OUTROS MÉTODOS DE INVERSÃO (Fu, de Groot, Egli2000, Lima2007)
 \end{enumerate}
 
-The application of the proposed algorithm to natural samples gives some
-indications of its ability to circumvent the prominent problems described by
-\citep{CortesOrtuno2022} [QUAIS PROBLEMAS FORAM LISTADOS POR CORTÉS-ORTUÑO?],
-namely: (i)\dots, (ii)\dots, (iii)\dots
 
-the same authors showed that particles in the single vortex PSD state present
-more accurate inversion results when considering the non-dipole components for
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Discussion}
+
+\subsection{Prior information and uniqueness of solutions}
+% simple synthetic
+Working with potential field data might be very tricky once there is too much ambiguity involved during data modeling, thus to obtain unique and reliable results from data inversion it is necessary to provide as much prior information as possible. One way to circumvent the ambiguity is incorporate prior information about the subsurface structure, such as the positioning of a known source of magnetization. Magnetic field measurements are more sensitive to changes in magnetization near the source that is causing the anomaly. When the position of the source is known, it constrains the model to be as consistent as possible to the observed data, hence increasing the likelihood of obtaining unique solutions. \citet{Oliveira2015Estimation} proved that the magnetization directions (D and I) recovered by the least squares estimator are sensitive to variations in the horizontal coordinates of the center of the magnetic sources, but are practically insensitive to variations in depth. Thus, they consider the ED method as an adequate technique to estimate the central positions that will be used as prior information for inversion. This occurs mainly because, when well performed, the recovery of the source's horizontal coordinates is considerably accurate, while the vertical coordinate can undergo greater variation even though it still provides satisfactory results \citep{Silva20033D, Melo2013}. This remark is also observed with the our simple synthetic samples where the horizontal positions estimated slightly deviate from the true values, which implies very little misfits in the recovered magnetic directions. Although the estimated magnetic moment for the said sample is satisfactory, this magnetic parameter is more affected by the variations in the source's depth, which is cause by the ambiguity mentioned before. In summary, in order to estimate all magnetic parameters as precisely as possible the ED must be executed within a data window containing the lowest amount possible of noise, since that high-frequency noise sensibility is one of the main limitations of the technique.
+
+%complex synthetic
+The application in complex synthetic data allows observing the strengths and limitations of the proposed methodology. Some of the strengths that can be mentioned are: (i) the applied technique not only detects most of the modeled sources but also (ii) most of the recovered magnetic parameters have considerably low errors, especially in the directions, usually less than 5° (Fig.~\ref{complex-synthetic-comparison}a). (iii) The magnetic moments obtained from well-individualized sources tend to not deviate much from the real values (Fig.~\ref{complex-synthetic-comparison}b) when R\textsuperscript{2} and SNR scores are high (e.g., $\geq 0.95$ and $\geq 10$, respectively) (Fig.~\ref{complex-synthetic-comparison}c-d). (iv) Shallow particles grouped in clusters are usually well individualized during window selection, as well as (v) some isolated particles that produce a weak magnetic signal. The main limitations observed were: (i) the blob detection fails when there are sources too close, grouping them into the same window, thus causing an erroneous result both for Euler deconvolution and for the magnetic parameters. (ii) The very same occurs when there is a source under another, in this case, the magnetic signal is the sum of both. (iii) In clusters of larger and/or deeper particles, although the method individualizes them well, the magnetic signal of the neighboring particles can considerably influence the result of the inversion. As expected, there is a direct relationship between the dipole intensity and depth with the observed errors. It is clear from the error bars in Figure~\ref{complex-synthetic-comparison} that deep particles and/or particles with small magnetic intensity generate worse results essentially because they will produce smaller anomalous fields in the magnetic maps. Note nonetheless, that even sources with small dipole moments when close to the surface are adequately modeled by our method, because of the trade-off between signal and noise for grains near the sensor.
+
+\subsection{Reliability of dipole moment approximation}
+% real samples
+Our approach relies in the premise of assuming the magnetic anomaly within 
+the data window is a response of a dipolar source. The latter is true when working 
+with particle signals in the SD magnetic domain state, since they are uniform magnetized 
+particles with strong dipolar anomaly. However, \cite{Nagy2017} reported
+that particles within the PSD domain can record the paleomagnetic field for longer (than SD ones) periods
+of time, being the stabler and also with strongly non-dipolar characteristics. 
+Therefore application of the proposed algorithm to natural samples should fail for those PSD
+particles. \cite{CortesOrtuno2022} give important insights about the matter, they 
+showed that PSD state particles present more accurate inversion results when considering the non-dipole components for
 small sample-sensor distances (\textless 1 $\mu$m), but for larger sensor
 distances the dipole as approximations are remarkably accurate, as the
 higher-order moments decay rapidly with distance and therefore have less
 influence on the particle's magnetic signal. Thus, our approach can be
-considered reasonable for working with particle signals in SD (already a
-dipole) and PSD states. The latter happens due to the QDM sensor height being
+considered reasonable for working with both particle SD and PSD states signals. 
+The latter happens mainly due to the sensor height being
 usually greater than 5 $\mu m$, considering a particle on the immediate
-surface of the sample the higher-order moments are already quite attenuated.
+surface of the sample the higher-order moments are already quite attenuated, thus 
+circumventing the prominent problems described for non-dipolar components.
 
 Despite the excellent signal/noise ratio that the SMM provided with the
 proximity of the sensor to the sample, it is worth mentioning that the
 measurement noise can still overshadow the responses of very weak/small, or
 deep particles, generating unreliable inversion results. Therefore, it is
 necessary to keep a check to determine if the inversion reached a satisfactory
-result, such as the coefficient of determination that we used or the
-signal-to-noise ratio presented by \citep{CortesOrtuno2022}.
+result, such as the coefficient of determination and the
+signal-to-noise ratio suggested by \citep{CortesOrtuno2021}.
 
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Additional remarks}
-
-While the windows approach violates the fundamental theory of the inversion problem that requires the sampled area to be finite and encapsulated by the inversion domain to ensure the uniqueness of results \citep{Baratchart2013,Lima2013}, our technique is similar to the one reported by \cite{Weiss2007}. The latter involves thresholding the long-distance interaction of each dipole in the SMM data, which excludes the effect of other dipoles by setting their contribution to zero, resulting in a sparse matrix that permits faster calculations. In contrast to this approach, we employ the windows technique and isolate the main signal of the desired dipole while excluding the rest from the inversion domain. This technique allows us to obtain an approximation of the dipole moment components of each source within a few seconds.
+While the windows approach violates the fundamental theory of the inversion problem that 
+requires the sampled area to be finite and encapsulated by the inversion domain to ensure 
+the uniqueness of results \citep{Baratchart2013,Lima2013}, our technique is similar to the 
+one reported by \cite{Weiss2007}. The last-mentioned involves thresholding the long-distance interaction 
+of each dipole in the SMM data, which excludes the effect of other dipoles by setting their 
+contribution to zero, resulting in a sparse matrix that permits faster calculations. In contrast 
+to this approach, we employ the TGA map to select the windows and isolate the area containing 
+the main signal of the desired dipole, while the area out of the windows boundaries is less sensible to 
+variation in magnetic parameters of this particular source, hence we exclude them from the inversion 
+domain. This technique allows us to obtain the 3D positioning and an approximation of the dipole moment 
+components of more than a hundred sources within less than two seconds.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Conclusion}
 
 We developed an efficient semi-automated method to determine the direction of
-magnetization of dipolar sources on a microscale, as well as the recovery of
+magnetization of dipolar sources on a microscale, as well as the estimate of
 their magnetic moment. Being ideal for a reinterpretation for the application
 of methods of paleomagnetic studies using thin sections of rock samples. This
 would be an attempt to improve the quality of results obtained by isolating the
@@ -725,16 +728,17 @@ responses of more reliable recorders of the Earth's geomagnetic field.
 
 We also present a new, faster, and cleaner way to solve the Euler equation in
 determining the positioning of magnetic anomaly sources using a pre-selection
-of magnetic anomaly source windows based on the Laplacian of the Gaussian
+of magnetic anomaly source windows based on the Laplacian of Gaussian
 applied to total gradient anomaly maps. In this way, reducing the numerous
 solutions to just one data window per source. After estimating the structural
 index ($n = 3$) by approximating the sources generating the magnetic anomaly to
 spheres/points, the Euler deconvolution is performed, and the central position
-of each source is determined.
+of each source is determined. Due to the similarity with aeromagnetic data, this
+approach can also be extrapolated for macro-scale studies.
 
-The recovery of direction and magnetization we only need to assume that the
+To recover magnetic direction and moment we only need to assume that the
 sources have their central positions known (so we apply Euler deconvolution)
-and that their magnetizations are uniform. This last premise aligns with the
+and that their magnetization are uniform. This last premise aligns with the
 theory of magnetically stable particles SD (and the PSD ones at a reasonable
 sensor height), which is the basis of classical paleomagnetism. Also, there is
 no need for any kind of prior knowledge other than the observed magnetic
@@ -742,16 +746,7 @@ anomaly, and the structural index of the sources. Therefore, this method can be
 quickly replicated in a dataset of thin sections of rocks to obtain the
 distributions of magnetic directions of each source identified in the sample.
 
-The test using a simple synthetic sample shows the great capability of the method by retrieving not only the precise center positions, but also retrieving the magnetization directions and intensity even under the considerable effect of high-frequency noise (20 nT). While the complex synthetic sample data allows observing the applicability of the method developed in real samples that are more complex with varied magnetization directions and intensity, in addition to also taking into account the high and low-frequency noise and sources with variable sizes and depths.
-
-\textbf{The real sample data positively answered the question of the algorithm's
-ability to deal with rocks thin sections. But also, showed the acceptable
-capacity (within the adequate R$^2$ threshold) of retrieving different
-magnetization directions recorded by magnetic minerals with different
-coercivities and magnetic signal disparities even greater than predicted in the
-complex synthetic test.}
-
-In our study, we assessed the quality of the fit between the predicted dipole model and the original magnetic data using two criteria: the coefficient of determination ($R^2$) and the signal-to-noise ratio (SNR).
+The test using a simple synthetic sample shows the great capability of the method by retrieving not only the precise center positions, but also retrieving the magnetization directions and intensity even under the considerable effect of high-frequency noise. While the complex synthetic sample data allows observing the applicability of the method developed in real samples that are more complex with varied magnetization directions and intensity, in addition to also taking into account the high and low-frequency noise and sources with variable sizes and depths. The real sample data positively answered the question of the algorithm's ability to deal with rocks thin sections. But also, showed the acceptable capacity of retrieving different magnetization directions recorded by magnetic minerals with different coercivities and magnetic signal disparities even greater than predicted in the complex synthetic test. We also assessed the quality of the fit between the predicted dipole model and the original magnetic data using two criteria: the coefficient of determination ($R^2$) and the signal-to-noise ratio (SNR).
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
