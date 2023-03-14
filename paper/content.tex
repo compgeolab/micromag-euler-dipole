@@ -485,7 +485,7 @@ We first applied our inversion workflow to synthetic data to evaluate its streng
 
 The first synthetic model was performed by generating the vertical magnetic field derived from a simple set of four spheres with similar magnetization intensity and radius, but completely different magnetization directions, contaminated by high-frequency noise. This simplified test model is basically done to investigate the efficiency of the inversions used for Euler positioning and magnetization parameters, thus being a validation of the methodology.
 
-The second model contains one hundred spheres with different radii and magnetization intensities but magnetized in a similar direction within one standard deviation. The magnetic field generated from these sources is corrupted by both low and high-frequency noise. The complexity of this synthetic data seeks to more faithfully emulate real magnetic microscopy data.
+The second model contains one hundred spheres with different magnetization intensities magnetized in two stable directions and similar standard deviation. The magnetic field generated from these sources is corrupted by both low and high-frequency noise. The complexity of this synthetic data seeks to more faithfully emulate real magnetic microscopy data.
 
 
 \subsection{Simple simulation: Validating the methodology}
@@ -570,11 +570,11 @@ To add more complexity, we simulate two stable magnetization  directions, both s
   \label{complex-synthetic-data}
 \end{figure}
 
-Since now the data have both high and low-frequency noise, we performed a $5^{th}$ degree polynomial fitting to remove the low-frequency wavelength from the signal. Subsequently, we applied an upward continuation to get rid of the high-frequency ones (Fig.~\ref{complex-synthetic-data}b). Followed by the TGA map calculation (Fig.~\ref{complex-synthetic-data}c), stretched-contrast filter (Fig.~\ref{complex-synthetic-data}d), and blob detection algorithm (Fig.~\ref{complex-synthetic-data}e). The positioning result of each source by window detection method is shown in Figure~\ref{complex-synthetic-data}e, where 97 particles out of the original 100 were detected. 
+Since now the data have both high and low-frequency noise, we performed a $5^{th}$ degree polynomial fitting to remove the low-frequency wavelength from the signal. Subsequently, we applied an upward continuation to get rid of the high-frequency ones (Fig.~\ref{complex-synthetic-data}b). Followed by the TGA map calculation (Fig.~\ref{complex-synthetic-data}c), stretched-contrast filter (Fig.~\ref{complex-synthetic-data}d), and blob detection algorithm (Fig.~\ref{complex-synthetic-data}e). The positioning result of each source by window detection method is shown in Figure~\ref{complex-synthetic-data}e, where 98 particles out of the original 100 were detected. 
 
 The spatiality of the inversion results is one of the key advantages of magnetic microscopy over the classic techniques of paleomagnetism. Therefore, we present the inversion results spatially so that we can evaluate any patterns in their distribution. The depth and dipolar moment of each particle are represented by horizontal and vertical error bars (Fig.~\ref{complex-synthetic-comparison}), respectively. These two variables are useful proxies for reliably determining the range for the width and amplitude range of the vertical component magnetic signal the technique is able to identify, which is crucial to know when evaluating these types of inversion results.
 
-Figure~\ref{complex-synthetic-comparison} shows the difference between the estimated dipole moments and the true values for each of the 97 particles that were identified and the model fitting tests. Firstly, we evaluate the magnetic direction misfits by calculating the module of the angular difference between the true and the estimated magnetization vectors (Fig.~\ref{complex-synthetic-comparison}a). Afterward, we calculate the dipole moment misfits in percentage (~$|~100 \left( m_{true} - m_{estimate}\right)~/~\left(m_{true}\right)~|$~), as shown in Figure~\ref{complex-synthetic-comparison}b). Then, the fitting tests were performed using the equations~\ref{R2}-~\ref{SNR} in an attempt to select which criterion best separates data with good fitting and low errors of direction and dipole moment. Figure~\ref{complex-synthetic-comparison}c shows the R² coefficient, or the \emph{D} parameter of the non-dipolarity test \citep{Fu2020}, representing how well the dipolar model is able to explain the observed data in the given window. On the other hand, the SNR is capable to express the power of the predicted model over its residual, therefore can select which sources are more "visible" by the sensor (Fig.~\ref{complex-synthetic-comparison}d). Consequently yielding results directly proportional to the R² coefficient. 
+Figure~\ref{complex-synthetic-comparison} shows the difference between the estimated dipole moments and the true values for each of the 98 particles that were identified and the model fitting tests. Firstly, we evaluate the magnetic direction misfits by calculating the module of the angular difference between the true and the estimated magnetization vectors (Fig.~\ref{complex-synthetic-comparison}a). Afterward, we calculate the dipole moment misfits in percentage (~$|~100 \left( m_{true} - m_{estimate}\right)~/~\left(m_{true}\right)~|$~), as shown in Figure~\ref{complex-synthetic-comparison}b). Then, the fitting tests were performed using the equations~\ref{R2}-~\ref{SNR} in an attempt to select which criterion best separates data with good fitting and low errors of direction and dipole moment. Figure~\ref{complex-synthetic-comparison}c shows the R² coefficient, or the \emph{D} parameter of the non-dipolarity test \citep{Fu2020}, representing how well the dipolar model is able to explain the observed data in the given window. On the other hand, the SNR is capable to express the power of the predicted model over its residual, therefore can select which sources are more "visible" by the sensor (Fig.~\ref{complex-synthetic-comparison}d). Consequently yielding results directly proportional to the R² coefficient. 
 
 
 \begin{figure}[htbp!]
@@ -592,7 +592,7 @@ Figure~\ref{complex-synthetic-stereograms} shows stereograms with the directions
 \centering
 \includegraphics[width=1\linewidth]{figures/complex-synthetic-stereograms.png}
 \caption{
-a) Simulation of a thin section of rock with two sets of stable particles uniformly magnetized in the average direction of the induced field (0{\textbackslash}textdegree/0{\textbackslash}textdegree and 180{\textbackslash}textdegree/0{\textbackslash}textdegree. b) The estimated vector directions without any type of filtering. c) Filtering criteria to select the sources' magnetic directions with the best fitting determined by the coefficient of determination ($R^ 2 \geq 0.95$) and signal-to-noise ratio (SNR $ \geq 10$).
+a) Simulation of a thin section of rock with two sets of stable particles uniformly magnetized (dipolar sources) in the average direction of the induced field (0{\textbackslash}textdegree/0{\textbackslash}textdegree and 180{\textbackslash}textdegree/0{\textbackslash}textdegree. b) The estimated vector directions without filtering. c) Filtering criteria to select the sources' magnetic directions with the best fitting determined by the coefficient of determination ($R^ 2 \geq 0.85$) and signal-to-noise ratio (SNR $ \geq 5$).
 }
 \label{complex-synthetic-stereograms}
 \end{figure}
@@ -631,38 +631,32 @@ possible to determine the windows for 103 potential sources
 \centering
 \includegraphics[width=1\linewidth]{figures/real-data.png}
 \caption{
-a) Real sample data. b) Individual sources' window position (yellow squares)
-obtained with the blob detection algorithm applied on the total gradient map.
-}
+    a) The real sample vertical component magnetic data $b_z$ observations at 
+    $z = \qty{5}{\micro\meter}$. 
+    b) Residual anomaly map after the $5^{th}$ degree polynomial signal subtraction and upward-continued data to $z = \qty{10}{\micro\meter}$ to attenuated long and short-wavelength noise, respectively.
+    c) The total gradient amplitude (TGA) calculated from the 
+    upward-continued data. 
+    d) The contrast-stretched TGA.
+    e) The detected source bounding boxes (black squares) that correctly
+    encapsulate the main signal of the sources.
+    f) The estimated source locations (colored circles) from Euler 
+    Deconvolution of the upward-continued data inside each bounding box. 
+    The color represents the estimated $z$ coordinates.
+  }
 \label{real-data}
 \end{figure}
 
-After applying the ED algorithm, we performed the inversion of the magnetic moment for each of the 103 windows selected previously. In order to reduce considerably the computation time, the inversions were done within each data window, instead of solving all sources parameters at the same time. We obtained the magnetic moment and the direction for all 103 magnetic grains (Figure~\ref{real-data-stereograms}a). Then, we calculated the residuals of the inversions in each window and subsequently the coefficient of determination R\textsuperscript{2} and signal-to-noise ratio (SNR), which were parameters used as filters for the best directions obtained. We considered a good fit to be achieved when $R^2$ was greater or equal to 0.85 and SNR was greater than 10. An $R^2$ value of 0.85 indicates that 85\% of the measured magnetic data is explained by the predicted dipole model, which is equivalent as the non-dipolarity test approach \citep{Fu2020}. On the other hand, an SNR of 10 means that the dipolar signal is 10 times greater than the residual noise. By using these criteria, we ensured that the fit was sufficiently accurate and the dipole model provided a reliable approximation of the original magnetic data. This filtering technique removed the poorly fit predicted models as well as the ones too corrupted with noise, showing more clearly the expected directional clusters of hematite and magnetite crystals (Figure~\ref{real-data-stereograms}b).
+After applying the ED algorithm, we performed the inversion of the magnetic moment for each of the 103 windows selected previously. In order to reduce considerably the computation time, the inversions were done within each data window, instead of solving all sources parameters at the same time. We obtained the magnetic moment and the direction for all 103 magnetic grains (Figure~\ref{real-data-stereograms}a). Then, we calculated the residuals of the inversions in each window and subsequently the coefficient of determination R\textsuperscript{2} and signal-to-noise ratio (SNR), which were parameters used as filters for the best directions obtained. We considered a good fit to be achieved when $R^2$ was greater or equal to 0.85 and SNR was greater than 5. An $R^2$ value of 0.85 indicates that 85\% of the measured magnetic data is explained by the predicted dipole model, which is equivalent as the non-dipolarity test approach \citep{Fu2020}. On the other hand, an SNR of 5 means that the dipolar signal is 5 times greater than the residual noise. By using these criteria, we ensured that the fit was sufficiently accurate and the dipole model provided a reliable approximation of the original magnetic data. This filtering technique removed the poorly fit predicted models as well as the ones too corrupted with noise, showing more clearly the expected directional clusters of hematite and magnetite crystals (Figure~\ref{real-data-stereograms}b).
 
 
 \begin{figure}[tb]
 \centering
 \includegraphics[width=1\linewidth]{figures/real-data-stereograms.png}
 \caption{
-a) The recovered data, without any type of filtering. b) Recovered data
-filtered by the coefficient of determination ($\geq 0.85$) and SNR ($\geq 10$), which shows
-two clusters of direction located on each pole of the stereogram.
+a) The estimated directions without filtering. b) Estimated directions filtered by the coefficient of determination ($\geq 0.85$) and SNR ($\geq 5$), which shows two clusters of direction located on each pole of the stereogram.
 }
 \label{real-data-stereograms}
 \end{figure}
-
-NESSA PARTE SERIA INTERESSANTE INCLUIR MAPAS COMO OS DA FIGURA 4B E 4C, COM A
-ESPACIALIDADE DOS AJUSTES E DISCUTIR DA SEGUINTE FORMA:
-
-\begin{enumerate}
-\item RESULTADOS EM FUNÇÃO DA QUALIDADE DO AJUSTE
-\item RESULTADOS EM FUNÇÃO DA DIPOLARIDADE DAS FONTES
-\item CONTEXTUALIZAR O SEU MÉTODO EM RELAÇÃO A OUTROS. COMO OS OUTROS ESTIMAM
-  OS MISFITS? QUE FILTROS USAM? QUAL A DIFERENÇA COM SUA ABORDAGEM? POR
-  ENQUANTO SOMENTE O TRABALHO DE CORTEZ ESTÁ COMENTADO -> COMPARAR COM
-  OS OUTROS MÉTODOS DE INVERSÃO (Fu, de Groot, Egli2000, Lima2007)
-\end{enumerate}
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Discussion}
@@ -756,10 +750,8 @@ The Python source code used to produce all results and figures presented here
 is available at \url{https://github.com/\GitHubRepository} and
 \url{https://doi.org/\ArchiveRepository} under the MIT open-source license.
 
-The image rescaling and blob detection though the Laplacian of Gaussian method
-were performed with the scikit-image library \citep{VanderWalt2014}. CITE OTHER
-SOFTWARE TOOLS USED. Matplotlib for figures, numpy and scipy for almost
-everything. Verde for the regional residual separation and other things.
+The image re-scaling and blob detection though the Laplacian of Gaussian method
+were performed with the scikit-image library \citep{VanderWalt2014}. We also used Matplotlib \citep{Hunter2007} for plotting the figures, numpy \citep{Harris2020} and scipy \citep{2020SciPy-NMeth} for all performed calculations. Verde \citep{verde2018} was used to generate data grids and to perform the regional residual separation, while the upward continuation filter was calculated using Harmonica \citep{harmonica2020}. The Choclo library \citep{choclo2022} provided kernel functions utilized in the forward and inverse problems. Loops were parallelized with the aid of Numba just-in-time compilation \citep{lam2015numba}. Lastly, the xarray library \citep{hoyer2017xarray} offered a fast and powerful tool to work with multi-dimensional datasets allowing an easy way to alteration, visualization and extraction of data with advanced indexing techniques.
 
 The QDM image data is available at CITE A DATAVERSE/FIGSHARE ARCHIVE under the
 CC-XX license.
@@ -767,6 +759,4 @@ CC-XX license.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Acknowledgements}
-
-We are indebted to the developers and maintainers of the open-source software
-without which this work would not have been possible.
+This research project was supported by the Conselho Nacional de Desenvolvimento Científico e Tecnológico (CNPq) - grant 162704/2021-6 and by the Fundação de Amparo à Pesquisa do Estado de São Paulo (FAPESP) - grant 2021/08379-5, the opinions, hypotheses and conclusions or recommendations expressed in this material are the responsibility of the authors and do not necessarily reflect the views of FAPESP. We also acknowledge the support of the Royal Society \textcolor{red}{[insert grant number]} for this research project. We are indebted to the developers and maintainers of the open-source software without which this work would not have been possible.
