@@ -6,6 +6,7 @@ Functions for performing the processing and inversion of the microscopy data.
 """
 import numpy as np
 import xarray as xr
+import matplotlib.pyplot as plt
 import scipy.io
 import skimage.feature
 import numba
@@ -396,3 +397,52 @@ def load_qdm(path):
     data.bz.attrs = {"long_name": "vertical magnetic field", "units": "nT"}
     data.attrs = {"file_name": str(path)}
     return data
+
+
+def plot_dipole_moment(positions, dipole_moments, ax=None, add_colorbar=True, add_key=True, key_coords=(0.1, -0.1), **kwargs):
+    """
+    Plot the dipole moments on a map represented by vectors.
+    
+    Each dipole moment is represented by:
+    
+    * A vector with unit length, direction set by the declination, and color set by inclination.
+    * A perpendicular line with the same color as the vector and with length set to the moment amplitude.
+    """
+    if ax is None:
+        ax = plt.gca()
+      
+    inclination, declination, amplitude = vector_to_angles(dipole_moments)
+    
+    # Calculate the plot vector components
+    u, v = np.sin(np.radians(declination)), np.cos(np.radians(declination))
+    color = inclination
+    scale = vd.maxabs(color)
+    
+    # Keyword arguments for the quiver plots
+    args = dict(
+        cmap="seismic",
+        clim=(-scale, scale),
+        pivot="mid",
+        width=0.005, 
+        scale=15,
+        headlength=3, 
+        headaxislength=3,
+    )
+    
+    args.update(kwargs)
+    dir_quiver = ax.quiver(*positions[:2], u, v, color, **args)
+    
+    # Make headless vectors at 90° to represent the amplitude
+    scale = amplitude / amplitude.max()
+    angle = np.radians(declination + 90)
+    u, v = scale * np.sin(angle), scale * np.cos(angle)    
+    args.update(headlength=0, headwidth=1, headaxislength=0)
+    amp_quiver = ax.quiver(*positions[:2], u, v, color, **args)
+    
+    if add_colorbar:
+        plt.colorbar(dir_quiver, ax=ax, label="inclination (°)")
+        
+    if add_key:
+        ax.quiverkey(amp_quiver, *key_coords, 1, label=f"{amplitude.max():.0e} A.m²\namplitude", labelpos="S")
+                     
+    return dir_quiver, amp_quiver
