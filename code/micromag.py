@@ -427,17 +427,20 @@ def plot_dipole_moment(positions, dipole_moments, ax=None, add_colorbar=True, ad
         scale=15,
         headlength=3, 
         headaxislength=3,
+        edgecolor='k',
+        linewidth = 0.35,
     )
     
     args.update(kwargs)
-    dir_quiver = ax.quiver(*positions[:2], u, v, color, **args)
+    dir_quiver = ax.quiver(*positions[:2], u, v, color, **args, zorder=1)
     
     # Make headless vectors at 90° to represent the amplitude
-    scale = amplitude / amplitude.max()
+    threshold_scale = abs(np.log10(amplitude))
+    scale = abs(threshold_scale-threshold_scale.max())/6 #amplitude / amplitude.max()
     angle = np.radians(declination + 90)
     u, v = scale * np.sin(angle), scale * np.cos(angle)    
     args.update(headlength=0, headwidth=1, headaxislength=0)
-    amp_quiver = ax.quiver(*positions[:2], u, v, color, **args)
+    amp_quiver = ax.quiver(*positions[:2], u, v, color, **args, zorder=0)
     
     if add_colorbar:
         plt.colorbar(dir_quiver, ax=ax, label="inclination (°)")
