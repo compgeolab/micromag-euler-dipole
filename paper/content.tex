@@ -1,12 +1,11 @@
 \section{Introduction}
 
-Several branches of Earth Sciences have demonstrated the importance of the
-``spatiality" of the data on a microscopic scale, mainly in geochemistry and
-geochronology applications where it is possible to perform punctual analysis
+Several branches of Earth Sciences have demonstrated the importance of spatial resolution on a microscopic scale. For example, geochemistry and
+geochronology applications have benefited from point-wise analyses
 and compositional maps, allowing significant advances in the understanding of
 igneous, metamorphic and sedimentary processes \citep{Verberne2020, Barnes2019,
 Davidson2007}. Classical paleomagnetic techniques, on the other hand, consist
-in analyzing bulk samples, where the magnetic signal of a single specimen is
+of analyzing bulk samples, where the magnetic signal of a single specimen is
 the result of the sum of moments of a large assembly of ferromagnetic grains
 \citep{Dunlop1997}. Typically, a standard paleomagnetic sample of
 approximately \qty{10}{\cm\cubed} would contain hundreds of thousands
@@ -16,15 +15,15 @@ PSD) with sizes below \qty{1}{\um}, to large ($\gg \qty{1}{\um}$) grains with
 multi-domain (MD) magnetic structures, which are less stable magnetic recorders
 \citep{Berndt2016}. These large MD grains usually conceal the signal of the SD
 and PSD grains, and techniques of step-wise thermal and magnetic treatments are
-needed to unveil the more stable and reliable magnetic record
+needed to unveil this more stable and reliable magnetic record
 \citep{Tauxe2018}. Recently, magnetic microscopy techniques opened the
-possibility of performing magnetic maps at the micro-scale and recovering the
+possibility of obtaining magnetic field maps at the micro-scale and recovering the
 magnetization of each grain, therefore enabling the separate analysis of stable
 and unstable magnetic particles \citep{DeGroot2018, Lima2014, Weiss2007,
 DeGroot2014}.
 
 In order to apply magnetic microscopy to paleomagnetic studies, it is necessary
-to recover from the magnetic images a large amount of individual magnetic
+to recover from the magnetic images a large number of individual magnetic
 moments, corresponding to at least tens of thousands of stable fine-grained
 grains ($< \qty{1}{\um}$), in order to provide statistical significance to the
 remanence vector \citep[e.g., ][]{Berndt2016}. Nowadays, with the development of
@@ -52,7 +51,7 @@ explore the techniques developed in exploration geophysics, in spite of the
 differences between aeromagnetic surveys and magnetic microscopy
 \citep{Lima2013}. Magnetic microscopy images commonly show the combined signal
 of multiple magnetic particles and can vary greatly in wavelength, strength,
-and spatial separation, depending on the NRM and location of each particle. We
+and spatial separation, depending on the natural remanent magnetization (NRM) and location of each particle. We
 usually assume that the signal measured by the magnetic microscope is the
 vertical component of the magnetic induction vector ($b_z$), the measurements
 are performed on a regular grid with evenly spaced grid points and at a
@@ -140,7 +139,7 @@ $f(x, y, z - \Delta z)$ are calculated by upward and downward continuation,
 respectively, performed in the wavenumber domain. The 2D maps of the $x$, $y$,
 and $z$ derivatives will also be used in the Euler Deconvolution step described
 below, which is known to be highly sensitive to noise in the derivatives
-\citep{Saleh2012Applying}. This is why e prefer the finite-differences based
+\citep{Saleh2012Applying}. This is why we prefer the finite-differences based
 derivatives, which are less prone to amplifying short-wavelength noise than
 those calculated in the wavenumber domain through the Fast Fourier Transform
 (FFT).
@@ -185,7 +184,7 @@ traditionally performed on a set of moving windows that scan the entire
 dataset, producing a large scatter of position estimates, most of which are
 spurious \citep{Silva20033D}. This is only done because it is impractical to
 segment an aeromagnetic dataset into individual anomalies. Fortunately,
-magnetic microscopy images contain fewer elongated features (e.g., dikes and
+magnetic microscopy images often contain fewer elongated features (e.g., dikes and
 suture zones) and regional signals (e.g., Curie depth variations) that are
 difficult to separate. This makes it possible for us to produce isolated
 signals for each magnetic particle through the source detection step described
@@ -467,7 +466,7 @@ These variances reflect the sensitivity of the estimated dipole moment to random
 
 Parameters retrieved during inversion procedures may not always explain the observed data perfectly.
 Hence, it is necessary to evaluate how well the predicted data is able to fit the observed data. 
-When evaluating the goodness of fit of inversions of magnetic microscopy data, \citet{Fu2020} apply a ``non-dipolarity parameter'' ($D$). 
+When evaluating the goodness of fit of inversions of magnetic microscopy data, \citet{Fu2020} apply a ``dipolarity parameter'' ($D$). 
 We note that $D$ is equivalent to the coefficient of determination
 
 \begin{equation}
@@ -624,7 +623,7 @@ The validation of the result obtained with the inversion was calculated for each
 \label{complex-synthetic-comparison}
 \end{figure}
 
-The spatiality of the inversion results is one of the key advantages of magnetic microscopy over the classic techniques of paleomagnetism.
+The spatial resolution of the inversion results is one of the key advantages of magnetic microscopy over the classic techniques of paleomagnetism.
 Therefore, we present the inversion results spatially so that we can evaluate any patterns in their distribution. 
 Figure~\ref{complex-synthetic-comparison} shows the spatial locations of the 99 sources that were identified and the differences between the estimated dipole moments and the true values.
 The depth and dipole moment amplitude of each source are represented by horizontal and vertical bars, respectively. 
@@ -674,10 +673,10 @@ coercivity grains (hematite) would point towards +Y and the low coercivity ones
 After remanence acquisition, we performed a magnetic map with the Quantum
 Diamond Microscope (QDM) at Harvard University over a sample section of
 approximately 1410 $\mu$m x 2256 $\mu$m (Figure~\ref{real-data}a) with a grid
-spacing of 2.35 $\mu$m and a sensor-sample distance of 5 $\mu$m, totaling
+spacing of 2.35 $\mu$m and a sensor-sample distance of approximatly 5 $\mu$m, totaling
 576x10\textsuperscript{3} data points. The QDM is housed in a shielded room, in
-order to avoid the influence of the Earth's magnetic field \citep{Fu2020,
-Glenn2017}. After applying the magnetic anomaly detection algorithm, it was
+order to avoid the influence of the Earth's magnetic field while the data was taken in projected magnetic microscopy (PMM) mode and converted to the vertical component of magnetic field ($B_{z}$) using a spectral approach \citep{Fu2020,
+Glenn2017}. We applied a bias field of 0.9 mT during the measurement, which was periodically reversed to result in an effective background field of <1 µT.  After applying the magnetic anomaly detection algorithm, it was
 possible to determine the windows for 75 potential sources
 (Figure~\ref{real-data}e).
 
@@ -739,7 +738,7 @@ The latter further allows unique estimation of magnetic moment configuration of 
 Such outstanding techniques come with some troubles of having to mechanically select the data for inversion or dealing with the weaknesses of the additional method used. 
 The MicroCT, for example, is a popular non-destructive technique for high-resolution imaging of the material internal structures, and yet, it is accompanied by some limitations when it comes to paleomagnetic studies: firstly, the technique has a spatial resolution on the order of micrometers, which is not sufficient to directly image the fined grained single-domain magnetite \citep{DeGroot2018}. 
 The microCT also struggles to discern ferromagnetic (\textit{l.s.}) from non-magnetic/antiferromagnetic minerals, as pointed out by \cite{DeGroot2021}, since they usually have similar densities and therefore similar X-ray attenuation \citep{Cnudde2013}. 
-But, the major limitation of microCT lies in the trade-off between the resolution and the sample size, requiring small sample volumes to achieve higher resolutions causing the technique to be too time-consuming.
+In any case, the major limitation of microCT lies in the trade-off between the resolution and the sample size, requiring small sample volumes to achieve higher resolutions causing the technique to be too time-consuming.
 
 Our proposed methodology has the goal of finding each individual source’s dipole moment components without the trouble of mechanically selecting cropped data or needing any type of additional information. 
 However, to better examine its advantages and disadvantages we first need to point out the strengths and weaknesses of the technique used in the detection of sources, the Laplacian of Gaussian (LoG) kernel \citep{Marr1980}. 
