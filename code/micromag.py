@@ -7,8 +7,11 @@ Functions for performing the processing and inversion of the microscopy data.
 import numpy as np
 import xarray as xr
 import matplotlib.pyplot as plt
+import scipy.linalg
 import scipy.io
 import skimage.feature
+import skimage.exposure
+import skimage.restoration
 import numba
 import harmonica as hm
 import verde as vd
@@ -18,6 +21,18 @@ import choclo
 TESLA_TO_NANOTESLA = 1e9
 MICROMETER_TO_METER = 1e-6
 METER_TO_MICROMETER = 1e6
+
+
+def enhance_image(image, percentile=(5, 95)):
+    """
+    Apply constrast stretching and denoising to enhance an image.
+    """
+    enhanced = skimage.restoration.denoise_nl_means(
+        skimage.exposure.rescale_intensity(
+            image, in_range=tuple(np.percentile(image, percentile)),
+        ),
+    )
+    return enhanced
 
 
 def gaussian_noise(error, shape, seed=None):
@@ -197,7 +212,6 @@ def dipole_moment_inversion(data, dipole_coordinates):
     # Verde drops non-dimension coordinates so we have to add z back.
     # This is a bug in Verde.
     table["z"] = data.z.values.ravel()
-
     n_data = table.shape[0]
     n_params = 3
     A = np.empty((n_data, n_params))
@@ -214,8 +228,7 @@ def dipole_moment_inversion(data, dipole_coordinates):
     )
     hessian = A.T @ A
     neg_gradient = A.T @ d
-    dipole_moment = np.linalg.solve(hessian, neg_gradient)
-
+    dipole_moment = scipy.linalg.solve(hessian, neg_gradient, assume_a="pos")
     residuals = d - A @ dipole_moment
     residuals_sum_sq = np.sum(residuals**2)
     # Estimate of the true error variance (since we'll never know it)
@@ -432,7 +445,7 @@ def plot_dipole_moment(positions, dipole_moments, ax=None, add_colorbar=True, ad
     )
     
     args.update(kwargs)
-    dir_quiver = ax.quiver(*positions[:2], u, v, color, **args, zorder=1)
+    dir_quiver = ax.quiver(*positions[:2], u, v, color, **args)
     
     # Make headless vectors at 90° to represent the amplitude
     threshold_scale = abs(np.log10(amplitude))
@@ -440,7 +453,7 @@ def plot_dipole_moment(positions, dipole_moments, ax=None, add_colorbar=True, ad
     angle = np.radians(declination + 90)
     u, v = scale * np.sin(angle), scale * np.cos(angle)    
     args.update(headlength=0, headwidth=1, headaxislength=0)
-    amp_quiver = ax.quiver(*positions[:2], u, v, color, **args, zorder=0)
+    amp_quiver = ax.quiver(*positions[:2], u, v, color, **args)
     
     if add_colorbar:
         plt.colorbar(dir_quiver, ax=ax, label="inclination (°)")
