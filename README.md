@@ -1,10 +1,10 @@
 # Full vector inversion of magnetic microscopy images using Euler deconvolution as a priori information
 
-Gelson Ferreira de Souza Junior,
-Leonardo Uieda,
-Ricardo Ivan Ferreira da Trindade,
-Janine Carmo,
-Roger Fu.
+[Gelson F. Souza Junior](https://orcid.org/0000-0002-5695-4239),
+[Leonardo Uieda](https://orcid.org/0000-0001-6123-9515),
+[Ricardo I. F. Trindade](https://orcid.org/0000-0001-9848-9550),
+[Janine Carmo](https://orcid.org/0000-0003-3683-3648),
+Roger Fu
 
 This repository contains the data and source code used to produce the results
 presented in:
