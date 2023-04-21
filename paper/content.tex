@@ -644,7 +644,7 @@ These results indicated that $R^2$ and SNR can be used as selection criteria to 
 \centering
 \includegraphics[width=1\linewidth]{figures/complex-synthetic-stereograms.png}
 \caption{ Comparison of true and estimated dipole magnetic moments and directions for the complex synthetic sample.
-a) Simulation of a thin section of rock with 103 particles uniformly magnetized (dipolar sources) by two different induced fields. The average directions of the induced fields are Dec=0\textdegree/Inc=0\textdegree and Dec=180\textdegree/Inc=0\textdegree, yielding two stable directions. b) All estimated vector directions of the identified sources ($M=99$). c) The Filtering criteria used to select the magnetic directions of the sources with the best fitting ($M=96$), determined by the coefficient of determination ($R^ 2 \geq 0.85$) and signal-to-noise ratio (SNR $ \geq 5$).
+a) Simulation of a thin section of rock with 103 particles uniformly magnetized (dipolar sources) by two different induced fields. The average directions of the induced fields are $D=\ang{0}$ and $I=\ang{0}$ and $D=\ang{180}$ and $I=\ang{0}$, yielding two stable directions. b) All estimated vector directions of the identified sources ($M=99$). c) The Filtering criteria used to select the magnetic directions of the sources with the best fitting ($M=96$), determined by the coefficient of determination ($R^2 \geq 0.85$) and signal-to-noise ratio ($\text{SNR} \geq 5$).
 }
 \label{complex-synthetic-stereograms}
 \end{figure}
@@ -672,11 +672,11 @@ coercivity grains (hematite) would point towards +Y and the low coercivity ones
 
 After remanence acquisition, we performed a magnetic map with the Quantum
 Diamond Microscope (QDM) at Harvard University over a sample section of
-approximately 1410 $\mu$m x 2256 $\mu$m (Figure~\ref{real-data}a) with a grid
-spacing of 2.35 $\mu$m and a sensor-sample distance of approximatly 5 $\mu$m, totaling
-576x10\textsuperscript{3} data points. The QDM is housed in a shielded room, in
-order to avoid the influence of the Earth's magnetic field while the data were taken in projected magnetic microscopy (PMM) mode and converted to the vertical component of magnetic field ($B_{z}$) using a spectral approach \citep{Lima2009, Fu2020,
-Glenn2017}. We applied a bias field of \qty{0.9}{\m\tesla} during the measurement, which was periodically reversed to result in an effective background field of <1 µT.  After applying the magnetic anomaly detection algorithm, it was
+approximately $\qty{1410}{\um} \times \qty{2256}{\um}$ (Figure~\ref{real-data}a) with a grid
+spacing of \qty{2.35}{\um} and a sensor-sample distance of approximately \qty{5}{\um}, totaling
+576,000 data points. The QDM is housed in a shielded room, in
+order to avoid the influence of the Earth's magnetic field while the data were taken in projected magnetic microscopy (PMM) mode and converted to the vertical component of magnetic field ($b_z$) using a spectral approach \citep{Lima2009, Fu2020,
+Glenn2017}. We applied a bias field of \qty{0.9}{\milli\tesla} during the measurement, which was periodically reversed to result in an effective background field of $< \qty{1}{\micro\tesla}$.  After applying the magnetic anomaly detection algorithm, it was
 possible to determine the windows for 75 potential sources
 (Figure~\ref{real-data}e).
 
@@ -685,8 +685,8 @@ possible to determine the windows for 75 potential sources
 \includegraphics[width=1\linewidth]{figures/real-data.png}
 \caption{Real data and the various processing steps performed prior to the dipole moment inversion.
     a) The real sample vertical component magnetic data $b_z$ observations at
-    $z = \qty{5}{\micro\meter}$.
-    b) Residual anomaly map after the $3^{th}$ degree polynomial signal subtraction and upward-continued data to $z = \qty{10}{\micro\meter}$ to attenuated long and short-wavelength noise, respectively.
+    $z = \qty{5}{\um}$.
+    b) Residual anomaly map after the $3^{th}$ degree polynomial signal subtraction and upward-continued data to $z = \qty{10}{\um}$ to attenuated long and short-wavelength noise, respectively.
     c) The total gradient amplitude (TGA) calculated from the
     upward-continued data.
     d) The contrast-stretched TGA.
@@ -699,7 +699,7 @@ possible to determine the windows for 75 potential sources
 \label{real-data}
 \end{figure}
 
-After applying the ED algorithm, we performed the inversion of the magnetic moment for each of the 75 windows selected previously. In order to reduce considerably the computation time, the inversions were done within each data window, instead of solving all sources parameters at the same time. We obtained the magnetic moment and the direction for all 75 magnetic grains (Figure~\ref{real-data-stereograms}a). Then, we calculated the residuals of the inversions in each window and subsequently the coefficient of determination R\textsuperscript{2} and signal-to-noise ratio (SNR), which were parameters used as filters for the best directions obtained. We considered a good fit to be achieved when $R^2$ was greater or equal to 0.85 and SNR was greater than 5. An $R^2$ value of 0.85 indicates that 85\% of the measured magnetic data is explained by the predicted dipole model, which is equivalent to the non-dipolarity test approach \citep{Fu2020}. On the other hand, an SNR of 5 means that the dipolar signal is 5 times greater than the residual noise. By using these criteria, we ensured that the fit was sufficiently accurate and the dipole model provided a reliable approximation of the original magnetic data. About 46 identified sources passed these criteria. This filtering technique removed the poorly fit predicted models as well as the ones too corrupted with noise, showing more clearly the expected directional clusters of hematite and magnetite crystals (Figure~\ref{real-data-stereograms}b). Notably, it is confirmed that the sample has both magnetic minerals, but by the expected directions we can also stipulate that the magnetite grains outnumber the hematite ones.
+After applying the ED algorithm, we performed the inversion of the magnetic moment for each of the 75 windows selected previously. In order to reduce considerably the computation time, the inversions were done within each data window, instead of solving all sources parameters at the same time. We obtained the magnetic moment and the direction for all 75 magnetic grains (Figure~\ref{real-data-stereograms}a). Then, we calculated the residuals of the inversions in each window and subsequently the coefficient of determination $R^2$ and signal-to-noise ratio (SNR), which were parameters used as filters for the best directions obtained. We considered a good fit to be achieved when $R^2$ was greater or equal to 0.85 and SNR was greater than 5. An $R^2$ value of 0.85 indicates that \qty{85}{\percent} of the measured magnetic data is explained by the predicted dipole model, which is equivalent to the dipolarity test approach \citep{Fu2020}. On the other hand, an SNR of 5 means that the dipolar signal is 5 times greater than the residual noise. By using these criteria, we ensured that the fit was sufficiently accurate and the dipole model provided a reliable approximation of the original magnetic data. About 46 identified sources passed these criteria. This filtering technique removed the poorly fit predicted models as well as the ones too corrupted with noise, showing more clearly the expected directional clusters of hematite and magnetite crystals (Figure~\ref{real-data-stereograms}b). Notably, it is confirmed that the sample has both magnetic minerals, but by the expected directions we can also stipulate that the magnetite grains outnumber the hematite ones.
 
 \begin{figure}[tb!]
 \centering
@@ -784,7 +784,7 @@ Thus, our approach can be considered reasonable for working with both particle S
 The latter happens mainly due to the sensor height being usually greater than 5 $\mu m$, considering a particle on the immediate surface of the sample the higher-order moments are already quite attenuated, thus circumventing the prominent problems described for non-dipolar components.
 
 Despite the excellent signal-to-noise ratio that the SMM provided with the
-the proximity of the sensor to the sample, it is worth mentioning that the
+proximity of the sensor to the sample, it is worth mentioning that the
 measurement noise can still overshadow the responses of very weak/small, or
 deep particles, generating unreliable inversion results.
 Therefore, it is necessary to keep a check to determine if the inversion reached a satisfactory prediction, such as the coefficient of determination and the
