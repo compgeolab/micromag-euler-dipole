@@ -41,7 +41,7 @@
 % Remove extra space between references
 \usepackage{natbibspacing}
 % Use a different font
-\usepackage{notomath}
+\usepackage[scaled=1.1]{notomath}
 % Icons and fonts (requires using xelatex or luatex)
 \usepackage{fontawesome5}
 \usepackage{academicons}
@@ -172,7 +172,7 @@
   }
   \newmdenv[style=summarybox_]{summarybox_}
   \begin{summarybox_}
-    \small
+    \footnotesize
     \BODY
   \end{summarybox_}
 }
@@ -182,11 +182,6 @@
 
 \maketitle
 \vspace{-1cm}
-\section*{\normalsize Abstract}
-{\small \input{abstract}}
-
-\section*{\normalsize Plain language summary}
-{\small \input{abstract-plain}}
 
 \begin{summarybox}
   \noindent
@@ -215,6 +210,12 @@
   Available under the \href{https://creativecommons.org/licenses/by/4.0/}{Creative Commons Attribution 4.0 International License}
   \faCreativeCommons\faCreativeCommonsBy{}.
 \end{summarybox}
+
+\section*{\normalsize Abstract}
+{\small \input{abstract}}
+
+\section*{\normalsize Plain language summary}
+{\small \input{abstract-plain}}
 
 \input{content.tex}
 
