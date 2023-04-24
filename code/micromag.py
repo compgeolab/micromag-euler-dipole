@@ -7,6 +7,7 @@ Functions for performing the processing and inversion of the microscopy data.
 import numpy as np
 import xarray as xr
 import matplotlib.pyplot as plt
+import mplstereonet
 import scipy.linalg
 import scipy.io
 import skimage.feature
@@ -449,7 +450,7 @@ def plot_dipole_moment(positions, dipole_moments, ax=None, add_colorbar=True, ad
     
     # Make headless vectors at 90° to represent the amplitude
     threshold_scale = abs(np.log10(amplitude))
-    scale = abs(threshold_scale-threshold_scale.max())/6 #amplitude / amplitude.max()
+    scale = abs(threshold_scale-threshold_scale.max()) #amplitude / amplitude.max()
     angle = np.radians(declination + 90)
     u, v = scale * np.sin(angle), scale * np.cos(angle)    
     args.update(headlength=0, headwidth=1, headaxislength=0)
@@ -462,3 +463,53 @@ def plot_dipole_moment(positions, dipole_moments, ax=None, add_colorbar=True, ad
         ax.quiverkey(amp_quiver, *key_coords, 1, label=f"{amplitude.max():.0e} A.m²\namplitude", labelpos="S")
                      
     return dir_quiver, amp_quiver
+
+
+def plot_stereonet(dipole_moments, ax=None, cmap="viridis", vmin=None, vmax=None, label="", add_ticks=True, **kwargs):
+    """
+    Plot the dipole moments in a stereonet.
+    
+    The moment magnitude is set as the color. 
+    Positive inclination symbols are solid, negative are just the outline.
+    """
+    if ax is None:
+        fig = plt.figure()
+        ax = fig.add_subplot(1, 1, 1, projection='stereonet')
+
+    ax.set_facecolor("#eeeeee") # color "#eeeeee"
+    ax.grid(linestyle="-", color="#cccccc", linewidth=1)
+    ax.set_longitude_grid_ends(90)
+    if add_ticks:
+        # Add ticks manually because mplstereonet doesn't work with subplots
+        ax.set_azimuth_ticks([])
+        ax.text(0.2, 1.65, '0°')
+        ax.text(0.2, -1.8, '180°')
+        ax.text(-2, -0.025, '270°')
+        ax.text(1.65, -0.025, '90°')
+    
+    if label and not label.endswith(" "):
+        label = label + " "
+    
+    inclination, declination, amplitude = vector_to_angles(dipole_moments)
+    
+    # Generate colors based on the amplitude values
+    norm = plt.Normalize(vmin=vmin, vmax=vmax)
+    colors = plt.colormaps[cmap](norm(amplitude))
+    
+    positive_inc = inclination > 0
+    ax.scatter(
+        *mplstereonet.line(inclination[positive_inc], declination[positive_inc]),
+        c=colors[positive_inc],
+        label=f"{label}$I > 0$",
+        edgecolors="#333333",
+        **kwargs,
+    )
+    ax.scatter(
+        *mplstereonet.line(-inclination[~positive_inc], declination[~positive_inc]),
+        c="#ffffff00",
+        label=f"{label}$I \le 0$",
+        edgecolors=colors[~positive_inc],
+        **kwargs,
+    )
+    mappable = plt.cm.ScalarMappable(norm, cmap=cmap)
+    return mappable
