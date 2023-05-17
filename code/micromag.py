@@ -413,7 +413,10 @@ def load_qdm(path):
     return data
 
 
-def plot_dipole_moment(positions, dipole_moments, ax=None, add_colorbar=True, add_key=True, key_coords=(0.1, -0.1), **kwargs):
+def plot_dipole_moment(
+    positions, dipole_moments, ax=None, vmin=None, vmax=None, cmap="plasma", cmap_norm=plt.Normalize, linewidth=1.5,
+    add_colorbar=True, add_key=True, key_coords=(0.1, -0.1), **kwargs,
+):
     """
     Plot the dipole moments on a map represented by vectors.
     
@@ -427,45 +430,60 @@ def plot_dipole_moment(positions, dipole_moments, ax=None, add_colorbar=True, ad
       
     inclination, declination, amplitude = vector_to_angles(dipole_moments)
     
+    # Generate colors based on the amplitude values
+    norm = cmap_norm(vmin=vmin, vmax=vmax)
+    colors = plt.colormaps[cmap](norm(amplitude))
+    
+    positive_inc = inclination > 0
+    negative_inc = ~positive_inc
+    
     # Calculate the plot vector components
-    u, v = np.sin(np.radians(declination)), np.cos(np.radians(declination))
-    color = inclination
-    scale = vd.maxabs(color)
+    scale = 90 - np.abs(inclination)
+    u, v = scale * np.sin(np.radians(declination)), scale * np.cos(np.radians(declination))
     
     # Keyword arguments for the quiver plots
     args = dict(
-        cmap="seismic",
-        clim=(-scale, scale),
         pivot="mid",
         width=0.005, 
         scale=15,
-        headlength=3, 
-        headaxislength=3,
-        edgecolor='k',
-        linewidth = 0.35,
+        headlength=1.5, 
+        headaxislength=1.5,
+        headwidth=2,
+        minlength=1.5,
+    )    
+    args.update(kwargs)
+    
+    pos_quiver = ax.quiver(
+        positions[:2][0][positive_inc], 
+        positions[:2][1][positive_inc], 
+        u[positive_inc], 
+        v[positive_inc], 
+        color=colors[positive_inc], 
+        edgecolor='k', 
+        linewidth=0, 
+        **args,
+    )    
+    neg_quiver = ax.quiver(
+        positions[:2][0][negative_inc], 
+        positions[:2][1][negative_inc], 
+        u[negative_inc], 
+        v[negative_inc], 
+        edgecolor=colors[negative_inc], 
+        color="#ffffff00", 
+        linewidth=linewidth,
+        **args,
     )
     
-    args.update(kwargs)
-    dir_quiver = ax.quiver(*positions[:2], u, v, color, **args)
-    
-    # Make headless vectors at 90° to represent the amplitude
-    threshold_scale = abs(np.log10(amplitude))
-    scale = abs(threshold_scale-threshold_scale.max()) #amplitude / amplitude.max()
-    angle = np.radians(declination + 90)
-    u, v = scale * np.sin(angle), scale * np.cos(angle)    
-    args.update(headlength=0, headwidth=1, headaxislength=0)
-    amp_quiver = ax.quiver(*positions[:2], u, v, color, **args)
-    
+    mappable = plt.cm.ScalarMappable(norm, cmap=cmap)    
     if add_colorbar:
-        plt.colorbar(dir_quiver, ax=ax, label="inclination (°)")
-        
+        plt.colorbar(mappable, ax=ax, label="dipole moment (A.m²)")        
     if add_key:
-        ax.quiverkey(amp_quiver, *key_coords, 1, label=f"{amplitude.max():.0e} A.m²\namplitude", labelpos="S")
+        ax.quiverkey(pos_quiver, *key_coords, 90, label="$I = 0^\circ$", labelpos="S")
                      
-    return dir_quiver, amp_quiver
+    return mappable, pos_quiver, neg_quiver
 
 
-def plot_stereonet(dipole_moments, ax=None, cmap="viridis", vmin=None, vmax=None, label="", add_ticks=True, **kwargs):
+def plot_stereonet(dipole_moments, ax=None, cmap="plasma", cmap_norm=plt.Normalize, vmin=None, vmax=None, label="", add_ticks=True, **kwargs):
     """
     Plot the dipole moments in a stereonet.
     
@@ -493,7 +511,7 @@ def plot_stereonet(dipole_moments, ax=None, cmap="viridis", vmin=None, vmax=None
     inclination, declination, amplitude = vector_to_angles(dipole_moments)
     
     # Generate colors based on the amplitude values
-    norm = plt.Normalize(vmin=vmin, vmax=vmax)
+    norm = cmap_norm(vmin=vmin, vmax=vmax)
     colors = plt.colormaps[cmap](norm(amplitude))
     
     positive_inc = inclination > 0
