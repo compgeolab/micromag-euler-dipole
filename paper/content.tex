@@ -499,21 +499,28 @@ Here, we use both $R^2$ and SNR as criteria for filtering out unreliable estimat
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Application to synthetic data}
 
-We first applied our inversion workflow to synthetic data to evaluate its strengths and limitations.
-The first set of synthetic data is simple and intended to test the method's performance under ideal circumstances.
-The second set is more complex, with a greater number of magnetic particles and long-wavelength noise, and is intended to demonstrate the capabilities and limitations of the method under real-world scenarios.
+We first applied our inversion workflow to three sets of synthetic data to evaluate its strengths and limitations.
+The datasets are produced by different models of varying complexity which were designed to assess different aspects of the method.
 
-The first synthetic model was performed by generating the vertical magnetic field ($b_z$) derived from a simple set of four dipoles with similar dipole moments amplitudes, but different inclinations and declinations, contaminated by high-frequency noise.
-The purpose of this model is to investigate the efficiency of the combination of Euler deconvolution and the dipole moment inversion, thus being a validation of the methodology.
+\begin{enumerate}
+\item \textbf{Method validation:} 
+The first model is composed of a set of four dipoles with similar dipole moments amplitudes, but different inclinations and declinations.
+The synthetic data consists of the vertical magnetic field ($b_z$) derived from this model and contaminated by pseudo-random high-frequency noise.
+The purpose of this simple model is to investigate the efficiency of the combination of the source detection method, Euler deconvolution, and the dipole moment inversion under ideal circumstances, thus serving as a validation of the methodology.
 
-The second model simulates a hundred sources with both dipolar and non-dipolar magnetic components and their vertical magnetic field ($b_z$) at different height levels, also corrupted with high-frequency noise. This section is carried out in order to assess the ability of the algorithm to deal with sources with strong non-dipolar components.
+\item \textbf{Applicability to non-dipolar sources:}
+The second model simulates a hundred sources with both dipolar and non-dipolar magnetic moments.
+Their vertical magnetic field ($b_z$) is calculated at different sensor-source distances
+and is also contaminated with pseudo-random high-frequency noise. 
+This model is used to assess the ability of the algorithm to deal with strong non-dipolar sources.
 
-The third model contains 103 dipoles with different dipole moment magnitudes, having inclinations and declinations around two stable directions.
+\item \textbf{Applicability to real-world scenarios:}
+The third model contains 103 dipoles with different dipole moment magnitudes, having inclinations and declinations clustered around two stable directions.
 The magnetic field generated from these sources is corrupted by both low and high-frequency noise.
 The complexity of this synthetic data seeks to more faithfully emulate real magnetic microscopy data.
+\end{enumerate}
 
-
-\subsection{Simple simulation: Validating the methodology for dipolar sources}
+\subsection{Method validation}
 
 \begin{figure}[tb!]
   \centering
@@ -534,8 +541,8 @@ The complexity of this synthetic data seeks to more faithfully emulate real magn
     e) The detected source bounding boxes (black squares) that correctly
     identify the signal of all four sources.
     f) The estimated source locations (colored circles) from Euler
-    Deconvolution of the upward-continued data inside each bounding box.
-    The color represents the difference between the true and estimated
+    deconvolution of the upward-continued data inside each bounding box.
+    The color represents the difference between the true and the estimated
     $z$ coordinates.
   }
   \label{fig_synthetic_simple_data}
@@ -546,41 +553,56 @@ The map covers a surface of $\qty{1000}{\um} \times \qty{1000}{\um}$, with data 
 The magnetic field data are contaminated with pseudo-random Gaussian noise with zero mean and \qty{20}{\nano\tesla} standard deviation.
 
 We first applied an upward continuation filter (Figure~\ref{fig_synthetic_simple_data}b) to smooth out the high-frequency noise \citep{Blakely1996}.
-This is important because it strongly affects the first derivatives of the field, which are required for the Euler Deconvolution.
-Then, we calculated the total gradient amplitude (Figure~\ref{fig_synthetic_simple_data}c), which was then subjected to contrast stretching to highlight as much as possible the weaker intensity sources (Figure~\ref{fig_synthetic_simple_data}d).
+This is important because noise strongly affects the first derivatives of the field, which are required for the source detection algorithm and the Euler deconvolution.
+Then, we calculated the total gradient amplitude (Figure~\ref{fig_synthetic_simple_data}c), which was subjected to contrast stretching to highlight the weaker intensity sources as much as possible (Figure~\ref{fig_synthetic_simple_data}d).
 Subsequently, we applied the blob detection algorithm to the contrast-stretched total gradient amplitude to obtain the position of the data windows for each source (Figure~\ref{fig_synthetic_simple_data}e).
-Euler Deconvolution was then performed for each data window identified by assuming a structural index $\eta = 3$ of a point source, therefore obtaining the Cartesian coordinates (Figure~\ref{fig_synthetic_simple_data}f) of each source. Table~\ref{tab_synthetic_simple_results} shows the true and estimated values of the source coordinates for comparison.
+Euler deconvolution was then performed for each data window identified by assuming a structural index $\eta = 3$ of a point source, therefore obtaining the Cartesian coordinates (Figure~\ref{fig_synthetic_simple_data}f) of each source. For comparison, Table~\ref{tab_synthetic_simple_results} shows the true and estimated values of the source coordinates.
 
-\begin{figure}[tb!]
-\centering
-\includegraphics[width=\linewidth]{figures/simple-synthetic-dipole-moment.png}
-\caption{
-Comparison of true and estimated dipole magnetic moments and directions.
-}
-\label{fig_synthetic_simple_results}
-\end{figure}
-
-The positions of each source obtained with Euler deconvolution were used as an input parameter for the dipole moment inversion.
-The estimated inclination ($I$), declination ($D$), and dipole moment amplitude ($m$) are shown in Figure~\ref{fig_synthetic_simple_results} along with the corresponding true values.
-Table~\ref{tab_synthetic_simple_results} also shows the true and estimate dipole moments as well as their corresponding standard deviations obtained using Equations~\ref{eq_chi_square}-\ref{eq_variances}.
-
-\begin{table}[tb]
+\begin{table}[tb!]
   \begin{center}
     \small
     \input{simple-synthetic-results.tex}
   \end{center}
   \caption{
-  True and estimated source positions and dipole moments for the simple synthetic data application.
-  Each source modeled and recovered positioning and magnetization parameters by the least square estimator, respectively.}
+    True and estimated source positions and dipole moments for the method validation test through a simple synthetic data application.
+  }
   \label{tab_synthetic_simple_results}
 \end{table}
 
+\begin{figure}[tb!]
+  \centering
+  \includegraphics[width=\linewidth]{figures/simple-synthetic-dipole-moment.png}
+  \caption{
+    Comparison of true and estimated dipole moments for the method validation test through a simple synthetic data application.
+    a) Stereonet showing the true (triangles) and estimated (circles) dipole moments. 
+    The colors are mapped to the dipole moment amplitude.
+    b) Grayscale map of the synthetic $b_z$ overlaid by the estimated dipole moment vectors.
+    The vector locations were derived from the Euler deconvolution results, their size is inversely proportional to the inclination $I$, their direction represents the declination $D$, and their colors are mapped to the dipole moment amplitude using the same colorscale as the stereonet.
+    In both graphs, solid symbols represent positive inclination while hollow symbols represent negative inclination.
+  }
+  \label{fig_synthetic_simple_results}
+\end{figure}
 
-\subsection{Simple simulation: Validating the methodology for non-dipolar sources}
+The positions of each source obtained with Euler deconvolution were then used as input for the dipole moment inversion.
+The estimated dipole moment vectors are shown in Figure~\ref{fig_synthetic_simple_results}.
+Figure~\ref{fig_synthetic_simple_results}a shows the estimated dipole moment, along with the corresponding true values, as a stereonet for better comparison of the true and estimated vector directions.
+Figure~\ref{fig_synthetic_simple_results}b shows the estimate dipole moments overlaid on a map of the synthetic $b_z$ to demonstrate the ability of our method to estimate a spatial distribution of dipole moments.
+For comparison, Table~\ref{tab_synthetic_simple_results} also shows the true and estimate dipole moments as well as their corresponding standard deviations obtained using Equations~\ref{eq_chi_square}-\ref{eq_variances}.
 
-Typically, when conducting magnetic field measurements with a large distance between the sensor and the magnetic anomaly source, higher-order non-dipole magnetization components such as quadrupoles and octupoles are disregarded. However, in magnetic microscopy, where the sensor is positioned very close to the sample, these higher-order components might be detected. This phenomenon is observed in paleomagnetic studies on particles with a PSD domain state, where magnetization is non-uniform throughout the grain. To assess the magnetic signal attenuation, simulations were conducted on particles with more complex magnetization at varying distances from the sensor.
 
-To simulate particles with non-dipole magnetization components, we specified a spherical volume with a radius of about 1 $\mu$m. Within this volume, we added 200 dipolar point particles with varying magnetization directions and magnetic moments. These directions were generated randomly to follow a normal distribution centered on the direction Dec=90°/Inc=0°, with a magnetic moment of $10^{-14}$ Am$^2$. We also randomly generated spatial positions around a central position of $x_c=25~\mu$m, $y_c=25~\mu$m, and $z_c=\alpha~\mu$m, where $\alpha$ = 0, 1, ... 11 corresponds to the variation in depth of the particle. By summing the $m_x$, $m_y$, and $m_z$ components of each modeled particle, we obtained the cartesian magnetization components for the spherical particle. The centroid of the particle was defined by the average of the $x_c$, $y_c$, and $z_c$ positions. The modeled vertical magnetic field was corrupted by a random noise of mean zero and a standard deviation of 20 nT.
+
+\subsection{Applicability to non-dipolar sources}
+
+Typically, when conducting magnetic field measurements with a large distance between the sensor and the magnetic anomaly source, higher-order non-dipole magnetization components such as quadrupoles and octupoles can be disregarded because of the strong attenuation with distance of the magnetic fields. 
+However, in magnetic microscopy, where the sensor is positioned only a few microns from the sample, these higher-order components might be detected. 
+This phenomenon is observed in paleomagnetic studies on particles with a PSD domain state, where magnetization is non-uniform throughout the grain. 
+To assess the attenuation of these non-dipolar components and the applicability of our method, we conducted simulation on particles with more complex magnetization at varying distances from the sensor.
+
+To simulate particles with non-dipolar magnetization components, we specified a spherical volume with a radius of approximately \qty{1}{\um}. 
+Within this volume, we added 200 dipolar particles with varying dipole moment directions and amplitudes. 
+These directions were generated randomly, following a normal distribution centered on the direction $D=\ang{90}$ and $I=\ang{0}$, with a magnetic moment of $\qty{e-14}{\ampere\m\squared}$. 
+We also randomly generated spatial positions around a central position of $x_c=\qty{25}{\um}$ and $y_c=\qty{25}{\um}$.
+The vertical coordinate of the central position $z_c$ varied between \qty{0}{\um} and \qty{-11}{\um} in \qty{1}{\um} increments, leading to a total of 12 . By summing the $m_x$, $m_y$, and $m_z$ components of each modeled particle, we obtained the cartesian magnetization components for the spherical particle. The centroid of the particle was defined by the average of the $x_c$, $y_c$, and $z_c$ positions. The modeled vertical magnetic field was corrupted by a random noise of mean zero and a standard deviation of 20 nT.
 
 According to Figure~\ref{non-dipolarity-synthetic-data} obtained from this simulation, it can be observed that when the particle is very close to the sensor, there is a strong non-dipolar contribution (Figure~\ref{non-dipolarity-synthetic-data}a-b) characterized by low $R^2$ values. As the distance increases, the magnetic signal is strongly attenuated, especially the non-dipolar components that decay more rapidly than the dipolar component, resulting in a rapid increase in $R^2$ (Figure~\ref{non-dipolarity-synthetic-data}c-d). At distances above 5 $\mu$m, there is practically only the contribution of the dipolar component, causing $R^2$ values to be very close to 1 (Figure~\ref{non-dipolarity-synthetic-data}e-f).
 
@@ -610,7 +632,7 @@ To assess the algorithm's capability to handle particles with more complex magne
 
 
 
-\subsection{Complex simulation: Testing applicability}
+\subsection{Applicability to real-world scenarios}
 
 This test represents a more complex scenario by simulating 103 sources randomly distributed in the imaged area of a synthetic thin section of $\qty{2000}{\um} \times \qty{2000}{\um}$.
 The synthetic $b_z$ data were generated on a regular grid with $\qty{2}{\um}$ spacing and $\qty{5}{\um}$ sensor-sample distance.
