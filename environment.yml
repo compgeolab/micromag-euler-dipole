@@ -13,6 +13,8 @@ dependencies:
   - netcdf4
   - jupyterlab
   - black
+  - rich
+  - ipywidgets
   # For building latex documents
   - make
   - tectonic

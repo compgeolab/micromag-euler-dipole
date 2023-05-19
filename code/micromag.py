@@ -45,6 +45,28 @@ def gaussian_noise(error, shape, seed=None):
     return noise
 
 
+def nondipolar_source(
+    xc, yc, zc, position_std, inclination, declination, angle_std, 
+    amplitude, amplitude_std, n_particles=200, seed=None,
+):
+    """
+    Generate a non-dipolar source as an ensemble of random dipoles
+    """
+    rng = np.random.default_rng(seed)
+    # Make sure z is always < 0 (dipole is inside the sample)
+    dipole_coordinates = (
+        rng.normal(xc, position_std, n_particles),
+        rng.normal(yc, position_std, n_particles),
+        -np.abs(rng.normal(zc, position_std, n_particles)),
+    )
+    dipole_moments = angles_to_vector(
+        rng.normal(inclination, angle_std, n_particles),
+        rng.normal(declination, angle_std, n_particles),
+        rng.normal(amplitude, amplitude_std, n_particles),
+    )
+    return (dipole_coordinates, dipole_moments)
+
+
 def angles_to_vector(inclination, declination, amplitude):
     """
     Generate a 3-component vector from inclination, declination, and amplitude
