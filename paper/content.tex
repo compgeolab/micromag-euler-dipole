@@ -600,14 +600,14 @@ To assess the attenuation of these non-dipolar components and the applicability 
 
 To simulate particles with non-dipolar magnetization components, we specified a spherical volume with a radius of approximately \qty{1}{\um}. 
 Within this volume, we added 200 dipolar particles with varying dipole moment directions and amplitudes. 
-These directions were generated randomly, following a normal distribution centered on the direction $D=\ang{90}$ and $I=\ang{0}$ and with standard deviation of \ang{10}.
+These directions were generated randomly, following a normal distribution centered on the direction $D=\ang{90}$ and $I=\ang{0}$ and with a standard deviation of \ang{10}.
 The dipole moment amplitudes were sampled by a normal distribution with mean $\qty{e-14}{\ampere\m\squared}$ and standard deviation $\qty{5e-14}{\ampere\m\squared}$. 
 We also randomly generated spatial positions around a central position of $x_c=\qty{25}{\um}$, $y_c=\qty{25}{\um}$, and $z_c=\qty{-1}{\um}$ with standard deviation of \qty{0.65}{\um}.
 The bulk magnetization of the non-dipolar particle is the vector sum of the dipole moments of each dipole. 
 The centroid of the particle is defined by the average of the $x_c$, $y_c$, and $z_c$ positions of each dipole.
 The synthetic vertical magnetic field $b_z$ of the non-dipolar source was calculated on regular grids with \qty{0.5}{\um} spacing.
 Each grid was located at a different sensor-sample distance $z$, varying between \qty{1}{\um} and \qty{10}{\um} in \qty{0.5}{\um} increments. 
-The synthetic data were corrupted by pseudo-random gaussian noise of mean \qty{0}{\nano\tesla} and a standard deviation of \qty{20}{\nano\tesla}.
+The synthetic data were corrupted by pseudo-random Gaussian noise of mean \qty{0}{\nano\tesla} and a standard deviation of \qty{20}{\nano\tesla}.
 For each data grid generated, we performed Euler deconvolution to estimate the source position and subsequently inverted the data for the dipole moment.
 At each step, we recorded the inversion $R^2$ value and the differences between the estimated position and dipole moment and the true centroid and bulk magnetization of the particle.
 
@@ -892,8 +892,7 @@ We also assessed the quality of the fit between the predicted dipole model and t
 The Python source code used to produce all results and figures presented here
 is available at \url{https://github.com/\GitHubRepository} and
 \url{https://doi.org/\ArchiveRepository} under the MIT open-source license.
-The QDM magnetic microscopy data are available at \textcolor{red}{CITE A
-DATAVERSE/FIGSHARE ARCHIVE under the CC-BY or CC-0 license}.
+The QDM magnetic microscopy data are available at~\url{https://figshare.com/articles/dataset/QDM_magnetic_microscopy_dataset_of_a_speleothem_from_Morocco/22965200} under the CC-0 license.
 
 The image re-scaling and blob detection through the Laplacian of Gaussian
 method were performed with the scikit-image library \citep{VanderWalt2014}.
