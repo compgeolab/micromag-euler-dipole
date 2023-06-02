@@ -35,6 +35,10 @@ The code that implements the method here is a proof-of-concept. A more
 user-friendly version will be implemented in the open-source library
 [Magali](https://github.com/compgeolab/magali).
 
+![3 part figure showing magnetic microscopy images overlaid with the recovered dipole moment vectors](paper/figures/complex-synthetic-stereograms.png)
+> Synthetic data test showing that our method is able to automatically identify and 
+> recover the dipole moments of a large number of magnetic particles.
+
 ## Abstract
 
 Very small magnetic particles in rocks and other materials can store
