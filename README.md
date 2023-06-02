@@ -43,7 +43,7 @@ But not all particles are good recorders of this magnetic information, and some
 may have recorded different overlapping directions and strengths.
 So it is important to measure each particle separately in order to identify and
 separate the good recorders from the bad ones.
-A device called a ``quantum diamond microscope'' is able to measure the
+A device called a "quantum diamond microscope" is able to measure the
 magnetic field near the surface of a rock sample at microscopic scale.
 We propose a new method for processing data from this microscope that is able
 to find out the individual magnetizations of large amounts of small magnetic
