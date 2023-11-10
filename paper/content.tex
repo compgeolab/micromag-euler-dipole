@@ -704,8 +704,8 @@ Figure~\ref{complex-synthetic-comparison}d shows the SNR (Equation~\ref{eq_snr})
 High SNR values correspond to small inversion residuals which indicate that a dipolar model was able to explain the observed data.
 Consequently, the variation of SNR values is similar to that of the $R^2$ coefficient.
 Figure~\ref{complex-synthetic-comparison} shows that large errors in the estimated dipole moment direction are associated with low values of $R^2$ and SNR.
-Conversely, the correlation between errors in dipole moment magnititude and $R^2$ and SNR is less pronounced, with some poor magnitude estimates being associated with $R^2$ and SNR indicating a good fit of the dipolar model.
-It is also noticeable that the majority of cases where the dipole moment direction error is large are associated with deep and low-amplitude sources that are close to shallower or higher-amplitude sources.
+Conversely, the correlation between errors in dipole moment magnitude and $R^2$ and SNR is less pronounced, with some poor magnitude estimates being associated with $R^2$ and SNR indicating a reasonable fit by dipolar model.
+It is also noticeable that the majority of cases where the direction misfit is given by deep and low-amplitude sources that are close to shallower or higher-amplitude sources.
 These results indicated that $R^2$ and SNR can be used as selection criteria to discard sources with likely high errors in the estimated dipole moment.
 
 \begin{figure}[tb!]
@@ -721,12 +721,18 @@ Figure~\ref{complex-synthetic-stereograms} shows stereograms with the directions
 
 \subsection{Applicability to different grain concentration scenarios}
 
-In order to assess the algorithm's ability to work with samples featuring higher concentrations of particles, we conducted multiple scenario tests (with 15 repetitions each) by increasing the concentrations of magnetic grains. Figure XX.A depicts the percentage of particle detection ($100($detected particles / total particles$)$) by the algorithm, with the median of the distribution represented by the red line. The same figure also presents the percentage of windows whose inversion results meet the filtering criteria of R-squared greater than or equal to 0.85 and SNR greater than or equal to 5, with the median represented by the blue line.
-
-As the number of particles increases, there is a consistent decrease in the percentage of source detection, particularly due to the spatial constraints of the algorithm, which require magnetic sources to be sparsely distributed for optimal detection. However, as shown in Figure XX.B, by calculating the angular misfit between the mean direction of the model and the mean direction of the detected windows, it is observed that for the unfiltered windows (red line), the angular misfits tend to increase with the concentration of magnetic grains. Nonetheless, when applying the filtering criteria, this misfit tends to approach zero.
+In order to assess the algorithm's ability to work with samples featuring higher concentrations of particles, we conducted multiple scenario tests (with 15 repetitions each) by increasing the concentrations of magnetic grains. Figure~\ref{grain-concentration}a depicts the percentage of particle detection by the algorithm, with the median of the distribution represented by the red line. The same figure also presents the percentage of windows whose inversion results meet the filtering criteria of $R^2 \geq 0.85$ and $SNR \geq 5$, with the median represented by the blue line. As the number of particles increases, there is a consistent decrease in the percentage of source detection, particularly due to the spatial constraints of the algorithm, which require magnetic sources to be sparsely distributed for optimal detection. However, as shown in Figure~\ref{grain-concentration}b, by calculating the angular misfit between the vector sum direction of the model and the vector sum direction of the detected windows, it is observed that for the unfiltered windows (red line), the angular misfits tend to increase with the concentration of magnetic grains. Nonetheless, when applying the filtering criteria, this misfit tends to approach zero.
 
 This observation highlights the algorithm's ability to effectively filter out spurious detection and improve the reliability of source detection, particularly in scenarios with higher particle concentrations. These findings underscore the algorithm's robustness in handling varying sample conditions and its capacity to adapt to different levels of particle density.
 
+\begin{figure}[tb!]
+  \centering
+  \includegraphics[width=1\linewidth]{paper/figures/grain-concentration.png}
+  \caption{ 
+  Different grains simulations randomly replicated (N=15) to assess the effectiveness of the algorithm to detect the magnetic sources. a) The efficacy of the detection was measured by percentage of sources identified ($100 \left( N_{detected~sources} ~/~ N_{true~sources} \right)$) and showed as box-plots for both unfiltered detection (median represented as the red line) and filtered detection ($R^2 \geq 0.85$ and $SNR \geq 5$, blue line). b) The same representation is displayed for the angular misfit between the true vector sum and both results for the filtered and unfiltered sum of vectors detected. The blue/red dots represent outliers in the distributions.
+  }
+  \label{grain-concentration}
+\end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Application to real data}
@@ -793,17 +799,15 @@ Since the pioneering work of \cite{Egli2000}, many methodologies were proposed f
 In the first type of approach, the main goal is usually to estimate average magnetization by inverting the whole sample superficial magnetization data commonly by means of unidirectional problem, uniform directions with non-negative variable dipole moments \citep[e.g.,][]{Weiss2007}, including performance enhancement in the spatial domain \citep[e.g.,][]{Myre2019} or frequency domain  \citep[e.g.,][]{Lima2013}.
 This methodology can be used to remarkably estimate the average magnetic direction and the total moment direction with the assumption that the particles were all magnetized in the direction of the same induced field \citep[sIRM and/or NRM in basalts,][]{Weiss2007}.
 However, this assumption is not always true when dealing with complex samples (i.e., more than one stable direction), which leads to the same drawbacks as the classic paleomagnetic measurements using bulk samples.
-The second type of approach has the goal of finding the individual source magnetic properties, which can be done by either inverting the dipole moment of a single source within a cropped section of an upward continued anomaly map \citep[e.g.,][]{Lima2016, Fu2020} or by the insertion of additional information of the sources’ shape, such as micro-computed tomography (microCT) \citep[e.g.,][]{Fabian2019, DeGroot2018, DeGroot2021, Kosters2023}.
+The second type of approach has the goal of finding the individual source magnetic properties, which can be done by either inverting the dipole moment of a single source within a cropped section of an upward continued anomaly map \citep[e.g.,][]{Lima2016, Fu2020} or by the insertion of additional information of the sources’ shape, such as micro-computed tomography (microCT) \citep[e.g.,][]{Fabian2019, DeGroot2018, DeGroot2021, Koster2023}.
 The latter further allows unique estimation of magnetic moment configuration of even higher orders components through spherical harmonics expansion constrained by micromagnetic models \citep[e.g.,][]{CortesOrtuno2021, CortesOrtuno2022}.
 Such outstanding techniques come with some troubles of having to mechanically select the data for inversion or dealing with the weaknesses of the additional method used.
-The MicroCT, for example, is a popular non-destructive technique for high-resolution imaging of the material internal structures, and yet, it is accompanied by some limitations when it comes to paleomagnetic studies: firstly, the technique has a spatial resolution on the order of micrometers, which is not sufficient to directly image the fined grained single-domain magnetite \citep{DeGroot2018}.
+The MicroCT, for example, is a popular non-destructive technique for high-resolution imaging of the material internal structures, and yet, it is accompanied by some limitations when it comes to paleomagnetic studies: firstly, the technique has a spatial resolution on the order of $\mu m$, which is not sufficient to directly image the fined grained single-domain magnetite \citep{DeGroot2018}.
 The microCT also struggles to discern ferromagnetic (\textit{l.s.}) from non-magnetic/antiferromagnetic minerals (although assigning to them negligible magnetization), as pointed out by \cite{DeGroot2021}, since they usually have similar densities and therefore similar X-ray attenuation \citep{Cnudde2013}.
 In any case, the major limitation of microCT lies in the trade-off between the resolution and the sample size, requiring small sample volumes to achieve higher resolutions causing the technique to be too time-consuming.
 
-LINK THE NEXT PARAGRAPH
 
-
-\subsection{NEW TITLE} %A critical examination of the source detection
+\subsection{TGA-guided windows: magnetic source detection using LoG Kernel} %A critical examination of the source detection
 
 Our proposed methodology has the goal of finding each individual source’s dipole moment components without the trouble of mechanically selecting cropped data or needing any type of additional information.
 However, to better examine its advantages and disadvantages we first need to point out the strengths and weaknesses of the technique used in the detection of sources, the Laplacian of Gaussian (LoG) kernel \citep{Marr1980}.
@@ -822,30 +826,23 @@ Hence, the application for micromagnetic measurements comes with all the advanta
 Nonetheless, the windows generated isolate the main magnetic signal’s region of each source.
 This guarantees that our thresholding approach (see section~\ref{dipole-reliability}), for both ED and dipolar inversion, is performed using the critical slice of the micromagnetic data, giving satisfactory parameters approximation and fast results as shown in the synthetic data.
 
-The complex synthetic data allows better observation of the strengths and limitations of the windows approach. The main strengths that can be mentioned are: 
-(i) the applied technique not only detects most of the modeled sources but also (ii) most of the recovered magnetic parameters have considerably low errors, especially in the directions, usually less than 5° (Figure~\ref{complex-synthetic-comparison}a).
-(iii) The magnetic moments obtained from well-individualized sources tend to not deviate much from the real values (Figure~\ref{complex-synthetic-comparison}b) when $R^2$ and SNR scores are considered high ($\geq 0.85$ and $\geq 5$, respectively) (Figure~\ref{complex-synthetic-comparison}c-d).
-(iv) Shallow particles grouped in clusters are usually well individualized during window selection, as well as (v) some isolated particles that produce a weak magnetic signal.
-% \begin{enumerate}[label=\roman*)]
-%   \item The applied technique detects most of the modeled sources;
-%   \item The majority of the recovered magnetic parameters have considerably low errors, especially in the directions, usually less than 5° (Figure~\ref{complex-synthetic-comparison}a);
-%   \item The magnetic moments obtained from well-individualized sources tend to not deviate much from the real values (Figure~\ref{complex-synthetic-comparison}b) when $R^2$ and SNR scores are considered high ($\geq 0.85$ and $\geq 5$, respectively) (Figure~\ref{complex-synthetic-comparison}c-d);
-%   \item Shallow particles grouped in clusters are usually well individualized during window selection; as well as
-%   \item Some isolated particles that produce a weak magnetic signal.
-% \end{enumerate}
+While the windows approach violates the fundamental theory of the inversion problem that  requires the sampled area to be finite and encapsulated by the inversion domain to ensure the uniqueness of results \citep{Baratchart2013,Lima2013}, our technique is similar to the  one reported by \cite{Weiss2007}.
+The last-mentioned involves thresholding the long-distance interaction
+of each dipole in the SMM data, which excludes the effect of other dipoles by setting their contribution to zero, resulting in a sparse matrix that permits faster calculations.
+In contrast to this approach, we employ the TGA map to select the windows and isolate the area containing the main signal of the desired dipole, while the area out of the boundaries of the window is less sensitive to variation in magnetic parameters of this particular source, hence we exclude them from the inversion domain.
+This technique allows us to obtain the 3D position and an approximation of the dipole moment components of hundreds of sources within a few seconds, while the inversion is fast the time bottleneck of our methodology is associated with the blob detection process.
 
-It is clear from the error bars in Figure~\ref{complex-synthetic-comparison} that deep-seated sources and/or particles with small dipole moments generate worse results, essentially because they will produce weaker anomalous fields in the magnetic maps.
-Note nonetheless, that even sources with small dipole moments when close to the surface are adequately modeled by our method, because of the trade-off between signal and noise for grains near the sensor. So we can point out the major limitations observed were: 
-(i) the blob detection fails when there are sources too close, grouping them into the same window, thus causing an erroneous result both for Euler deconvolution and for the magnetic parameters.
-(ii) The very same occurs when there is a source under another, in this case, the magnetic signal is the sum of both.
-(iii) In clusters of larger and/or deeper particles, although the method individualizes them well, the magnetic signal of the neighboring particles can considerably influence the result of the inversion, especially the estimated dipole moment (cluster in the Figure~\ref{complex-synthetic-comparison}b with the highest misfit values).
-As expected, there is a direct relationship between the dipole intensity and depth with the observed errors.
+Another main limitation arises from the spatial constraints inherent to our approach. Specifically, the blob detection struggles when dealing with sources that are closely spaced or overlapping, in the last case, it is unable to discern the magnetic sources. Through multiple tests (Figure~\ref{detection-map}), we have found that, for shallow sources, with sensor-sample height $\leq 5 \mu m$, a minimum separation distance of approximately 14 $\mu m$ is necessary to achieve successful source detection. This distance steadily increases for deeper seated sources, requiring around 20 $\mu m$ of separation for sensor-sample height of 25 $\mu m$. This immensely impacts the algorithm's detection capacity, as the particle count escalates, there is a persistent decline in the rate of successful source detection, as shown in Figure~\ref{grain-concentration}a. In essence, the algorithm's effectiveness diminishes as sources become more densely packed, posing a challenge in scenarios where particle density is high (e.g., extrusive rocks). On the other hand, as shown in our complex synthetic and real rock samples the technique could be densely applied to rocks with a lower concentration of magnetic grains (e.g., carbonates), due to its high successful rate for detection of sources.
 
-% \begin{enumerate}[label=\roman*)]
-%   \item  the blob detection fails when there are sources too close, grouping them into the same window, thus causing an erroneous result both for Euler deconvolution and for the magnetic parameters;
-%   \item  The very same occurs when there is a source under another, in this case, the magnetic signal is the sum of both.
-%   \item In clusters of larger and/or deeper particles, although the method individualizes them well, the magnetic signal of the neighboring particles can considerably influence the result of the inversion, especially the estimated dipole moment (cluster in the Figure~\ref{complex-synthetic-comparison}b with the highest misfit values). As expected, there is a direct relationship between the dipole intensity and depth with the observed errors.
-% \end{enumerate}
+
+\begin{figure}[tb!]
+\centering
+\includegraphics[width=0.5\linewidth]{paper/figures/detection-map.png}
+\caption{
+Simulation to assess the algorithm's ability to discern between two sources, with different horizontal separation and varying sensor-sample heights. The black line represents the boundary where the algorithm's is capable of identify two sources.
+}
+\label{detection-map}
+\end{figure}
 
 
 \subsection{Critical assessment of source position determination} %Prior information and uniqueness of solutions
@@ -858,11 +855,10 @@ When the position of the source is known, it constrains the model to be as consi
 Thus, they consider the ED method as an adequate technique to estimate the central positions that will be used as prior information for inversion.
 This occurs mainly because, when well performed, the recovery of the source's horizontal coordinates is considerably accurate, while the vertical coordinate can undergo greater variation even though it still provides satisfactory results \citep{Silva20033D, Melo2013}.
 
-
-
 This remark is also better observed in our simple synthetic sample where the estimated horizontal positions slightly deviate from the true values, which implies small misfit values in the recovered magnetic directions.
-Although the estimated magnetic moment for the said sample is satisfactory, this magnetic parameter is more affected by the variations in the depth of the source, which is probably caused by ambiguities.
-In summary, in order to estimate all magnetic parameters as precisely as possible the ED must be executed within a data window containing the lowest amount possible of noise since that high-frequency noise sensibility is one of the ED's main limitations.
+Although the estimated magnetic moment for the said sample is satisfactory, this magnetic parameter is more affected by the variations in the depth of the source, which is probably caused by ambiguities. Despite the fact that we use the ED original formulation dedicated to dipolar sources ($\eta = 3$), the technique did not present significant difficulties in estimating the 3D position of non-dipolar sources. This adaptability allows for an extension of its application to magnetic particles with a strong influence of higher-order magnetic anomalies. Lastly, as shown in the complex synthetic sample, the ED can reliably estimated the position of well-individualized sources, however when dealing with clustered particles the Euler's solutions start to deviate from the true positions. This deviation is particularly notable in the z-coordinate, which is showed by \cite{Oliveira2015Estimation} to not affect the magnetization direction estimation. However, the scenarios with closely spaced magnetic sources, where the inherent assumptions of Euler's method encounter challenges in accurately capturing the complex interactions of magnetic field anomaly caused by each nearby source, greatly interfering in the dipole intensity estimation. 
+
+In summary, in order to estimate the Cartesian position as precisely as possible the ED must be executed within a data window containing only one magnetic source and the lowest amount possible of noise, since the high-frequency noise sensibility is also one of the ED's limitations. As these assumptions deviate from the ideal case, the ED estimates also become less accurate. 
 
 \subsection{Critical assessment of dipole moment approximation} %Reliability of dipole moment approximation
 \label{dipole-reliability}
@@ -870,9 +866,9 @@ In summary, in order to estimate all magnetic parameters as precisely as possibl
 Our approach relies in the premise of assuming the magnetic anomaly within
 the data window is a response of a dipolar source.
 The latter is true when working
-with particle signals in the SD magnetic domain state since they are uniform magnetized particles with strong dipolar anomalies.
+with particle signals in the SD magnetic domain state since they are uniform magnetized particles \citep{Dunlop1997} with strong dipolar anomalies.
 However, \cite{Nagy2017} reported that particles within the PSD domain can record the paleomagnetic field for longer (than SD ones) periods of time, being the stabler and also with strongly non-dipolar characteristics.
-Therefore the application of the proposed algorithm to natural samples should fail for domains bigger than PSD state. In these instances, where sources may exhibit higher-order magnetic anomalies influence such as quadrupole or octupole \citep[e.g.,][]{CortesOrtuno2021, Koster2023lava}. In such cases, the dipole model fitting process may not yield satisfactory results. Consequently, the presence of higher-order anomalies within the magnetic sources can impact the accuracy of our inversion results.
+Hence, the implementation of the proposed algorithm in natural samples is expected to be unsuccessful in domains other than the SD state. In these instances, where sources may exhibit higher-order magnetic anomalies influence, such as quadrupole or octupole \citep[e.g.,][]{CortesOrtuno2021}, the dipole model fitting process may not yield satisfactory results. Consequently, the presence of higher-order anomalies within the magnetic sources can impact the accuracy of our inversion results. 
 
 \cite{CortesOrtuno2022} give important insights about the matter, they showed that PSD state particles present more accurate inversion results when considering the non-dipole components for small sample-sensor distances (\textless 1 $\mu$m), but for larger sensor distances the dipole as approximations are remarkably accurate, as the higher-order moments decay rapidly with distance and therefore have less
 influence on the particle's magnetic signal.
@@ -883,15 +879,8 @@ Despite the excellent signal-to-noise ratio that the SMM provided with the
 proximity of the sensor to the sample, it is worth mentioning that the
 measurement noise can still overshadow the responses of very weak/small, or
 deep particles, generating unreliable inversion results.
-Therefore, it is necessary to keep a check to determine if the inversion reached a satisfactory prediction, such as the coefficient of determination and the
-signal-to-noise ratio suggested by \cite{CortesOrtuno2021}.
-
-While the windows approach violates the fundamental theory of the inversion problem that  requires the sampled area to be finite and encapsulated by the inversion domain to ensure the uniqueness of results \citep{Baratchart2013,Lima2013}, our technique is similar to the  one reported by \cite{Weiss2007}.
-The last-mentioned involves thresholding the long-distance interaction
-of each dipole in the SMM data, which excludes the effect of other dipoles by setting their contribution to zero, resulting in a sparse matrix that permits faster calculations.
-In contrast to this approach, we employ the TGA map to select the windows and isolate the area containing the main signal of the desired dipole, while the area out of the boundaries of the window is less sensitive to variation in magnetic parameters of this particular source, hence we exclude them from the inversion domain.
-This technique allows us to obtain the 3D position and an approximation of the dipole moment components of hundreds of sources within a few seconds, while the inversion is fast the time bottleneck of our methodology is associated with the blob detection process.
-
+Therefore, it is necessary to keep a check to determine if the inversion reached a satisfactory prediction, such as the coefficient of determination \citep[dipolarity test, ][]{Fu2020} and the
+signal-to-noise ratio suggested by \cite{CortesOrtuno2021}. This filtering process is better observed in the complex synthetic data where it becomes evident the direct relationship between the poorly estimated dipole moment and direction with the lowest values for both $R^2$ and SNR scores (Figure~\ref{complex-synthetic-comparison}).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Conclusion}
