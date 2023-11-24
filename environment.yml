@@ -18,6 +18,7 @@ dependencies:
   # For building latex documents
   - make
   - tectonic
+  - latexdiff
   # For stereonets
   - mplstereonet
   # Fatiando
