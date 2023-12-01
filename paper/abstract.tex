@@ -1,15 +1,18 @@
-Paleomagnetic data is collected from bulk samples, containing a mixture of stable and unstable magnetic particles. 
-Recently, magnetic microscopy techniques have allowed the examination of individual magnetic grains. 
-However, accurately determining the magnetic moments of these grains is difficult and time-consuming due to the inherent ambiguity of potential field data and the large number of grains in each image. 
-Here we introduce a fast and semi-automated algorithm that estimates the position and magnetization of each magnetic source solely based on magnetic microscopy data, without requiring any additional information. 
-The algorithm follows a three-step process. 
-Firstly, it employs image processing techniques to identify and isolate data window boundaries for each magnetic source. 
-Secondly, the algorithm uses Euler deconvolution to estimate their positioning. 
-Lastly, the algorithm solves an overdetermined linear inverse problem, using a dipolar approximation, to determine the direction and intensity of the magnetic dipole moment for each source. 
-To validate the algorithm, we conducted tests analyzing particle depth, intensity, and non-dipolarity. 
-Additionally, synthetic data experiments were performed to demonstrate the effectiveness of the methodology in recovering the position and magnetic information of both dipolar and non-dipolar sources. 
-These experiments included complex samples designed to simulate real rock data. 
-While our underlying assumption is that of dipolar and spatially separated magnetic grains, our results show that the method is capable of automatically identifying individual dipolar sources that are at least between 14 and \qty{20}{\mu\meter} apart and can accurately recover the dipole moment and position of non-dipolar sources that are at least \qty{5}{\mu\meter} from the sensor.
-However, the applicability of the method is still limited to particles in the single- or pseudosingle-domain range.
-When applied to real data, our method is able to accurately retrieved the expected directions induced in the sample. 
-The semi-automated nature of our algorithm, combined with its low processing cost and ability to simultaneously analyze the magnetic moments of numerous particles, represents a significant advancement in facilitating paleomagnetic applications of magnetic microscopy.
+% Paleomagnetic data is collected from bulk samples, containing a mixture of stable and unstable magnetic particles. 
+% Recently, magnetic microscopy techniques have allowed the examination of individual magnetic grains. 
+% However, accurately determining the magnetic moments of these grains is difficult and time-consuming due to the inherent ambiguity of potential field data and the large number of grains in each image. 
+% Here we introduce a fast and semi-automated algorithm that estimates the position and magnetization of each magnetic source solely based on magnetic microscopy data, without requiring any additional information. 
+% The algorithm follows a three-step process. 
+% Firstly, it employs image processing techniques to identify and isolate data window boundaries for each magnetic source. 
+% Secondly, the algorithm uses Euler deconvolution to estimate their positioning. 
+% Lastly, the algorithm solves an overdetermined linear inverse problem, using a dipolar approximation, to determine the direction and intensity of the magnetic dipole moment for each source. 
+% To validate the algorithm, we conducted tests analyzing particle depth, intensity, and non-dipolarity. 
+% Additionally, synthetic data experiments were performed to demonstrate the effectiveness of the methodology in recovering the position and magnetic information of both dipolar and non-dipolar sources. 
+% These experiments included complex samples designed to simulate real rock data. 
+% While our underlying assumption is that of dipolar and spatially separated magnetic grains, our results show that the method is capable of automatically identifying individual dipolar sources that are at least between 14 and \qty{20}{\mu\meter} apart and can accurately recover the dipole moment and position of non-dipolar sources that are at least \qty{5}{\mu\meter} from the sensor.
+% However, the applicability of the method is still limited to particles in the single- or pseudosingle-domain range.
+% When applied to real data, our method is able to accurately retrieved the expected directions induced in the sample. 
+% The semi-automated nature of our algorithm, combined with its low processing cost and ability to simultaneously analyze the magnetic moments of numerous particles, represents a significant advancement in facilitating paleomagnetic applications of magnetic microscopy.
+
+
+Paleomagnetic data is collected from bulk samples, containing a mixture of stable and unstable magnetic particles. Recently, magnetic microscopy techniques have allowed the examination of individual magnetic grains. However, accurately determining the magnetic moments of these grains is difficult and time-consuming due to the inherent ambiguity of potential field data and the large number of grains in each image. Here we introduce a fast and semi-automated algorithm that estimates the position and magnetization of each magnetic source solely based on magnetic microscopy data, without requiring any additional information. The algorithm follows a three-step process. Firstly, it employs image processing techniques to identify and isolate data window boundaries for each magnetic source. Secondly, the algorithm uses Euler deconvolution to estimate their positioning. Lastly, the algorithm solves an overdetermined linear inverse problem, using a dipolar approximation, to determine the direction and intensity of the magnetic dipole moment for each source. To validate the algorithm, we conducted tests analyzing particle depth, intensity, and non-dipolarity. Additionally, synthetic data experiments were performed to demonstrate the effectiveness of the methodology in recovering the position and magnetic information of both dipolar and non-dipolar sources. These experiments included complex samples designed to simulate real rock data. Then, we applied it to real data, where it accurately retrieved the expected directions induced in the sample. The semi-automated nature of our algorithm, combined with its low processing cost and ability to simultaneously analyze the magnetic moments of numerous particles, represents a significant advancement in facilitating paleomagnetic applications of magnetic microscopy.
