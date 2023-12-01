@@ -17,7 +17,7 @@ presented in:
 |  | Info |
 |-:|:-----|
 | Version of record | TBD |
-| Open-access version on EarthArXiv | https://doi.org/10.31223/X5QD5Z |
+| Preprint on EarthArXiv | https://doi.org/10.31223/X5QD5Z |
 | Archive of this repository | https://doi.org/10.6084/m9.figshare.22672978 |
 | Reproducing our results | [`REPRODUCING.md`](REPRODUCING.md) |
 
