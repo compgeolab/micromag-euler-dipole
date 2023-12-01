@@ -644,8 +644,6 @@ We replicated the particle generation procedure 100 times with variations in the
   \label{non-dipolarity-synthetic-data-inversion}
 \end{figure}
 
-
-
 \subsection{Applicability to real-world scenarios}
 
 This test represents a more complex scenario by simulating 103 sources randomly distributed in the imaged area of a synthetic thin section of $\qty{2000}{\um} \times \qty{2000}{\um}$.
@@ -774,16 +772,7 @@ and 0.3 T, respectively toward the +Y and -Y directions. In this way, the high
 coercivity grains (hematite) would point towards +Y and the low coercivity ones
 (magnetite) would align in the -Y direction.
 
-After remanence acquisition, we performed a magnetic map with the Quantum
-Diamond Microscope (QDM) at Harvard University over a sample section of
-approximately $\qty{1410}{\um} \times \qty{2256}{\um}$ (Figure~\ref{real-data}a) with a grid
-spacing of \qty{2.35}{\um} and a sensor-sample distance of approximately \qty{5}{\um}, totaling
-576,000 data points. The QDM is housed in a shielded room, in
-order to avoid the influence of the Earth's magnetic field while the data were taken in projected magnetic microscopy mode and converted to the vertical component of magnetic field ($b_z$) using a spectral approach \citep{Lima2009, Fu2020,
-Glenn2017}. We applied a bias field of \qty{0.9}{\milli\tesla} during the measurement, which was periodically reversed to result in an effective background field of $< \qty{1}{\micro\tesla}$.  After applying the magnetic anomaly detection algorithm (Figure~\ref{real-data}b-e), it was
-possible to determine the windows for 100 potential sources, of which 75 remain after filtering for coherent Euler deconvolution position ($z_c \leq 0$), as shown in Figure~\ref{real-data}e.
-
-\begin{figure}[tb!]
+\begin{figure}[ph!]
 \centering
 \includegraphics[width=1\linewidth]{figures/real-data.png}
 \caption{Real data and the various processing steps performed prior to the dipole moment inversion.
@@ -802,7 +791,14 @@ possible to determine the windows for 100 potential sources, of which 75 remain 
 \label{real-data}
 \end{figure}
 
-In order to reduce the computation time, the Euler deconvolution and magnetic moment inversions were done within each data window, instead of solving all sources parameters at the same time. We obtained the position and dipole moment for all 75 magnetic grains (Figure~\ref{real-data-stereograms}a). Then, we calculated the residuals of the inversions in each window and subsequently the coefficient of determination $R^2$ and signal-to-noise ratio (SNR), which were parameters used as filters for the best directions obtained. We considered a good fit to be achieved when $R^2$ was greater or equal to 0.85 and SNR was greater than 5. An $R^2$ value of 0.85 indicates that \qty{85}{\percent} of the measured magnetic data is explained by the predicted dipole model, which is equivalent to the dipolarity test approach \citep{Fu2020}. On the other hand, an SNR of 5 means that the dipolar signal is 5 times greater than the residual noise. By using these criteria, we ensured that the fit was sufficiently accurate and the dipole model provided a reliable approximation of the original magnetic data. About 46 identified sources passed these criteria. This filtering technique removed the models with poor fit to the data, which includes the ones that were too corrupted with noise. The filtered results show more clearly the expected directional clusters of hematite and magnetite crystals (Figure~\ref{real-data-stereograms}b). Notably, it is confirmed that the sample has both magnetic minerals, but by the expected directions we can also stipulate that the magnetite grains outnumber the hematite ones.
+After remanence acquisition, we performed a magnetic map with the Quantum
+Diamond Microscope (QDM) at Harvard University over a sample section of
+approximately $\qty{1410}{\um} \times \qty{2256}{\um}$ (Figure~\ref{real-data}a) with a grid
+spacing of \qty{2.35}{\um} and a sensor-sample distance of approximately \qty{5}{\um}, totaling
+576,000 data points. The QDM is housed in a shielded room, in
+order to avoid the influence of the Earth's magnetic field while the data were taken in projected magnetic microscopy mode and converted to the vertical component of magnetic field ($b_z$) using a spectral approach \citep{Lima2009, Fu2020,
+Glenn2017}. We applied a bias field of \qty{0.9}{\milli\tesla} during the measurement, which was periodically reversed to result in an effective background field of $< \qty{1}{\micro\tesla}$.  After applying the magnetic anomaly detection algorithm (Figure~\ref{real-data}b-e), it was
+possible to determine the windows for 100 potential sources, of which 75 remain after filtering for coherent Euler deconvolution position ($z_c \leq 0$), as shown in Figure~\ref{real-data}e.
 
 \begin{figure}[tb!]
 \centering
@@ -813,6 +809,8 @@ a) All estimated directions without filtering ($M=75$). b) Estimated directions 
 }
 \label{real-data-stereograms}
 \end{figure}
+
+In order to reduce the computation time, the Euler deconvolution and magnetic moment inversions were done within each data window, instead of solving all sources parameters at the same time. We obtained the position and dipole moment for all 75 magnetic grains (Figure~\ref{real-data-stereograms}a). Then, we calculated the residuals of the inversions in each window and subsequently the coefficient of determination $R^2$ and signal-to-noise ratio (SNR), which were parameters used as filters for the best directions obtained. We considered a good fit to be achieved when $R^2$ was greater or equal to 0.85 and SNR was greater than 5. An $R^2$ value of 0.85 indicates that \qty{85}{\percent} of the measured magnetic data is explained by the predicted dipole model, which is equivalent to the dipolarity test approach \citep{Fu2020}. On the other hand, an SNR of 5 means that the dipolar signal is 5 times greater than the residual noise. By using these criteria, we ensured that the fit was sufficiently accurate and the dipole model provided a reliable approximation of the original magnetic data. About 46 identified sources passed these criteria. This filtering technique removed the models with poor fit to the data, which includes the ones that were too corrupted with noise. The filtered results show more clearly the expected directional clusters of hematite and magnetite crystals (Figure~\ref{real-data-stereograms}b). Notably, it is confirmed that the sample has both magnetic minerals, but by the expected directions we can also stipulate that the magnetite grains outnumber the hematite ones.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Discussion}
