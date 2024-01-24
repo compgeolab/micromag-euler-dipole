@@ -79,8 +79,9 @@ license text.
 
 This research was supported by grant 162704/2021-6 from the Conselho Nacional
 de Desenvolvimento Científico e Tecnológico (CNPq), grant 2021/08379-5 from the
-Fundação de Amparo à Pesquisa do Estado de São Paulo (FAPESP), and grant
-IES\R3\213141 from the Royal Society.
+Fundação de Amparo à Pesquisa do Estado de São Paulo (FAPESP), grant PRPI 
+22.1.09345.01.2 from Universidade de São Paulo, and grant IES\R3\213141 from 
+the Royal Society.
 The opinions, hypotheses, and conclusions or recommendations expressed in this
 material are the responsibility of the authors and do not necessarily reflect
 the views of FAPESP.
