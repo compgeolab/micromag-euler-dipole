@@ -1,4 +1,4 @@
-# Full vector inversion of magnetic microscopy images using Euler deconvolution as a priori information
+# Full vector inversion of magnetic microscopy images using Euler deconvolution as prior information
 
 [Gelson F. Souza Junior](https://orcid.org/0000-0002-5695-4239),
 [Leonardo Uieda](https://orcid.org/0000-0001-6123-9515),
@@ -36,7 +36,7 @@ user-friendly version will be implemented in the open-source library
 [Magali](https://github.com/compgeolab/magali).
 
 ![3 part figure showing magnetic microscopy images overlaid with the recovered dipole moment vectors](paper/figures/complex-synthetic-stereograms.png)
-> Synthetic data test showing that our method is able to automatically identify and 
+> Synthetic data test showing that our method is able to automatically identify and
 > recover the dipole moments of a large number of magnetic particles.
 
 ## Abstract
@@ -79,8 +79,8 @@ license text.
 
 This research was supported by grant 162704/2021-6 from the Conselho Nacional
 de Desenvolvimento Científico e Tecnológico (CNPq), grant 2021/08379-5 from the
-Fundação de Amparo à Pesquisa do Estado de São Paulo (FAPESP), grant PRPI 
-22.1.09345.01.2 from Universidade de São Paulo, and grant IES\R3\213141 from 
+Fundação de Amparo à Pesquisa do Estado de São Paulo (FAPESP), grant PRPI
+22.1.09345.01.2 from Universidade de São Paulo, and grant IES\R3\213141 from
 the Royal Society.
 The opinions, hypotheses, and conclusions or recommendations expressed in this
 material are the responsibility of the authors and do not necessarily reflect
