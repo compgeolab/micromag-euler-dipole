@@ -170,7 +170,8 @@ detects the local TGA maxima. The LoG method is particularly well suited for
 the detection of bright blobs on a dark background at the expense of a longer
 computation time \citep{Han2016}. For the image sizes routinely found in
 magnetic microscopy, the computation is fast and only needs to be performed
-once per image.
+once per image. To avoid issues of source truncation in the following steps, we
+exclude windows that are on or close to the borders of the datasets.
 
 \subsection{Euler Deconvolution}
 
