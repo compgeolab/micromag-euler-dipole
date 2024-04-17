@@ -1,6 +1,6 @@
 # Full vector inversion of magnetic microscopy images using Euler deconvolution as prior information
 
-[Gelson F. Souza Junior](https://orcid.org/0000-0002-5695-4239),
+[Gelson F. Souza-Junior](https://orcid.org/0000-0002-5695-4239),
 [Leonardo Uieda](https://orcid.org/0000-0001-6123-9515),
 [Ricardo I. F. Trindade](https://orcid.org/0000-0001-9848-9550),
 [Janine Carmo](https://orcid.org/0000-0003-3683-3648),
@@ -9,14 +9,14 @@ Roger Fu
 This repository contains the data and source code used to produce the results
 presented in:
 
-> Souza Junior, G.F., Uieda, L., Trindade, R.I.F., Carmo, J., and Fu, R.
+> Souza-Junior, G.F., Uieda, L., Trindade, R.I.F., Carmo, J., and Fu, R.
 > (2023). Full vector inversion of magnetic microscopy images using Euler
-> deconvolution as a priori information. EarthArXiv.
+> deconvolution as prior information. EarthArXiv.
 > https://doi.org/10.31223/x5qd5z
 
 |  | Info |
 |-:|:-----|
-| Version of record | TBD |
+| Version of record | https://doi.org/10.1029/2023GC011082 |
 | Preprint on EarthArXiv | https://doi.org/10.31223/X5QD5Z |
 | Archive of this repository | https://doi.org/10.6084/m9.figshare.22672978 |
 | Reproducing our results | [`REPRODUCING.md`](REPRODUCING.md) |
@@ -29,11 +29,11 @@ the data in 2 steps to determine the position and dipole moment of each
 particle.
 The idea for this work came from combining the group's expertise in applied
 geophysics and paleomagnetism.
-This is the first contribution from Gelson F. Souza Junior's PhD project.
+This is the first contribution from Gelson F. Souza-Junior's PhD project.
 
 The code that implements the method here is a proof-of-concept. A more
 user-friendly version will be implemented in the open-source library
-[Magali](https://github.com/compgeolab/magali).
+[Magali](https://github.com/fatiando/magali).
 
 ![3 part figure showing magnetic microscopy images overlaid with the recovered dipole moment vectors](paper/figures/complex-synthetic-stereograms.png)
 > Synthetic data test showing that our method is able to automatically identify and

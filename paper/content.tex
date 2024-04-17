@@ -80,7 +80,7 @@ parts that can be performed independently:
   the magnetic field caused by each source. We will do this through a
   combination of classic potential field data processing (\textit{total
   gradient amplitude}) and image processing (histogram stretching and
-  equalization) and segmentation methods (watershed segmentation).
+  equalization) and segmentation methods.
 \item \textbf{Position estimation}: Estimate the 3D position of a magnetic
   particle based on the magnetic field measurements and the assumption of a
   dipolar source. This can be achieved by applying the Euler deconvolution
@@ -413,8 +413,8 @@ The estimated dipole moment vector $\hat{\mathbf{m}}$ can be converted into decl
 \begin{equation}
 \label{eq_vector_to_incdec}
 \begin{aligned}
-I &= \tan^{-1}\dfrac{m_z}{\sqrt{m_x^2 + m_y^2}} \ , \\
-D &= \tan^{-1}\dfrac{m_y}{m_x} \ , \\
+I &= -\tan^{-1}\dfrac{m_z}{\sqrt{m_x^2 + m_y^2}} \ , \\
+D &= \tan^{-1}\dfrac{m_x}{m_y} \ , \\
 m &= \sqrt{m_x^2 + m_y^2 + m_z^2} \ .
 \end{aligned}
 \end{equation}
