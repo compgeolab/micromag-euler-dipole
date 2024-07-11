@@ -9,10 +9,7 @@ Roger Fu
 This repository contains the data and source code used to produce the results
 presented in:
 
-> Souza-Junior, G.F., Uieda, L., Trindade, R.I.F., Carmo, J., and Fu, R.
-> (2023). Full vector inversion of magnetic microscopy images using Euler
-> deconvolution as prior information. EarthArXiv.
-> https://doi.org/10.31223/x5qd5z
+> Souza‐Junior, G. F., Uieda, L., Trindade, R. I. F., Carmo, J., & Fu, R. (2024). Full vector inversion of magnetic microscopy images using Euler deconvolution as prior information. Geochemistry, Geophysics, Geosystems, 25, e2023GC011082. https://doi.org/10.1029/2023GC011082
 
 |  | Info |
 |-:|:-----|
