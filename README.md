@@ -4,7 +4,7 @@
 [Leonardo Uieda](https://orcid.org/0000-0001-6123-9515),
 [Ricardo I. F. Trindade](https://orcid.org/0000-0001-9848-9550),
 [Janine Carmo](https://orcid.org/0000-0003-3683-3648),
-Roger Fu
+[Roger Fu](https://orcid.org/0000-0003-3635-2676)
 
 This repository contains the data and source code used to produce the results
 presented in:
